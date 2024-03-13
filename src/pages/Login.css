@@ -1,0 +1,66 @@
+body {
+  background-image: url("https://d35y3h46sw2vsm.cloudfront.net/w/wp-content/uploads/2023/08/University-of-Greenwich-768x480.jpg");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  max-width: 500px;
+  max-height: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #c9c9c9;
+}
+
+.logo-container {
+  width: 1px;
+  height: 1px;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+}
+
+.header-title {
+  text-align: center;
+  color: #337ab7;
+  margin-top: 10px;
+}
+
+/* .formgroup {
+  margin: 20px;
+  margin-bottom: 20px;
+} */
+
+.btn-primary {
+  background-color: #f5f5f5;
+  border-color: #f5f5f5;
+  width: 100%;
+  border-radius: 0px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  align-items: center;
+}
+
+.register-text {
+  color: black;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.register-link {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 350px;
+  }
+}
