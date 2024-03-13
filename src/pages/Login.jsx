@@ -24,18 +24,17 @@ function Login() {
 
   return (
     <div className="login-container">
-      {" "}
+      {/* {" "} {" "} */}
       <div className="logo-container">
         <img
           src="https://upload.wikimedia.org/wikipedia/vi/b/bf/Official_logo_of_Greenwich_Vietnam.png"
-          alt="University of Greenwich logo"
+          alt=""
         />
       </div>
       <div className="container">
         <h1>LOGIN</h1>
         <form onSubmit={handleSubmit}>
           <FormGroup>
-            {" "}
             {}
             <Input
               type="text"

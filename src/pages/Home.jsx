@@ -1,11 +1,15 @@
-// import React from 'react'
+import React from "react";
+import Header from "./Header";
+import Footer from "./Footer";
 
-function Home() {
+const Homepage = () => {
   return (
-    <div> 
-      <h1>Home page</h1>
+    <div>
+      <Header />
+      <div className="homepage-content">{}</div>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Homepage;
