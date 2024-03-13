@@ -37,9 +37,9 @@ function Login() {
           <FormGroup>
             {" "}
             {}
-            <Label for="email">Email*</Label>
             <Input
               type="text"
+              placeholder="Email*"
               id="email"
               name="email"
               value={email}
@@ -47,9 +47,9 @@ function Login() {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="password">Password*</Label>
             <Input
               type="password"
+              placeholder="Password*"
               id="password"
               name="password"
               value={password}
@@ -57,18 +57,18 @@ function Login() {
             />
           </FormGroup>
           {passwordError && <div className="error">{passwordError}</div>}
-          <Link to="/register">
+          <Link to="/register" className="register-link">
             <div>
-              <p>Do not have account? Click here to register</p>
+              <p className="register-text">
+                Do not have account? Click here to register
+              </p>
             </div>
             <Button type="button" variant="primary">
               {" "}
-              {/* Thay type thành "button" */}
               Next
             </Button>
           </Link>
         </form>
-        {/* Add links for "Forgot password" and "Create account" if needed */}
       </div>
     </div>
   );
