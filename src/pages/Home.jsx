@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Login from './forms/Login'
-import './styleHome.css'
+import Login from '../components/loginForm/LoginForm.jsx'
+import './style/homeStyle.css'
 
 import {Button} from 'reactstrap'
 // import { Link } from 'react-router-dom'
