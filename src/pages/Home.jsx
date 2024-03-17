@@ -7,7 +7,7 @@ import {Button} from 'reactstrap'
 // import { Link } from 'react-router-dom'
 function Home() {
   const [showLoginForm, setLoginForm] = useState(false)
-  const handleButtonClick = () => {
+  const handleLogin = () => {
     setLoginForm(!showLoginForm)
   }
 
@@ -19,7 +19,7 @@ function Home() {
         {!showLoginForm && (
           <Link to = "/login">
             <Button
-              onClick={handleButtonClick}
+              onClick={handleLogin}
             >
               Start Journey
             </Button>
