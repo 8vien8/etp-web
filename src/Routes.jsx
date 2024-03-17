@@ -6,6 +6,8 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 import Contact from './pages/Contact';
 import Login from './components/loginForm/LoginForm';
+import RegisterForm from './components/registerForm/RegisterForm';
+import Terms from './components/terms/Terms';
 
 const AppRouter = () => {
   return (
@@ -14,7 +16,9 @@ const AppRouter = () => {
         {/* <Route path="/" element={<App />} > */}
             <Route path="/" element={<Home />} >
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<RegisterForm />} />
             </Route>  
+            <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
