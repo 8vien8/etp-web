@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Login from '../components/loginForm/LoginForm.jsx'
 import './style/homeStyle.css'
 
@@ -16,11 +17,13 @@ function Home() {
       </div>
       <div className='start-button'>
         {!showLoginForm && (
-          <Button
-            onClick={handleButtonClick}
-          >
-            Start Journey
-          </Button>
+          <Link to = "/login">
+            <Button
+              onClick={handleButtonClick}
+            >
+              Start Journey
+            </Button>
+          </Link>
         )}
         {showLoginForm && <Login/> }
       </div>

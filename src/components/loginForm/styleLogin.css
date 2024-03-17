@@ -1,0 +1,36 @@
+
+.login-form{
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #b4abab5b;
+}
+
+.form-header{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.form-group{
+    margin: 5px, 0;
+}
+
+.login-form input{
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    text-align: left;
+    padding-left: 5px;
+    width: 100%;
+}
+
+.login-register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}

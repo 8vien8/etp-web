@@ -16,7 +16,7 @@
 }
 
 .homepage-logo{
-    top: 40px;
+    top: 25px;
     position: absolute;
     background-size: cover;
     width: 800px;
@@ -29,15 +29,11 @@
 
 }
 
-.start-button{
-    /* margin-top: 20px; */
-}
-
 button{
     border: none;
     border-radius: 8px;
     padding: 0.6em 1.2em;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 500;
     font-family: inherit;
     background-color: transparent;
