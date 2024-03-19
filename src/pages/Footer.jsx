@@ -10,9 +10,6 @@ const Footer = () => {
           <Link to="/">Copyright &copy; 2024</Link>
         </p>
         <p>
-          <Link to="/">Home</Link>
-        </p>
-        <p>
           <Link to="/privacy">Privacy & cookies</Link>
         </p>
         <p>
