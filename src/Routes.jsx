@@ -1,5 +1,5 @@
 // Routings
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 // import App from './App';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -19,19 +19,19 @@ const AppRouter = () => {
     <Router>
       <Routes>
             <Route path="/" element={<Home />} >
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<RegisterForm />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<RegisterForm />} />
             </Route>  
             <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="/user-landing-page" element={<LandingPage />} />
-              <Route path="/submissions" element={<Submissions />} />
-              {/* <Route path="/reports" element={<Reports />} /> */}
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
+            <Route path="/user" element={<LandingPage />} >
+              <Route path="submissions" element={<Submissions />} />
+              <Route path="messages" element={<Messages />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
       </Routes>
     </Router>
   );

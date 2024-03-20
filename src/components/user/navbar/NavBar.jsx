@@ -11,27 +11,23 @@ function NavBar() {
             <Nav className="mr-auto" navbar>
                 <NavItem className='navbar-item'>
                     <box-icon name='home'/>
-                    <NavLink tag={Link} to="/user-landing-page" >Home</NavLink>
+                    <NavLink tag={Link} to="/user" >Home</NavLink>
                 </NavItem>
                 <NavItem className='navbar-item'>
                     <box-icon name='dock-left'/>
-                    <NavLink tag={Link} to="/submissions" >Submission</NavLink>
+                    <NavLink tag={Link} to="submissions" >Reports</NavLink>
                 </NavItem>
-                {/* <NavItem className='navbar-item'>
-                    <box-icon type='solid' name='report'/>
-                    <NavLink tag={Link} to="/reports" >Reports</NavLink>
-                </NavItem> */}
                 <NavItem className='navbar-item'>
                     <box-icon name='message-rounded-dots'/>
-                    <NavLink tag={Link} to="/messages" >Messages</NavLink>
+                    <NavLink tag={Link} to="messages" >Messages</NavLink>
                 </NavItem>
                 <NavItem className='navbar-item'>
                     <box-icon name='user-circle'/>
-                    <NavLink tag={Link} to="/profile" >Profile</NavLink>
+                    <NavLink tag={Link} to="profile" >Profile</NavLink>
                 </NavItem>
                 <NavItem className='navbar-item'>
                     <box-icon name='cog' />
-                    <NavLink tag={Link} to="/settings" >Settings</NavLink>
+                    <NavLink tag={Link} to="settings" >Settings</NavLink>
                 </NavItem>
             </Nav>
         </Navbar>

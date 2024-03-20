@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.user-landing-page-container{
+    display: grid;
+    grid-template-columns: 15% 1fr;
+}
+
+.content{
+    padding: 20px;
+}
