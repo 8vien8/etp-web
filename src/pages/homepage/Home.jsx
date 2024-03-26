@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Login from "../components/loginForm/LoginForm.jsx";
-import Footer from "./Footer";
-import "./style/homeStyle.css";
+import Login from "../../components/loginForm/LoginForm.jsx";
+import Footer from "./Footer.jsx";
+import "../style/homeStyle.css";
 
 import { Button } from "reactstrap";
 // import { Link } from 'react-router-dom'
@@ -21,7 +21,9 @@ function Home() {
             <Button onClick={handleLogin}>Start Journey</Button>
           </Link>
         )}
-        {showLoginForm && <Login />}
+        <div className="form">
+          {showLoginForm && <Login />}
+        </div>
       </div>
       <Footer />
     </div>
