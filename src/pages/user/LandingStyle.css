@@ -6,9 +6,12 @@
 
 .user-landing-page-container{
     display: grid;
-    grid-template-columns: 15% 1fr;
+    grid-template-columns: 12% 1fr;
 }
 
 .content{
+    border: solid 1px rgb(214, 212, 212);
+    margin: 20px;
     padding: 20px;
+    min-height: 95vh;
 }

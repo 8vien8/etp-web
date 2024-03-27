@@ -29,11 +29,11 @@
 
 }
 
-button{
+.start-button button{
     border: none;
     border-radius: 8px;
     padding: 0.6em 1.2em;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 500;
     font-family: inherit;
     background-color: transparent;
@@ -43,10 +43,18 @@ button{
      color 0.4s ease-in
 }
 
-button:hover{
+.start-button button:hover{
     background-color: #4077ec;
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-
+.form button {
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: inherit;
+    background-color: #4673d3eb;
+    cursor: pointer;
+}
