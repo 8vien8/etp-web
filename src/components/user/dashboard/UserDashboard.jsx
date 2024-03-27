@@ -5,7 +5,7 @@ function UserDashboard() {
     <div className='user-dashboard-container'>
       <div className='user-dashboard-search'>
         <box-icon name='search-alt-2'/>
-        <Input type='search' placeholder='Search here... '/>
+        <Input type='search' placeholder='Search courses here... '/>
       </div>
       <div className='user-dashboard-content' >
         <Card style={{ width: '18%' }}>
