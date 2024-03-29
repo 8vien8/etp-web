@@ -14,26 +14,30 @@ import Messages from './components/user/message/Messages';
 import Profile from './components/user/profile/Profile';
 import Settings from './components/user/settingg/Settings';
 import UserDashboard from './components/user/dashboard/UserDashboard';
-
+import CoordinatorLandingPage from './pages/coordinator/LandingPage';
+import Dashboard from './components/coordinator/dashboard/Dashboard';
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
-            <Route path="/" element={<Home />} >
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<RegisterForm />} />
-            </Route>  
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/user" element={<LandingPage />} >
-              <Route path="/user" element={<UserDashboard />} />
-              <Route path="submissions" element={<Submissions />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+        <Route path="/" element={<Home />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<RegisterForm />} />
+        </Route>
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/user" element={<LandingPage />}>
+          <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="submissions" element={<Submissions />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+        <Route path="/coordinator" element={<CoordinatorLandingPage />} >
+          <Route path='dashboard' element={<Dashboard/>}/>
+        </Route>
       </Routes>
     </Router>
   );
