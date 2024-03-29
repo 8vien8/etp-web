@@ -1,6 +1,6 @@
 import { Navbar, Nav, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import '../../utils/navbarStyle.css'
+import '../../utils/style/navbarStyle.css'
 function NavBar() {
   return (
     <div className='navbar-container'>
