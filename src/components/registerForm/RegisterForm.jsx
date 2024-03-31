@@ -2,6 +2,7 @@ import { FormGroup, Form, Label, Input, Button } from "reactstrap"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import Login from "../loginForm/LoginForm"
+import Terms from "../terms/Terms"
 import "./styleRegister.css"
 function RegisterForm() {
   const [showLoginForm, setShowLoginForm] = useState(false)
@@ -32,9 +33,9 @@ function RegisterForm() {
               onSubmit={handleSubmit}
         >
           <div className='form-header'>
-            <h1>Register</h1>
+            <h2>Register</h2>
           </div>
-          <FormGroup className='form-group'>
+          <FormGroup>
             <Label>Email</Label>
             <Input
               type="email"
@@ -74,7 +75,7 @@ function RegisterForm() {
           <div className="term-check-box">
             <Input type="checkbox"
                    required           
-            /> Agree with <Link to='/terms'>Terms</Link>
+            /> Agree with <Link to='terms'><Terms/></Link>
           </div> 
           <div className='register-button'>
             <Button 
@@ -84,7 +85,7 @@ function RegisterForm() {
             </Button>
           </div>
           <div className='form-footer'>
-            <p>Already have an account? 
+            <p>Already have an account?.
               <Link to ='/login'
                     onClick={handleLogin}
               > Sign in

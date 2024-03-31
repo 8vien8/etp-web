@@ -30,10 +30,11 @@
 }
 
 .start-button button{
+    color: rgb(10, 9, 9);
     border: none;
     border-radius: 8px;
     padding: 0.6em 1.2em;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 500;
     font-family: inherit;
     background-color: transparent;
@@ -51,10 +52,13 @@
 
 .form button {
     border-radius: 8px;
-    padding: 0.6em 1.2em;
+    padding: 0.3em 0.6em;
     font-size: 1em;
-    font-weight: bold;
     font-family: inherit;
-    background-color: #4673d3eb;
+    background-color: #4077ec;
     cursor: pointer;
+}
+
+.form a{
+    color: rgba(81, 38, 7, 0.902);
 }

@@ -16,9 +16,9 @@ function Login() {
               // onSubmit={handleSubmit}
         >
           <div className='form-header'>
-            <h1>Login</h1>
+            <h2>Login</h2>
           </div>
-          <FormGroup className='form-group'>
+          <FormGroup>
             <Label>Email</Label>
             <Input
               type="email"
