@@ -15,11 +15,11 @@ function NavBar() {
                 </NavItem>
                 <NavItem className='navbar-item'>
                     <box-icon name='dock-left'/>
-                    <NavLink tag={Link} to="submissions" >Reports</NavLink>
+                    <NavLink tag={Link} to="articles" >Articles</NavLink>
                 </NavItem>
                 <NavItem className='navbar-item'>
-                    <box-icon name='plus-circle'/>
-                    <NavLink tag={Link} to="create" >Create</NavLink>
+                    <box-icon name='user-plus'/>
+                    <NavLink tag={Link} to="create-user" >New User</NavLink>
                 </NavItem>
                 <NavItem className='navbar-item'>
                     <box-icon name='message-rounded-dots'/>

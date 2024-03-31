@@ -1,0 +1,20 @@
+
+.dashboard-search input{
+    height: 30px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    padding-left: 30px ;
+    padding-right: 10px;
+    width: 20%;
+}
+.dashboard-search box-icon{
+    height: 25px;
+    width: 30px;
+    position: absolute;
+    transform: translate(15% ,10%) ;
+}
+
+
+
+

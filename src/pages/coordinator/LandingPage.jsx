@@ -1,4 +1,4 @@
-import NavBar from "../../components/user/navbar/NavBar"
+import NavBar from "../../components/coordinator/navbar/NavBar"
 import { Outlet } from 'react-router-dom'
 import '../style/LandingStyle.css'
 function LandingPage() {

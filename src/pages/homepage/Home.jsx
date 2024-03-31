@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import Login from "../../components/loginForm/LoginForm.jsx";
 import Footer from "./Footer.jsx";
 import "../style/homeStyle.css";
-
 import { Button } from "reactstrap";
-// import { Link } from 'react-router-dom'
+
 function Home() {
   const [showLoginForm, setLoginForm] = useState(false);
   const handleLogin = () => {

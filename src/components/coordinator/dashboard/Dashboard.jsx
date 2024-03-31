@@ -1,14 +1,10 @@
-import { Card, CardBody, CardTitle, CardSubtitle, Button, Input } from 'reactstrap'
-import './style.css'
-import '../../utils/style/cardStyle.css' 
-function UserDashboard() {
+import { Card, CardBody, CardTitle, CardSubtitle, Button} from 'reactstrap'
+import '../../utils/style/cardStyle.css'
+const Dashboard = () => {
   return (
-    <div className='dashboard-container'>
-      <div className='dashboard-search'>
-        <box-icon name='search-alt-2'/>
-        <Input type='search' placeholder='Search courses here... '/>
-      </div>
-      <div className='dashboard-content' >
+    <div>
+      <h1>Coordinator</h1>
+      <div className="dashboard-content">
         <Card style={{ width: '18%' }}>
           <img
             alt="Sample"
@@ -23,7 +19,7 @@ function UserDashboard() {
               className="mb-2 text-muted"
               tag="h3"
             >
-              Article name
+              Academic year
             </CardSubtitle>
             <Button>
               Detail 
@@ -33,8 +29,7 @@ function UserDashboard() {
         </Card>
       </div>
     </div>
-
   )
 }
 
-export default UserDashboard
+export default Dashboard

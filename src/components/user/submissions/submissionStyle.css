@@ -4,9 +4,7 @@
 }
 
 .search-course-container button {
-    padding: 0.2rem;
     cursor: pointer;
-    font-weight: 550;
 }
 
 .search-input{
@@ -14,7 +12,10 @@
     gap: 5px
 }
 
-.search-input input{
-    height: 1.7rem;
-    padding: 0.3rem;
+#courseStatus{
+    width: 50%;
+}
+
+#courseDate{
+    width: 70%;
 }
