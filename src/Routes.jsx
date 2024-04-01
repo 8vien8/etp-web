@@ -1,5 +1,5 @@
 // Routings
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import App from './App';
 import Home from './pages/homepage/Home';
 import About from './pages/homepage/About';
@@ -20,6 +20,8 @@ import CreateNewSubmissions from './components/user/create/CreateNewSubmisson';
 import CreateNewUser from './components/coordinator/createUser/CreateNewUser';
 import Message from './components/coordinator/message/Messages';
 import CoProfile from './components/coordinator/profile/CoProfile';
+import ManagerDashBoard from './components/manager/dashboard/ManagerDashBoard';
+import ManagerLandingPage from './pages/manager/ManagerLandingPage';
 const AppRouter = () => {
   return (
     <Router>
@@ -39,13 +41,18 @@ const AppRouter = () => {
           <Route path="messages" element={<Messages />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+
         <Route path="/coordinator" element={<CoordinatorLandingPage />} >
-          <Route path='dashboard' element={<Dashboard/>}/>
-          <Route path='articles' element={<Articles/>}/>
-          <Route path='create-user' element={<CreateNewUser/>}/>
-          <Route path='messages' element={<Message/>}/>
-          <Route path='profile' element={<CoProfile/>}/>
-          <Route path='settings' element={<Articles/>}/>
+          <Route path='dashboard' element={<Dashboard />} />
+          <Route path='articles' element={<Articles />} />
+          <Route path='create-user' element={<CreateNewUser />} />
+          <Route path='messages' element={<Message />} />
+          <Route path='profile' element={<CoProfile />} />
+          <Route path='settings' element={<Articles />} />
+        </Route>
+
+        <Route path="/manager" element={<ManagerLandingPage />}>
+          <Route path='dashboard' element={<ManagerDashBoard />} />
         </Route>
       </Routes>
     </Router>
