@@ -1,0 +1,39 @@
+/* profileStyle.css */
+.profile-Header {
+  display: flex;
+  justify-content: center;
+}
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin: 20px auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid rgb(132, 138, 139);
+}
+
+th,
+td {
+  padding: 8px;
+}
+
+th {
+  background-color: rgb(148, 148, 148);
+}
+
+.logout-btn {
+  justify-content: center;
+  display: flex;
+  margin-bottom: 20px;
+}
