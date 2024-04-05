@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-
+import { Button } from 'reactstrap'
 function Header() {
     const navigate = useNavigate();
 
@@ -10,8 +10,7 @@ function Header() {
 
     return (
         <div className="header">
-            <h1>App Header</h1>
-            <button onClick={handleLogout}>Logout</button>
+            <Button onClick={handleLogout}>Logout</Button>
         </div>
     );
 }
