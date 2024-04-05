@@ -1,8 +1,6 @@
-import React from "react";
-import NavBar from "../navbar/NavBar";
-import { Container, Row, Col, Table, Button } from "reactstrap";
+import { Container, Row, Col, Table } from "reactstrap";
 import "./profileStyle.css";
-
+import Logout from '../../button/logOut.jsx'
 function Profile() {
   return (
     <div>
@@ -14,9 +12,7 @@ function Profile() {
                 <div className="profile-picture"></div>
               </div>
               <div className="logout-btn">
-                <Button className="btn-logOut" color="primary">
-                  Log Out
-                </Button>
+                <Logout />
               </div>
             </Col>
           </Row>
