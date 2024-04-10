@@ -44,7 +44,6 @@ const AppRouter = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/setting" element={<Setiing />} />
         </Route>
         {/* Student */}
         <Route
@@ -62,6 +61,7 @@ const AppRouter = () => {
           <Route path="create" element={<CreateNewSubmissions />} />
           <Route path="messages" element={<Messages />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
 
         {/* Coordinator */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Table, Button, Input } from "reactstrap";
+import { Container, Row, Button, Input } from "reactstrap";
 
 function Setting() {
   return (
