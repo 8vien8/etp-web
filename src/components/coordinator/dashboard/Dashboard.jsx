@@ -1,4 +1,5 @@
-import { Card, CardBody, CardTitle, CardSubtitle, Button} from 'reactstrap'
+import { Card, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import '../../utils/style/cardStyle.css'
 const Dashboard = () => {
   return (
@@ -13,17 +14,19 @@ const Dashboard = () => {
           />
           <CardBody className='articles-container'>
             <CardTitle tag="h2">
-              Courses name
+              Class name
             </CardTitle>
             <CardSubtitle
               className="mb-2 text-muted"
               tag="h3"
             >
-              Academic year
+              Course Name
             </CardSubtitle>
             <Button>
-              Detail 
-              <box-icon name='link-external'></box-icon>
+              <Link to="/coordinator/classroom">
+                Detail
+                <box-icon name='link-external'></box-icon>
+              </Link>
             </Button>
           </CardBody>
         </Card>

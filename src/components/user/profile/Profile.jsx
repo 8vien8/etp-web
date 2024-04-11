@@ -1,5 +1,5 @@
 import { Container, Row, Col, Table } from "reactstrap";
-import "./profileStyle.css";
+import "../../utils/style/profileStyle.css";
 import Logout from '../../button/logOut.jsx'
 function Profile() {
   return (
