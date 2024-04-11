@@ -3,7 +3,7 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import './styleLogin.css'
 import { Link, useNavigate } from 'react-router-dom'
 import RegisterForm from '../registerForm/RegisterForm'
-import mockUsers from '../../../mockdata'
+import { mockUsers } from '../../../mockdata'
 function Login() {
   const [showRegistrationForm, setShowRegistrationForm] = useState(false)
   const handleRegister = () => {

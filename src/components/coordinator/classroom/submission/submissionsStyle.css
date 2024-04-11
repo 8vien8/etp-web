@@ -1,0 +1,6 @@
+.search-submissions {
+  display: flex;
+  margin-bottom: 5px;
+  width: 50%;
+  gap: 5px;
+}

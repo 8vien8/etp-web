@@ -21,6 +21,7 @@ import CreateNewUser from './components/coordinator/createUser/CreateNewUser';
 import Message from './components/coordinator/message/Messages';
 import CoProfile from './components/coordinator/profile/CoProfile';
 import ManagerDashBoard from './components/manager/dashboard/ManagerDashBoard';
+import ClassDetail from './components/coordinator/classroom/ClassDetail';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -56,6 +57,7 @@ const AppRouter = () => {
           <Route path='messages' element={<Message />} />
           <Route path='profile' element={<CoProfile />} />
           <Route path='settings' element={<Articles />} />
+          <Route path='classroom' element={<ClassDetail />} />
         </Route>
 
         {/*Manager */}

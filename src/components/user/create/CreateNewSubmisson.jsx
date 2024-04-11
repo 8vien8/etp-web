@@ -1,7 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Table, Button, Input } from "reactstrap";
+import { Container, Row, Table, Button, Input } from "reactstrap";
 import "./CreateNewSubmissionStyle.css";
-import Terms from "../../terms/Terms";
 
 function CreateNewSubmissions() {
   return (

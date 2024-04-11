@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Row, Col, Table, Button, Input } from "reactstrap";
+import { Table, Button, Input } from "reactstrap";
 import "./createnewuserStyle.css";
 
 function CreateNewUser() {

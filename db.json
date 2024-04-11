@@ -1,0 +1,72 @@
+{
+  "submissions": [
+    {
+      "id": "2",
+      "date": "2022-04-02",
+      "submissionTitle": "Assignment 2",
+      "studentID": "456",
+      "grade": "D",
+      "comment": "Bad",
+      "graded": "Graded"
+    },
+    {
+      "id": "3",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "grade": "A",
+      "comment": "SDADasd",
+      "graded": "Graded"
+    },
+    {
+      "id": "5",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "grade": "A",
+      "comment": "aaaaaaaaaaaa",
+      "graded": "Graded"
+    },
+    {
+      "id": "7",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "grade": "dá",
+      "comment": "sdasd",
+      "graded": "Graded"
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "academicYear": "Senior"
+    },
+    {
+      "id": 2,
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "academicYear": "Junior"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob@example.com",
+      "academicYear": "Senior"
+    },
+    {
+      "id": 4,
+      "name": "Emily Brown",
+      "email": "emily@example.com",
+      "academicYear": "Sophomore"
+    },
+    {
+      "id": 5,
+      "name": "Michael Wilson",
+      "email": "michael@example.com",
+      "academicYear": "Freshman"
+    }
+  ]
+}
