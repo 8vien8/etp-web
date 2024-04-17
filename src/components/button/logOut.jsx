@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap'
-function Header() {
+function LogOut() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -15,4 +15,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default LogOut;

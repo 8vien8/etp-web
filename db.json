@@ -5,15 +5,31 @@
       "date": "2022-04-02",
       "submissionTitle": "Assignment 2",
       "studentID": "456",
+      "studentName": "Student 1",
       "grade": "D",
       "comment": "Bad",
-      "graded": "Graded"
+      "graded": "Graded",
+      "files": [
+        {
+          "id": "1",
+          "fileName": "Assignment1",
+          "fileUrl": "https://www.bing.com/images/search?view=detailV2&ccid=LvGjj4lI&id=26061B8C4FAB9BB2BD1A19C2985D40CCAA1F1FB2&thid=OIP.LvGjj4lI-UHagACBR43lzAHaE8&mediaurl=https%3a%2f%2fwww.wondersoflondon.com%2fwp-content%2fuploads%2f2018%2f01%2fNational-Maritime-Museum-in-Greenwich.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.2ef1a38f8948f941da800081478de5cc%3frik%3dsh8fqsxAXZjCGQ%26pid%3dImgRaw%26r%3d0&exph=1000&expw=1500&q=greenwich&simid=608045749240095263&FORM=IRPRST&ck=3166833833778DE54653D2D816FE6E3E&selectedIndex=2&itb=0",
+          "fileType": "pdf"
+        },
+        {
+          "id": "2",
+          "fileName": "Assignment2",
+          "fileUrl": "https://www.bing.com/images/search?view=detailV2&ccid=LvGjj4lI&id=26061B8C4FAB9BB2BD1A19C2985D40CCAA1F1FB2&thid=OIP.LvGjj4lI-UHagACBR43lzAHaE8&mediaurl=https%3a%2f%2fwww.wondersoflondon.com%2fwp-content%2fuploads%2f2018%2f01%2fNational-Maritime-Museum-in-Greenwich.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.2ef1a38f8948f941da800081478de5cc%3frik%3dsh8fqsxAXZjCGQ%26pid%3dImgRaw%26r%3d0&exph=1000&expw=1500&q=greenwich&simid=608045749240095263&FORM=IRPRST&ck=3166833833778DE54653D2D816FE6E3E&selectedIndex=2&itb=0",
+          "fileType": "docx"
+        }
+      ]
     },
     {
       "id": "3",
       "date": "2022-04-03",
       "submissionTitle": "Assignment 3",
       "studentID": "789",
+      "studentName": "Student 2",
       "grade": "A",
       "comment": "SDADasd",
       "graded": "Graded"
@@ -23,6 +39,7 @@
       "date": "2022-04-03",
       "submissionTitle": "Assignment 3",
       "studentID": "789",
+      "studentName": "Student 3",
       "grade": "A",
       "comment": "aaaaaaaaaaaa",
       "graded": "Graded"
@@ -32,6 +49,7 @@
       "date": "2022-04-03",
       "submissionTitle": "Assignment 3",
       "studentID": "789",
+      "studentName": "Student 4",
       "grade": "dá",
       "comment": "sdasd",
       "graded": "Graded"
@@ -67,6 +85,22 @@
       "name": "Michael Wilson",
       "email": "michael@example.com",
       "academicYear": "Freshman"
+    }
+  ],
+  "class": [
+    {
+      "id": 1,
+      "className": "Class 1",
+      "dueDate": "",
+      "documents": [],
+      "studentNumber": "",
+      "studentList": [
+        {
+          "id": 1,
+          "studentName": "Student 1",
+          "studentID": ""
+        }
+      ]
     }
   ]
 }

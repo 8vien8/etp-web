@@ -3,6 +3,7 @@ export const mockUsers = [
     { id: 2, email: 'manager@example.com', password: 'manager123', role: 'manager' },
     { id: 3, email: 'coordinator@example.com', password: 'coordinator123', role: 'coordinator' },
     { id: 4, email: 'student@example.com', password: 'student123', role: 'student' },
+    { id: 5, email: 'guest@example.com', password: 'guest123', role: 'guest' },
 ];
 
 export const mockStudent = [

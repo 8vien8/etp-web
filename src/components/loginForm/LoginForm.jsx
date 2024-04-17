@@ -33,6 +33,9 @@ function Login() {
         case 'student':
           navigate("/user")
           break;
+        case 'guest':
+          navigate("/guest")
+          break;
         default:
           break;
       }
