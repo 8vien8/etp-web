@@ -22,6 +22,9 @@ import Message from './components/coordinator/message/Messages';
 import CoProfile from './components/coordinator/profile/CoProfile';
 import ManagerDashBoard from './components/manager/dashboard/ManagerDashBoard';
 import ClassDetail from './components/coordinator/classroom/ClassDetail';
+import SubmissionDetail from './components/coordinator/classroom/submission/detail/SubmissionDetail';
+import AdminLandingPage from './pages/admin/AdminLandingPage';
+import AdminDashBoard from './components/admin/dashboard/AdminDashBoard';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -57,12 +60,18 @@ const AppRouter = () => {
           <Route path='messages' element={<Message />} />
           <Route path='profile' element={<CoProfile />} />
           <Route path='settings' element={<Articles />} />
-          <Route path='classroom' element={<ClassDetail />} />
+          <Route path='classroom' element={<ClassDetail />} >
+            <Route path='submission' element={<SubmissionDetail />} />
+          </Route>
         </Route>
 
         {/*Manager */}
         <Route path="/manager" element={isAuthenticated('manager') ? <ManagerLandingPage /> : <Navigate to="/login" />}>
           <Route path='dashboard' element={<ManagerDashBoard />} />
+        </Route>
+        {/* Admin */}
+        <Route path="/admin" element={isAuthenticated('admin') ? <AdminLandingPage /> : <Navigate to="/login" />}>
+          <Route path='dashboard' element={<AdminDashBoard />} />
         </Route>
       </Routes>
     </Router>

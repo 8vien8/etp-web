@@ -41,7 +41,7 @@ const EditGrade = ({ submission, onSaveGrade }) => {
     return (
         <>
             <Button color="primary" onClick={toggleModal} disabled={submission.graded !== 'Graded'}>
-                Edit Grade
+                Edit
             </Button>
             <Modal isOpen={modal} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}>Edit Grade</ModalHeader>

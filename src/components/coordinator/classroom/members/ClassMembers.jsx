@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import './classMembersStyle.css';
+import ClassMembersDetail from './detail/ClassMemberDetail';
 
 function ClassMembers() {
     const apiUrl = 'http://localhost:3001/students';
@@ -108,7 +109,7 @@ function ClassMembers() {
                                 <td>{student.email}</td>
                                 <td>{student.academicYear}</td>
                                 <td>
-                                    <Button color="primary">Detail</Button>
+                                    <ClassMembersDetail student={student} />
                                     <Button color="danger" onClick={() => confirmDelete(student.id)}>Delete</Button>
                                 </td>
                             </tr>

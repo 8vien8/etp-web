@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Input, Table } from 'reactstrap';
 import GradeSubmission from '../gradeSubmission/GradeSubmission';
 import EditGrade from '../editGrade/EditGrade';
+import SubmissionDetail from './detail/SubmissionDetail';
+import './submissionsStyle.css'
 
 function Submissions() {
     const [submissions, setSubmissions] = useState([]);
@@ -85,11 +87,12 @@ function Submissions() {
             <Table striped>
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th>Submission Date</th>
                         <th>Title</th>
                         <th>Student ID</th>
+                        {/* <th>Student name</th> */}
                         <th>Grade</th>
-                        <th>Actions</th>
+                        <th className='action-column'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,8 +101,9 @@ function Submissions() {
                             <td>{submission.date}</td>
                             <td>{submission.submissionTitle}</td>
                             <td>{submission.studentID}</td>
+                            {/* <td>{submission.studentName}</td> */}
                             <td>{submission.grade}</td>
-                            <td>
+                            <td className='action-column'>
                                 <GradeSubmission
                                     submission={submission}
                                     onSaveGrade={handleSaveGrade}
@@ -108,12 +112,12 @@ function Submissions() {
                                     submission={submission}
                                     onSaveGrade={handleSaveGrade}
                                 />
+                                <SubmissionDetail submission={submission} />
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
-
         </div>
     );
 }
