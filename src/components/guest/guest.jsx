@@ -7,7 +7,10 @@ function Message() {
     <div>
       <div className="col-6">
         <Card inverse>
-          <CardImg alt="Card image cap" src="" />
+          <CardImg
+            alt="Card image cap"
+            src="https://picsum.photos/900/270?grayscale"
+          />
           <CardImgOverlay>
             <CardTitle tag="h5">Card Title</CardTitle>
             <CardText>
@@ -23,7 +26,10 @@ function Message() {
       </div>
       <div className="col-6">
         <Card inverse>
-          <CardImg alt="Card image cap" src="" />
+          <CardImg
+            alt="Card image cap"
+            src="https://picsum.photos/900/270?grayscale"
+          />
           <CardImgOverlay>
             <CardTitle tag="h5">Card Title</CardTitle>
             <CardText>
