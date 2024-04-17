@@ -25,6 +25,8 @@ import ClassDetail from './components/coordinator/classroom/ClassDetail';
 import SubmissionDetail from './components/coordinator/classroom/submission/detail/SubmissionDetail';
 import AdminLandingPage from './pages/admin/AdminLandingPage';
 import AdminDashBoard from './components/admin/dashboard/AdminDashBoard';
+import GuestLandingPage from './pages/guest/GuestLandingPage';
+import GuestDashBoard from './components/guest/dashboard/GuestDashBoard';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -72,6 +74,10 @@ const AppRouter = () => {
         {/* Admin */}
         <Route path="/admin" element={isAuthenticated('admin') ? <AdminLandingPage /> : <Navigate to="/login" />}>
           <Route path='dashboard' element={<AdminDashBoard />} />
+        </Route>
+        {/* Guest */}
+        <Route path="/guest" element={isAuthenticated('guest') ? <GuestLandingPage /> : <Navigate to="/login" />}>
+          <Route path='dashboard' element={<GuestDashBoard />} />
         </Route>
       </Routes>
     </Router>

@@ -1,6 +1,6 @@
 import { Container, Row, Col, Table } from "reactstrap";
 import "../../utils/style/profileStyle.css";
-import Logout from '../../button/logOut.jsx'
+import Logout from '../../button/LogOut.jsx'
 function CoProfile() {
   return (
     <div>

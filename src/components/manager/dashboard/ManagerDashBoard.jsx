@@ -1,7 +1,10 @@
+import LogOut from "../../button/LogOut"
 
 function ManagerDashBoard() {
     return (
-        <div>Manager DashBoard</div>
+        <div>Manager DashBoard
+            <LogOut />
+        </div>
     )
 }
 
