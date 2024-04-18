@@ -1,4 +1,45 @@
 {
+  "coordinators": [
+    {
+      "id": "1",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Coordinator 1",
+      "coordinatorID": "CD1",
+      "email": "example@example.com",
+      "password": "<PASSWORD>",
+      "classManage": [
+        {
+          "id": "1",
+          "classID": "1",
+          "className": "Class 1",
+          "classCode": "CS101"
+        },
+        {
+          "id": "3",
+          "classID": "3",
+          "className": "Class 3",
+          "classCode": "CS303"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Coordinator 2",
+      "coordinatorID": "CD2",
+      "email": "example@example.com",
+      "password": "<PASSWORD>",
+      "classManage": [
+        {
+          "id": "2",
+          "classID": "2",
+          "className": "Class 2",
+          "classCode": "CS202",
+          "classDescription": "This is a description of the course"
+        }
+      ]
+    }
+  ],
   "submissions": [
     {
       "id": "2",
@@ -89,16 +130,103 @@
   ],
   "class": [
     {
-      "id": 1,
+      "id": "1",
+      "classID": "CL1",
       "className": "Class 1",
-      "dueDate": "",
-      "documents": [],
-      "studentNumber": "",
+      "documentList": [
+        {
+          "id": "1",
+          "documentUrl": "http://example.com",
+          "uploadDate": "01-02-2003"
+        },
+        {
+          "id": "2",
+          "documentUrl": "http://example.com",
+          "uploadDate": "02-03-2003"
+        }
+      ],
+      "coordinatorName": "Coordinator 1",
+      "coordinatorID": "CD1",
       "studentList": [
         {
-          "id": 1,
+          "id": "1",
           "studentName": "Student 1",
-          "studentID": ""
+          "studentID": "ST1"
+        },
+        {
+          "id": "2",
+          "studentName": "Student 2",
+          "studentID": "ST2"
+        }
+      ],
+      "courseList": [
+        { "id": "1", "courseName": "Course 1", "courseID": "Co1" },
+        { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
+      ]
+    },
+    {
+      "id": "2",
+      "classID": "CL2",
+      "className": "Class 2",
+      "documents": [
+        { "id": "1", "url": "http://example.com" },
+        { "id": "2", "url": "http://example.com" }
+      ],
+      "coordinatorName": "Coordinator 2",
+      "coordinatorID": "CD2",
+      "studentList": [
+        {
+          "id": "1",
+          "studentName": "Student 1",
+          "studentID": "ST1"
+        },
+        {
+          "id": "2",
+          "studentName": "Student 2",
+          "studentID": "ST2"
+        }
+      ],
+      "courseList": [
+        { "id": "1", "courseName": "Course 1", "courseID": "Co1" },
+        { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Course 1",
+      "courseID": "Co1",
+      "createDate": "02-18-2024",
+      "startDate": "03-18-2024",
+      "endDate": "04-19-2024",
+      "classApply": [
+        {
+          "id": "1",
+          "classID": "1",
+          "className": "Class 1",
+          "classCode": "CS101"
+        },
+        {
+          "id": "3",
+          "classID": "3",
+          "className": "Class 3",
+          "classCode": "CS303"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Courser 2",
+      "courseID": "Co2",
+      "classApply": [
+        {
+          "id": "2",
+          "classID": "2",
+          "className": "Class 2",
+          "classCode": "CS202"
         }
       ]
     }

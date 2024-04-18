@@ -22,19 +22,19 @@ function Login() {
       console.log(user.role);
       switch (user.role) {
         case 'admin':
-          navigate("/admin/home")
+          navigate("/admin")
           break;
         case 'manager':
-          navigate("/manager/home")
+          navigate("/manager")
           break;
         case 'coordinator':
-          navigate("/coordinator/home")
+          navigate("/coordinator")
           break;
         case 'student':
-          navigate("/user/home")
+          navigate("/user")
           break;
         case 'guest':
-          navigate("/guest/home")
+          navigate("/guest")
           break;
         default:
           break;

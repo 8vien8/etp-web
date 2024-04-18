@@ -1,11 +1,11 @@
-.card:hover .articles-container {
+/* .card:hover .articles-container {
   transform: translateY(-105%);
 }
 
-.card:hover img{
+.card:hover img {
   filter: opacity(0.4);
   transition: transform 0.3s ease;
-}
+} */
 
 .card .articles-container {
   transition: transform 0.3s ease;
@@ -20,33 +20,35 @@
   margin-bottom: 5px;
 }
 
-.card-title .card-subtitle{
-    display: flex;
-    flex-wrap: wrap;
+.card-title .card-subtitle {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.dashboard-content{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
+.dashboard-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
 }
 
-.dashboard-content button{
-    display: flex;
-    align-items: center;
-    border: solid 1px #303338eb;
-    border-radius: 5px;
-    padding: 3px;
-    margin-top: 5px;
-    background-color: #b7b8bfeb;
-    cursor: pointer;
-    font-size: 15px;
-    gap: 2px
+.dashboard-content button {
+  display: flex;
+  align-items: center;
+  border: solid 1px #303338eb;
+  border-radius: 5px;
+  padding: 3px;
+  margin-top: 5px;
+  background-color: #b7b8bfeb;
+  cursor: pointer;
+  font-size: 15px;
+  gap: 2px;
+  color: black;
+  font-weight: 500;
 }
 
-.dashboard-content box-icon{
-    width: 15px;
-    height: 15px;
+.dashboard-content box-icon {
+  width: 15px;
+  height: 15px;
 }
 
 @media screen and (max-width: 768px) {
