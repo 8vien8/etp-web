@@ -11,11 +11,11 @@ function NavBar() {
                 <Nav className="mr-auto" navbar>
                     <NavItem className='navbar-item'>
                         <box-icon name='home' />
-                        <NavLink tag={Link} to="dashboard" >Home</NavLink>
+                        <NavLink tag={Link} to="" >Home</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <box-icon name='user-plus' />
-                        <NavLink tag={Link} to="create-user" >User</NavLink>
+                        <box-icon type='solid' name='dashboard' />
+                        <NavLink tag={Link} to="dashboard" >Board</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
                         <box-icon name='user-circle' />
