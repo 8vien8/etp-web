@@ -27,6 +27,8 @@ import AdminLandingPage from './pages/admin/AdminLandingPage';
 import AdminDashBoard from './components/admin/dashboard/AdminDashBoard';
 import GuestLandingPage from './pages/guest/GuestLandingPage';
 import GuestDashBoard from './components/guest/dashboard/GuestDashBoard';
+import ManagerHome from './components/manager/home/ManagerHome';
+
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -68,7 +70,8 @@ const AppRouter = () => {
         </Route>
 
         {/*Manager */}
-        <Route path="/manager" element={isAuthenticated('manager') ? <ManagerLandingPage /> : <Navigate to="/login" />}>
+        <Route path="/manager/home" element={isAuthenticated('manager') ? <ManagerLandingPage /> : <Navigate to="/login" />}>
+          <Route path='' element={<ManagerHome />} />
           <Route path='dashboard' element={<ManagerDashBoard />} />
         </Route>
         {/* Admin */}
