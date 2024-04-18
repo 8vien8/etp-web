@@ -7,7 +7,7 @@ import NotFound from './pages/homepage/NotFound';
 import LandingPage from './pages/user/LandingPage';
 import CoordinatorLandingPage from './pages/coordinator/LandingPage';
 import ManagerLandingPage from './pages/manager/ManagerLandingPage';
-import Login from './components/loginForm/LoginForm'; // Import component Login
+import Login from './components/loginForm/LoginForm';
 import RegisterForm from './components/registerForm/RegisterForm';
 import Terms from './components/terms/Terms';
 import UserDashboard from './components/user/dashboard/UserDashboard';
@@ -28,7 +28,10 @@ import AdminDashBoard from './components/admin/dashboard/AdminDashBoard';
 import GuestLandingPage from './pages/guest/GuestLandingPage';
 import GuestDashBoard from './components/guest/dashboard/GuestDashBoard';
 import ManagerHome from './components/manager/home/ManagerHome';
-
+import Directors from './components/manager/directors/Directors';
+import Courses from './components/manager/courses/Courses';
+import MaProfile from './components/manager/profile/Profile';
+import Classes from './components/manager/classes/Classes';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -70,9 +73,13 @@ const AppRouter = () => {
         </Route>
 
         {/*Manager */}
-        <Route path="/manager/home" element={isAuthenticated('manager') ? <ManagerLandingPage /> : <Navigate to="/login" />}>
+        <Route path="/manager" element={isAuthenticated('manager') ? <ManagerLandingPage /> : <Navigate to="/login" />}>
           <Route path='' element={<ManagerHome />} />
           <Route path='dashboard' element={<ManagerDashBoard />} />
+          <Route path='director' element={<Directors />} />
+          <Route path='courses' element={<Courses />} />
+          <Route path='classes' element={<Classes />} />
+          <Route path='profile' element={<MaProfile />} />
         </Route>
         {/* Admin */}
         <Route path="/admin" element={isAuthenticated('admin') ? <AdminLandingPage /> : <Navigate to="/login" />}>
