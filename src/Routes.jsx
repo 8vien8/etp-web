@@ -32,6 +32,7 @@ import Directors from './components/manager/directors/Directors';
 import Courses from './components/manager/courses/Courses';
 import MaProfile from './components/manager/profile/Profile';
 import Classes from './components/manager/classes/Classes';
+import MaClassDetail from './components/manager/classes/MaClassDetail';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -79,6 +80,7 @@ const AppRouter = () => {
           <Route path='director' element={<Directors />} />
           <Route path='courses' element={<Courses />} />
           <Route path='classes' element={<Classes />} />
+          <Route path='classes/:id' element={<MaClassDetail />} />
           <Route path='profile' element={<MaProfile />} />
         </Route>
         {/* Admin */}
