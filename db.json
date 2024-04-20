@@ -157,6 +157,11 @@
           "id": "2",
           "studentName": "Student 2",
           "studentID": "ST2"
+        },
+        {
+          "id": "3",
+          "studentName": "Student 3",
+          "studentID": "ST3"
         }
       ],
       "courseList": [

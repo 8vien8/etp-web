@@ -390,10 +390,10 @@ function MaClassDetail() {
                     {/* Add students */}
                     <div className='student'>
                         <h3>Students</h3>
-                        <Table>
+                        <Table striped>
                             <thead>
                                 <tr>
-                                    <th>Student ID</th>
+                                    <th scope='row'>Student ID</th>
                                     <th>Student Name</th>
                                     <th>Action</th>
                                 </tr>
@@ -401,9 +401,9 @@ function MaClassDetail() {
                             <tbody>
                                 {classDetails.studentList && classDetails.studentList.map(student => (
                                     <tr key={student.id}>
-                                        <td>{student.studentID}</td>
+                                        <td style={{ width: "20%" }}>{student.studentID}</td>
                                         <td>{student.studentName}</td>
-                                        <td>
+                                        <td style={{ width: "10%" }}>
                                             <Button color='danger' onClick={() => handleDeleteStudent(student.id)}>Delete</Button>
                                         </td>
                                     </tr>
