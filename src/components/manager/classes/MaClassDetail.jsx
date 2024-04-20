@@ -1,53 +1,452 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Button, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
+import './classDetail.css'
 
 function MaClassDetail() {
-    const [classDetails, setClassDetails] = useState(null);
     const { id } = useParams();
+    const apiUrl = `http://localhost:3001/class/${id}`;
 
-    const apiUrl = 'http://localhost:3001/class'
+    const [classDetails, setClassDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const [showEditClassInformations, setShowEditClassInformations] = useState(false);
+    const [showEditCoordinator, setShowEditCoordinator] = useState(false);
+
+    const handleShowEditClassInformations = () => {
+        setShowEditClassInformations(!showEditClassInformations);
+    }
+
+    const handleShowEditCoordinator = () => {
+        setShowEditCoordinator(!showEditCoordinator);
+    }
+
+    const [newClassName, setNewClassName] = useState('');
+    const [newClassID, setNewClassID] = useState('');
+    const [newCoordinatorName, setNewCoordinatorName] = useState('');
+    const [newCoordinatorID, setNewCoordinatorID] = useState('');
+    const [newCourseName, setNewCourseName] = useState('');
+    const [newDocumentUrl, setNewDocumentUrl] = useState('');
+    const [newUploadDate, setNewUploadDate] = useState('');
+    const [newStudentName, setNewStudentName] = useState('');
+    const [newStudentID, setNewStudentID] = useState('');
 
     useEffect(() => {
         const fetchClassDetails = async () => {
             try {
-                const response = await fetch(`${apiUrl}/${id}`);
+                const response = await fetch(apiUrl);
                 const data = await response.json();
                 setClassDetails(data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching class details:', error);
+                setError(error);
+                setLoading(false);
             }
         };
 
         fetchClassDetails();
-    }, [id]);
+    }, [apiUrl]);
 
-    if (!classDetails) return <p>Loading...</p>;
+    // Class Information
+    const handleUpdateClassID = async () => {
+        try {
+            const response = await fetch(apiUrl + '/classID', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ className: newClassID })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update class ID');
+            }
+            // Update information after update
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error updating class name:', error);
+        }
+    };
+    const handleUpdateClassName = async () => {
+        try {
+            const response = await fetch(apiUrl + '/className', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ className: newClassName })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update class name');
+            }
+            // Update information after update
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error updating class name:', error);
+        }
+    };
+
+    const handleUpdateClass = async () => {
+        try {
+            await handleUpdateClassID();
+            await handleUpdateClassName();
+            setShowEditClassInformations(!showEditClassInformations);
+        } catch (error) {
+            alert.error('Error updating class:', error);
+        }
+    };
+
+    // Coordinator
+
+    const handleEditCoordinatorName = async () => {
+        try {
+            const response = await fetch(apiUrl + '/coordinatorName', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ coordinatorName: newCoordinatorName })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to edit coordinator');
+            }
+            // Update class information after update coordinator
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error adding coordinator:', error);
+        }
+    };
+    const handleEditCoordinatorID = async () => {
+        try {
+            const response = await fetch(apiUrl + '/coordinatorID', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ coordinatorName: newCoordinatorID })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to edit coordinator');
+            }
+            // Update class information after update coordinator
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error adding coordinator:', error);
+        }
+    };
+
+    const handleEditCoordinator = async () => {
+        try {
+            await handleEditCoordinatorID();
+            await handleEditCoordinatorName();
+            setShowEditCoordinator(!showEditCoordinator)
+        } catch (error) {
+            alert.error('Error editing coordinator:', error);
+        }
+    }
+
+
+    const handleAddCourse = async () => {
+        try {
+            const response = await fetch(apiUrl + '/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ courseName: newCourseName })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add course');
+            }
+            // Update class information after update course
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error adding course:', error);
+        }
+    };
+
+    const handleAddDocument = async () => {
+        try {
+            const response = await fetch(apiUrl + '/documents', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ documentUrl: newDocumentUrl, uploadDate: newUploadDate })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add document');
+            }
+            // Update class information after add  document
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error adding document:', error);
+        }
+    };
+
+    const handleAddStudent = async () => {
+        try {
+            const response = await fetch(apiUrl + '/students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ studentName: newStudentName, studentID: newStudentID })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add student');
+            }
+            // Update class information after add student
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error adding student:', error);
+        }
+    };
+
+    const handleDeleteStudent = async (studentId) => {
+        try {
+            const response = await fetch(apiUrl + `/students/${studentId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete student');
+            }
+            // Update class information after delete student
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error deleting student:', error);
+        }
+    };
+
+    // const handleDeleteCoordinator = async (coordinatorId) => {
+    //     try {
+    //         const response = await fetch(apiUrl + `/coordinators/${coordinatorId}`, {
+    //             method: 'DELETE'
+    //         });
+    //         if (!response.ok) {
+    //             throw new Error('Failed to delete coordinator');
+    //         }
+    //         // Update class information after delete coordinator
+    //         const updatedClass = await response.json();
+    //         setClassDetails(updatedClass);
+    //     } catch (error) {
+    //         console.error('Error deleting coordinator:', error);
+    //     }
+    // };
+
+    const handleDeleteCourse = async (courseId) => {
+        try {
+            const response = await fetch(apiUrl + `/courses/${courseId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete course');
+            }
+            // Update class information after delete course
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error deleting course:', error);
+        }
+    };
+
+    const handleDeleteDocument = async (documentId) => {
+        try {
+            const response = await fetch(apiUrl + `/documents/${documentId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete document');
+            }
+            // Update class information after delete document
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+        } catch (error) {
+            console.error('Error deleting document:', error);
+        }
+    };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <div>
-            <h2>Class Detail</h2>
-            <p><strong>Name:</strong> {classDetails.className}</p>
-            <p><strong>Coordinator:</strong> {classDetails.coordinatorName}</p>
-            <p><strong>Coordinator ID:</strong> {classDetails.coordinatorID}</p>
-            <p><strong>Students</strong></p>
-            <ul>
-                {classDetails.studentList && classDetails.studentList.map(student => (
-                    <li key={student.id}>{student.studentName} - ID: {student.studentID}</li>
-                ))}
-            </ul>
-            <p><strong>Courses</strong></p>
-            <ul>
-                {classDetails.courseList && classDetails.courseList.map(course => (
-                    <li key={course.id}>{course.courseName} - ID: {course.courseID}</li>
-                ))}
-            </ul>
-            <p><strong>Documents</strong></p>
-            <ul>
-                {classDetails.documentList && classDetails.documentList.map(document => (
-                    <li key={document.id}> URL: <a href={document.documentUrl}>{document.documentUrl}</a> - Upload: {document.uploadDate}</li>
-                ))}
-            </ul>
-        </div>
+            {classDetails && (
+                <div>
+                    <div className='class-detail-header'>
+                        <h2>
+                            <strong>{classDetails.className}</strong>
+                            <strong>({classDetails.classID})</strong>
+
+                        </h2>
+                        {!showEditClassInformations && (
+                            <Button style={{ backgroundColor: 'unset', border: 'unset', paddingBottom: '0' }} onClick={handleShowEditClassInformations}><box-icon name='edit'></box-icon></Button>
+                        )}
+                    </div>
+                    {/* Edit class info */}
+                    {showEditClassInformations && (
+                        <Modal isOpen={showEditClassInformations}>
+                            <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditClassInformations}>
+                                Edit Class Information
+                            </ModalHeader>
+                            <ModalBody>
+                                <Label>Edit Class Name</Label>
+                                <Input
+                                    value={newClassName}
+                                    onChange={(e) => setNewClassName(e.target.value)}
+                                    type='text'
+                                    placeholder='Class Name'
+                                />
+                                <Label>Edit Class ID</Label>
+                                <Input
+                                    value={newClassID}
+                                    onChange={(e) => setNewClassID(e.target.value)}
+                                    type='text'
+                                    placeholder='Class ID'
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color='primary' variant='primary' onClick={handleUpdateClass}>
+                                    Update
+                                </Button>
+                                <Button variant='secondary' onClick={handleShowEditClassInformations}>
+                                    Cancel
+                                </Button>
+                            </ModalFooter>
+                        </Modal>
+                    )}
+                    <div className='coordinator'>
+                        <div style={{ display: 'flex' }}>
+                            <h3>Coordinators</h3>
+                            {!showEditCoordinator && (
+                                <Button style={{ backgroundColor: 'unset', border: 'unset', paddingBottom: '0' }} onClick={handleShowEditCoordinator}><box-icon name='edit'></box-icon></Button>
+                            )}
+                        </div>
+                        <p><strong>Coordinator: </strong>{classDetails.coordinatorName} - <strong>ID: </strong> {classDetails.coordinatorID}</p>
+
+                        {/* Edit coordinator */}
+                        {showEditCoordinator && (
+                            <Modal isOpen={showEditCoordinator}>
+                                <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditCoordinator}>Edit Coordinator Information</ModalHeader>
+                                <ModalBody>
+                                    <Label>Edit Coordinator Name</Label>
+                                    <Input
+                                        value={newCoordinatorName}
+                                        onChange={(e) => setNewCoordinatorName(e.target.value)}
+                                        type='text'
+                                        placeholder='Coordinator Name'
+                                    />
+                                    <Label>Edit Coordinator ID</Label>
+                                    <Input
+                                        value={newCoordinatorID}
+                                        onChange={(e) => setNewCoordinatorID(e.target.value)}
+                                        type='text'
+                                        placeholder='Coordinator ID'
+                                    />
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color='primary' variant='primary' onClick={handleEditCoordinator}>
+                                        Update
+                                    </Button>
+                                    <Button variant='secondary' onClick={handleShowEditCoordinator}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
+                        )}
+                    </div>
+
+                    {/* Add course */}
+                    <Input
+                        type="text"
+                        value={newCourseName}
+                        onChange={(e) => setNewCourseName(e.target.value)}
+                        placeholder="Enter new course name"
+                    />
+                    <Button onClick={handleAddCourse}>Add</Button>
+
+                    {/* Add document */}
+                    <Input
+                        type="text"
+                        value={newDocumentUrl}
+                        onChange={(e) => setNewDocumentUrl(e.target.value)}
+                        placeholder="Enter document URL"
+                    />
+                    <Input
+                        type="text"
+                        value={newUploadDate}
+                        onChange={(e) => setNewUploadDate(e.target.value)}
+                        placeholder="Enter upload date"
+                    />
+                    <Button onClick={handleAddDocument}>Add </Button>
+
+                    {/* Add students */}
+                    <div className='student'>
+                        <h3>Students</h3>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {classDetails.studentList && classDetails.studentList.map(student => (
+                                    <tr key={student.id}>
+                                        <td>{student.studentID}</td>
+                                        <td>{student.studentName}</td>
+                                        <td>
+                                            <Button color='danger' onClick={() => handleDeleteStudent(student.id)}>Delete</Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                        <Input
+                            type="text"
+                            value={newStudentName}
+                            onChange={(e) => setNewStudentName(e.target.value)}
+                            placeholder="Enter student name"
+                        />
+                        <Input
+                            type="text"
+                            value={newStudentID}
+                            onChange={(e) => setNewStudentID(e.target.value)}
+                            placeholder="Enter student ID"
+                        />
+                        <Button onClick={handleAddStudent}>Add</Button>
+                    </div>
+
+                    <h3>Courses</h3>
+                    <ul>
+                        {classDetails.courseList && classDetails.courseList.map(course => (
+                            <li key={course.id}>
+                                {course.courseName}
+                                <Button color='danger' onClick={() => handleDeleteCourse(course.id)}>Delete</Button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <h3>Documents</h3>
+                    <ul>
+                        {classDetails.documentList && classDetails.documentList.map(document => (
+                            <li key={document.id}>
+                                <a href={document.documentUrl}>{document.documentUrl}</a> - Upload: {document.uploadDate}
+                                <Button color='danger' onClick={() => handleDeleteDocument(document.id)}>Delete</Button>
+                            </li>
+                        ))}
+                    </ul>
+                </div >
+            )}
+        </div >
     );
 }
 

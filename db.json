@@ -160,7 +160,14 @@
         }
       ],
       "courseList": [
-        { "id": "1", "courseName": "Course 1", "courseID": "Co1" },
+        {
+          "id": "1",
+          "courseName": "Course 1",
+          "courseID": "Co1",
+          "publicDate": "01-03-2003",
+          "startDate": "01-02-2003",
+          "endDate": "2002-03-2003"
+        },
         { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
       ]
     },
