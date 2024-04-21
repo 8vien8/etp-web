@@ -13,6 +13,7 @@ function MaClassDetail() {
 
     const [showEditClassInformations, setShowEditClassInformations] = useState(false);
     const [showEditCoordinator, setShowEditCoordinator] = useState(false);
+    const [showEditCourseDueDate, setShowEditCourseDueDate] = useState(false);
 
     const handleShowEditClassInformations = () => {
         setShowEditClassInformations(!showEditClassInformations);
@@ -20,6 +21,10 @@ function MaClassDetail() {
 
     const handleShowEditCoordinator = () => {
         setShowEditCoordinator(!showEditCoordinator);
+    }
+
+    const handleShowEditCourseDueDate = () => {
+        setShowEditCourseDueDate(!showEditCourseDueDate);
     }
 
     const [newClassName, setNewClassName] = useState('');
@@ -31,6 +36,7 @@ function MaClassDetail() {
     const [newUploadDate, setNewUploadDate] = useState('');
     const [newStudentName, setNewStudentName] = useState('');
     const [newStudentID, setNewStudentID] = useState('');
+    const [courseDueDate, setNewCourseDueDate] = useState('');
 
     useEffect(() => {
         const fetchClassDetails = async () => {
@@ -150,10 +156,10 @@ function MaClassDetail() {
         }
     }
 
-
+    //  Courses
     const handleAddCourse = async () => {
         try {
-            const response = await fetch(apiUrl + '/courses', {
+            const response = await fetch(apiUrl + '/courseList', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -170,6 +176,35 @@ function MaClassDetail() {
             console.error('Error adding course:', error);
         }
     };
+
+    const handleSetCourseDueDate = async () => {
+        try {
+            // const formattedDate = `${courseDueDate.getDate().toString().padStart(2, '0')}-${(courseDueDate.getMonth() + 1).toString().padStart(2, '0')}-${courseDueDate.getFullYear()}`;
+
+            const response = await fetch(apiUrl + '/endDate', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    endDate: courseDueDate
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to set course due date');
+            }
+
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
+            handleShowEditCourseDueDate();
+        } catch (error) {
+            console.error('Error setting course due date:', error);
+        }
+    }
+
+
+    // Documents
 
     const handleAddDocument = async () => {
         try {
@@ -363,15 +398,6 @@ function MaClassDetail() {
                         )}
                     </div>
 
-                    {/* Add course */}
-                    <Input
-                        type="text"
-                        value={newCourseName}
-                        onChange={(e) => setNewCourseName(e.target.value)}
-                        placeholder="Enter new course name"
-                    />
-                    <Button onClick={handleAddCourse}>Add</Button>
-
                     {/* Add document */}
                     <Input
                         type="text"
@@ -425,15 +451,64 @@ function MaClassDetail() {
                         <Button onClick={handleAddStudent}>Add</Button>
                     </div>
 
-                    <h3>Courses</h3>
-                    <ul>
-                        {classDetails.courseList && classDetails.courseList.map(course => (
-                            <li key={course.id}>
-                                {course.courseName}
-                                <Button color='danger' onClick={() => handleDeleteCourse(course.id)}>Delete</Button>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className='courses'>
+                        <h3>Courses</h3>
+                        <Table striped>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Release</th>
+                                    <th>Open</th>
+                                    <th>Close</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {classDetails.courseList && classDetails.courseList.map(course => (
+                                    <tr key={course.id}>
+                                        <td>{course.courseName} </td>
+                                        <td>{course.courseID} </td>
+                                        <td>{course.publicDate} </td>
+                                        <td>{course.startDate} </td>
+                                        <td>{course.endDate} </td>
+                                        <td style={{ width: "18%" }}>
+                                            <Button style={{ marginRight: "5px" }} color='danger' onClick={() => handleDeleteCourse(course.id)}>Delete</Button>
+                                            <Button style={{ marginLeft: "5px" }} color='primary' onClick={() => handleShowEditCourseDueDate(course.id)}>Set date</Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                        {/* Add course */}
+                        <Input
+                            type="text"
+                            value={newCourseName}
+                            onChange={(e) => setNewCourseName(e.target.value)}
+                            placeholder="Enter new course name"
+                        />
+                        <Button onClick={handleAddCourse}>Add</Button>
+
+                        {showEditCourseDueDate && (
+                            <Modal isOpen={showEditCourseDueDate}>
+                                <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditCourseDueDate}>Edit Course Due Date</ModalHeader>
+                                <ModalBody>
+                                    <Label>Choose new due date for course</Label>
+                                    <Input type='date'
+                                        onChange={(e) => setNewCourseDueDate(e.target.value)}
+                                        value={courseDueDate}
+                                    >
+                                    </Input>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color='primary' variant='primary' onClick={handleSetCourseDueDate}>
+                                        Update
+                                    </Button>
+                                    <Button variant='secondary' onClick={handleShowEditCourseDueDate}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
+                        )}
+                    </div>
 
                     <h3>Documents</h3>
                     <ul>
@@ -445,7 +520,8 @@ function MaClassDetail() {
                         ))}
                     </ul>
                 </div >
-            )}
+            )
+            }
         </div >
     );
 }
