@@ -1,0 +1,8 @@
+.class-detail-header {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-title {
+  width: 95%;
+}

@@ -1,0 +1,275 @@
+{
+  "coordinators": [
+    {
+      "id": "1",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Coordinator 1",
+      "coordinatorID": "CD1",
+      "email": "example@example.com",
+      "password": "<PASSWORD>",
+      "classManage": [
+        {
+          "id": "1",
+          "classID": "1",
+          "className": "Class 1",
+          "classCode": "CS101"
+        },
+        {
+          "id": "3",
+          "classID": "3",
+          "className": "Class 3",
+          "classCode": "CS303"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Coordinator 2",
+      "coordinatorID": "CD2",
+      "email": "example@example.com",
+      "password": "<PASSWORD>",
+      "classManage": [
+        {
+          "id": "2",
+          "classID": "2",
+          "className": "Class 2",
+          "classCode": "CS202",
+          "classDescription": "This is a description of the course"
+        }
+      ]
+    }
+  ],
+  "submissions": [
+    {
+      "id": "2",
+      "date": "2022-04-02",
+      "submissionTitle": "Assignment 2",
+      "studentID": "456",
+      "studentName": "Student 1",
+      "grade": "D",
+      "comment": "Bad",
+      "graded": "Graded",
+      "files": [
+        {
+          "id": "1",
+          "fileName": "Assignment1",
+          "fileUrl": "https://www.bing.com/images/search?view=detailV2&ccid=LvGjj4lI&id=26061B8C4FAB9BB2BD1A19C2985D40CCAA1F1FB2&thid=OIP.LvGjj4lI-UHagACBR43lzAHaE8&mediaurl=https%3a%2f%2fwww.wondersoflondon.com%2fwp-content%2fuploads%2f2018%2f01%2fNational-Maritime-Museum-in-Greenwich.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.2ef1a38f8948f941da800081478de5cc%3frik%3dsh8fqsxAXZjCGQ%26pid%3dImgRaw%26r%3d0&exph=1000&expw=1500&q=greenwich&simid=608045749240095263&FORM=IRPRST&ck=3166833833778DE54653D2D816FE6E3E&selectedIndex=2&itb=0",
+          "fileType": "pdf"
+        },
+        {
+          "id": "2",
+          "fileName": "Assignment2",
+          "fileUrl": "https://www.bing.com/images/search?view=detailV2&ccid=LvGjj4lI&id=26061B8C4FAB9BB2BD1A19C2985D40CCAA1F1FB2&thid=OIP.LvGjj4lI-UHagACBR43lzAHaE8&mediaurl=https%3a%2f%2fwww.wondersoflondon.com%2fwp-content%2fuploads%2f2018%2f01%2fNational-Maritime-Museum-in-Greenwich.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.2ef1a38f8948f941da800081478de5cc%3frik%3dsh8fqsxAXZjCGQ%26pid%3dImgRaw%26r%3d0&exph=1000&expw=1500&q=greenwich&simid=608045749240095263&FORM=IRPRST&ck=3166833833778DE54653D2D816FE6E3E&selectedIndex=2&itb=0",
+          "fileType": "docx"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "studentName": "Student 2",
+      "grade": "A",
+      "comment": "SDADasd",
+      "graded": "Graded"
+    },
+    {
+      "id": "5",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "studentName": "Student 3",
+      "grade": "A",
+      "comment": "aaaaaaaaaaaa",
+      "graded": "Graded"
+    },
+    {
+      "id": "7",
+      "date": "2022-04-03",
+      "submissionTitle": "Assignment 3",
+      "studentID": "789",
+      "studentName": "Student 4",
+      "grade": "dá",
+      "comment": "sdasd",
+      "graded": "Graded"
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "academicYear": "Senior"
+    },
+    {
+      "id": 2,
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "academicYear": "Junior"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob@example.com",
+      "academicYear": "Senior"
+    },
+    {
+      "id": 4,
+      "name": "Emily Brown",
+      "email": "emily@example.com",
+      "academicYear": "Sophomore"
+    },
+    {
+      "id": 5,
+      "name": "Michael Wilson",
+      "email": "michael@example.com",
+      "academicYear": "Freshman"
+    }
+  ],
+  "class": [
+    {
+      "id": "1",
+      "classID": "CL1",
+      "className": "Class 1",
+      "documents": [
+        {
+          "id": "1",
+          "documentUrl": "http://example.com",
+          "uploadDate": "01-02-2003"
+        },
+        {
+          "id": "2",
+          "documentUrl": "http://example.com",
+          "uploadDate": "02-03-2003"
+        }
+      ],
+      "coordinatorName": "Coordinator 1",
+      "coordinatorID": "CD1",
+      "students": [
+        {
+          "id": "1",
+          "studentName": "Student 1",
+          "studentID": "ST1"
+        },
+        {
+          "id": "2",
+          "studentName": "Student 2",
+          "studentID": "ST2"
+        },
+        {
+          "id": "3",
+          "studentName": "Student 3",
+          "studentID": "ST3"
+        }
+      ],
+      "courses": [
+        {
+          "id": "1",
+          "courseName": "Course 1",
+          "courseID": "Co1",
+          "publicDate": "01-03-2003",
+          "startDate": "01-02-2003",
+          "endDate": "2002-03-2003",
+          "submissions": [
+            {
+              "id": "1",
+              "submissionTitle": "Assignment 1",
+              "studentID": "ST1",
+              "studentName": "Student 1",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            },
+            {
+              "id": "2",
+              "submissionTitle": "Assignment 2",
+              "studentID": "ST2",
+              "studentName": "Student 2",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            },
+            {
+              "id": "3",
+              "submissionTitle": "Assignment 3",
+              "studentID": "ST3",
+              "studentName": "Student 3",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            }
+          ]
+        },
+        { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
+      ]
+    },
+    {
+      "id": "2",
+      "classID": "CL2",
+      "className": "Class 2",
+      "documents": [
+        { "id": "1", "url": "http://example.com" },
+        { "id": "2", "url": "http://example.com" }
+      ],
+      "coordinatorName": "Coordinator 2",
+      "coordinatorID": "CD2",
+      "studentList": [
+        {
+          "id": "1",
+          "studentName": "Student 1",
+          "studentID": "ST1"
+        },
+        {
+          "id": "2",
+          "studentName": "Student 2",
+          "studentID": "ST2"
+        }
+      ],
+      "courseList": [
+        { "id": "1", "courseName": "Course 1", "courseID": "Co1" },
+        { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Course 1",
+      "courseID": "Co1",
+      "createDate": "02-18-2024",
+      "startDate": "03-18-2024",
+      "endDate": "04-19-2024",
+      "classApply": [
+        {
+          "id": "1",
+          "classID": "1",
+          "className": "Class 1",
+          "classCode": "CS101"
+        },
+        {
+          "id": "3",
+          "classID": "3",
+          "className": "Class 3",
+          "classCode": "CS303"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "avatarUrl": "https://telegraph-image-bak.pages.dev/file/6cf95f7546ffe37e1d83f.jpg",
+      "name": "Courser 2",
+      "courseID": "Co2",
+      "classApply": [
+        {
+          "id": "2",
+          "classID": "2",
+          "className": "Class 2",
+          "classCode": "CS202"
+        }
+      ]
+    }
+  ]
+}
