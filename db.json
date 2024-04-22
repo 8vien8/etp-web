@@ -133,7 +133,7 @@
       "id": "1",
       "classID": "CL1",
       "className": "Class 1",
-      "documentList": [
+      "documents": [
         {
           "id": "1",
           "documentUrl": "http://example.com",
@@ -147,7 +147,7 @@
       ],
       "coordinatorName": "Coordinator 1",
       "coordinatorID": "CD1",
-      "studentList": [
+      "students": [
         {
           "id": "1",
           "studentName": "Student 1",
@@ -157,10 +157,51 @@
           "id": "2",
           "studentName": "Student 2",
           "studentID": "ST2"
+        },
+        {
+          "id": "3",
+          "studentName": "Student 3",
+          "studentID": "ST3"
         }
       ],
-      "courseList": [
-        { "id": "1", "courseName": "Course 1", "courseID": "Co1" },
+      "courses": [
+        {
+          "id": "1",
+          "courseName": "Course 1",
+          "courseID": "Co1",
+          "publicDate": "01-03-2003",
+          "startDate": "01-02-2003",
+          "endDate": "2002-03-2003",
+          "submissions": [
+            {
+              "id": "1",
+              "submissionTitle": "Assignment 1",
+              "studentID": "ST1",
+              "studentName": "Student 1",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            },
+            {
+              "id": "2",
+              "submissionTitle": "Assignment 2",
+              "studentID": "ST2",
+              "studentName": "Student 2",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            },
+            {
+              "id": "3",
+              "submissionTitle": "Assignment 3",
+              "studentID": "ST3",
+              "studentName": "Student 3",
+              "grade": "A",
+              "comment": "sdasd",
+              "graded": "Graded"
+            }
+          ]
+        },
         { "id": "2", "courseName": "Course 2", "courseID": "Co2" }
       ]
     },

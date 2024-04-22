@@ -32,6 +32,8 @@ import Directors from './components/manager/directors/Directors';
 import Courses from './components/manager/courses/Courses';
 import MaProfile from './components/manager/profile/Profile';
 import Classes from './components/manager/classes/Classes';
+import MaClassDetail from './components/manager/classes/MaClassDetail';
+import MaSubmissionDetail from './components/manager/classes/submissions/MaSubmissionDetail';
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -79,6 +81,8 @@ const AppRouter = () => {
           <Route path='director' element={<Directors />} />
           <Route path='courses' element={<Courses />} />
           <Route path='classes' element={<Classes />} />
+          <Route path='classes/:classId' element={<MaClassDetail />} />
+          <Route path='classes/:classId/course/:courseId/submissions' element={<MaSubmissionDetail />} />
           <Route path='profile' element={<MaProfile />} />
         </Route>
         {/* Admin */}
@@ -90,7 +94,7 @@ const AppRouter = () => {
           <Route path='dashboard' element={<GuestDashBoard />} />
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 };
 
