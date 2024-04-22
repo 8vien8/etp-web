@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, Outlet } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import './classDetail.css'
 
 function MaClassDetail() {
-    const { id } = useParams();
-    const apiUrl = `http://localhost:3001/class/${id}`;
+    const { classId } = useParams();
+    const apiUrl = `http://localhost:3001/class/${classId}`;
 
     const [classDetails, setClassDetails] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -33,10 +33,11 @@ function MaClassDetail() {
     const [newCoordinatorID, setNewCoordinatorID] = useState('');
     const [newCourseName, setNewCourseName] = useState('');
     const [newDocumentUrl, setNewDocumentUrl] = useState('');
-    const [newUploadDate, setNewUploadDate] = useState('');
+    // const [newUploadDate, setNewUploadDate] = useState('');
     const [newStudentName, setNewStudentName] = useState('');
     const [newStudentID, setNewStudentID] = useState('');
     const [courseDueDate, setNewCourseDueDate] = useState('');
+    const [courseStartDate, setNewCourseStartDate] = useState('');
 
     useEffect(() => {
         const fetchClassDetails = async () => {
@@ -56,120 +57,65 @@ function MaClassDetail() {
     }, [apiUrl]);
 
     // Class Information
-    const handleUpdateClassID = async () => {
-        try {
-            const response = await fetch(apiUrl + '/classID', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ className: newClassID })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update class ID');
-            }
-            // Update information after update
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error updating class name:', error);
-        }
-    };
-    const handleUpdateClassName = async () => {
-        try {
-            const response = await fetch(apiUrl + '/className', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ className: newClassName })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update class name');
-            }
-            // Update information after update
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error updating class name:', error);
-        }
-    };
-
     const handleUpdateClass = async () => {
         try {
-            await handleUpdateClassID();
-            await handleUpdateClassName();
+            const response = await fetch(apiUrl + '/classInfo', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ className: newClassName, classID: newClassID })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update class information');
+            }
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
             setShowEditClassInformations(!showEditClassInformations);
         } catch (error) {
-            alert.error('Error updating class:', error);
+            console.error('Error updating class information:', error);
         }
     };
 
     // Coordinator
 
-    const handleEditCoordinatorName = async () => {
-        try {
-            const response = await fetch(apiUrl + '/coordinatorName', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ coordinatorName: newCoordinatorName })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to edit coordinator');
-            }
-            // Update class information after update coordinator
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error adding coordinator:', error);
-        }
-    };
-    const handleEditCoordinatorID = async () => {
-        try {
-            const response = await fetch(apiUrl + '/coordinatorID', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ coordinatorName: newCoordinatorID })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to edit coordinator');
-            }
-            // Update class information after update coordinator
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error adding coordinator:', error);
-        }
-    };
-
     const handleEditCoordinator = async () => {
         try {
-            await handleEditCoordinatorID();
-            await handleEditCoordinatorName();
+            const response = await fetch(apiUrl + '/coordinator', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ coordinatorName: newCoordinatorName, coordinatorID: newCoordinatorID })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to edit coordinator');
+            }
+            const updatedClass = await response.json();
+            setClassDetails(updatedClass);
             setShowEditCoordinator(!showEditCoordinator)
         } catch (error) {
-            alert.error('Error editing coordinator:', error);
+            console.error('Error editing coordinator:', error);
         }
-    }
+    };
 
     //  Courses
     const handleAddCourse = async () => {
+        if (!newCourseName || !courseStartDate || !courseDueDate) {
+            alert('Please enter all fields.');
+            return;
+        }
         try {
-            const response = await fetch(apiUrl + '/courseList', {
+            const response = await fetch(apiUrl + '/courses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ courseName: newCourseName })
+                body: JSON.stringify({ courseName: newCourseName, startDate: courseStartDate, endDate: courseDueDate })
             });
             if (!response.ok) {
                 throw new Error('Failed to add course');
             }
-            // Update class information after update course
             const updatedClass = await response.json();
             setClassDetails(updatedClass);
         } catch (error) {
@@ -203,28 +149,57 @@ function MaClassDetail() {
         }
     }
 
+    const [modal, setModal] = useState(false);
+    const [courseToDelete, setCourseToDelete] = useState(null);
+    const [studentToDelete, setStudentToDelete] = useState(null);
+
+    const toggleModal = () => setModal(!modal);
+
+    const confirmDelete = () => {
+        if (courseToDelete) {
+            handleDeleteCourse(courseToDelete);
+            setModal(false);
+        }
+        if (studentToDelete) {
+            handleDeleteStudent(studentToDelete);
+            setModal(false);
+        }
+    };
 
     // Documents
 
     const handleAddDocument = async () => {
+        if (!newDocumentUrl) {
+            alert('Please choose a file for upload');
+            return;
+        }
         try {
+            const currentDate = new Date();
+            const formattedDate = currentDate.toISOString().split('T')[0];
+
+            const currentDocuments = classDetails.documents || [];
+            const newDocument = { documentUrl: newDocumentUrl, uploadDate: formattedDate };
+            const updatedDocuments = [...currentDocuments, newDocument];
+
             const response = await fetch(apiUrl + '/documents', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ documentUrl: newDocumentUrl, uploadDate: newUploadDate })
+                body: JSON.stringify({ documents: updatedDocuments })
             });
+
             if (!response.ok) {
                 throw new Error('Failed to add document');
             }
-            // Update class information after add  document
+
             const updatedClass = await response.json();
             setClassDetails(updatedClass);
         } catch (error) {
             console.error('Error adding document:', error);
         }
     };
+
 
     const handleAddStudent = async () => {
         try {
@@ -261,22 +236,6 @@ function MaClassDetail() {
             console.error('Error deleting student:', error);
         }
     };
-
-    // const handleDeleteCoordinator = async (coordinatorId) => {
-    //     try {
-    //         const response = await fetch(apiUrl + `/coordinators/${coordinatorId}`, {
-    //             method: 'DELETE'
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error('Failed to delete coordinator');
-    //         }
-    //         // Update class information after delete coordinator
-    //         const updatedClass = await response.json();
-    //         setClassDetails(updatedClass);
-    //     } catch (error) {
-    //         console.error('Error deleting coordinator:', error);
-    //     }
-    // };
 
     const handleDeleteCourse = async (courseId) => {
         try {
@@ -340,6 +299,7 @@ function MaClassDetail() {
                                     onChange={(e) => setNewClassName(e.target.value)}
                                     type='text'
                                     placeholder='Class Name'
+                                    required
                                 />
                                 <Label>Edit Class ID</Label>
                                 <Input
@@ -347,6 +307,7 @@ function MaClassDetail() {
                                     onChange={(e) => setNewClassID(e.target.value)}
                                     type='text'
                                     placeholder='Class ID'
+                                    required
                                 />
                             </ModalBody>
                             <ModalFooter>
@@ -360,13 +321,12 @@ function MaClassDetail() {
                         </Modal>
                     )}
                     <div className='coordinator'>
-                        <div style={{ display: 'flex' }}>
-                            <h3>Coordinators</h3>
+                        <h4>
+                            <strong>Coordinator: </strong>{classDetails.coordinatorName} - <strong>ID: </strong> {classDetails.coordinatorID}
                             {!showEditCoordinator && (
                                 <Button style={{ backgroundColor: 'unset', border: 'unset', paddingBottom: '0' }} onClick={handleShowEditCoordinator}><box-icon name='edit'></box-icon></Button>
                             )}
-                        </div>
-                        <p><strong>Coordinator: </strong>{classDetails.coordinatorName} - <strong>ID: </strong> {classDetails.coordinatorID}</p>
+                        </h4>
 
                         {/* Edit coordinator */}
                         {showEditCoordinator && (
@@ -398,21 +358,6 @@ function MaClassDetail() {
                         )}
                     </div>
 
-                    {/* Add document */}
-                    <Input
-                        type="text"
-                        value={newDocumentUrl}
-                        onChange={(e) => setNewDocumentUrl(e.target.value)}
-                        placeholder="Enter document URL"
-                    />
-                    <Input
-                        type="text"
-                        value={newUploadDate}
-                        onChange={(e) => setNewUploadDate(e.target.value)}
-                        placeholder="Enter upload date"
-                    />
-                    <Button onClick={handleAddDocument}>Add </Button>
-
                     {/* Add students */}
                     <div className='student'>
                         <h3>Students</h3>
@@ -425,12 +370,15 @@ function MaClassDetail() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {classDetails.studentList && classDetails.studentList.map(student => (
+                                {classDetails.students && classDetails.students.map(student => (
                                     <tr key={student.id}>
                                         <td style={{ width: "20%" }}>{student.studentID}</td>
                                         <td>{student.studentName}</td>
                                         <td style={{ width: "10%" }}>
-                                            <Button color='danger' onClick={() => handleDeleteStudent(student.id)}>Delete</Button>
+                                            <Button color='danger'
+                                                onClick={() => { setStudentToDelete(student.id); toggleModal() }}>
+                                                Delete
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -465,28 +413,68 @@ function MaClassDetail() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {classDetails.courseList && classDetails.courseList.map(course => (
+                                {classDetails.courses && classDetails.courses.map(course => (
                                     <tr key={course.id}>
-                                        <td>{course.courseName} </td>
-                                        <td>{course.courseID} </td>
-                                        <td>{course.publicDate} </td>
-                                        <td>{course.startDate} </td>
-                                        <td>{course.endDate} </td>
-                                        <td style={{ width: "18%" }}>
-                                            <Button style={{ marginRight: "5px" }} color='danger' onClick={() => handleDeleteCourse(course.id)}>Delete</Button>
+                                        <td>{course.courseName}</td>
+                                        <td>{course.courseID}</td>
+                                        <td>{course.publicDate}</td>
+                                        <td>{course.startDate}</td>
+                                        <td>{course.endDate}</td>
+                                        <td style={{ width: "25%" }}>
+                                            <Button style={{ marginRight: "5px" }} color='danger' onClick={() => {
+                                                setCourseToDelete(course.id);
+                                                toggleModal();
+                                            }}>Delete</Button>
                                             <Button style={{ marginLeft: "5px" }} color='primary' onClick={() => handleShowEditCourseDueDate(course.id)}>Set date</Button>
+                                            <Link to={`course/${course.id}/submissions`}>
+                                                <Button style={{ marginLeft: "5px" }} color='success'>Articles</Button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </Table>
+
+                        {/* Modal for confirming deletion */}
+                        <Modal isOpen={modal} toggle={toggleModal}>
+                            <ModalHeader toggle={toggleModal}>Confirm Delete</ModalHeader>
+                            <ModalBody>
+                                Are you sure you want to delete. Your data will be deleted!!
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" onClick={confirmDelete}>Delete</Button>{' '}
+                                <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
                         {/* Add course */}
                         <Input
+                            style={{ width: '30%' }}
                             type="text"
                             value={newCourseName}
                             onChange={(e) => setNewCourseName(e.target.value)}
                             placeholder="Enter new course name"
+                            required
                         />
+                        <div style={{ display: "flex", gap: "10px" }}>
+                            <div>
+                                <Label><strong>Start Date</strong></Label>
+                                <Input
+                                    type="date"
+                                    value={courseStartDate}
+                                    onChange={(e) => setNewCourseStartDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <Label><strong>End Date</strong></Label>
+                                <Input
+                                    type="date"
+                                    value={courseDueDate}
+                                    onChange={(e) => setNewCourseDueDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
                         <Button onClick={handleAddCourse}>Add</Button>
 
                         {showEditCourseDueDate && (
@@ -497,6 +485,7 @@ function MaClassDetail() {
                                     <Input type='date'
                                         onChange={(e) => setNewCourseDueDate(e.target.value)}
                                         value={courseDueDate}
+                                        required
                                     >
                                     </Input>
                                 </ModalBody>
@@ -511,17 +500,37 @@ function MaClassDetail() {
                     </div>
 
                     <h3>Documents</h3>
-                    <ul>
-                        {classDetails.documentList && classDetails.documentList.map(document => (
-                            <li key={document.id}>
-                                <a href={document.documentUrl}>{document.documentUrl}</a> - Upload: {document.uploadDate}
-                                <Button color='danger' onClick={() => handleDeleteDocument(document.id)}>Delete</Button>
-                            </li>
-                        ))}
-                    </ul>
+                    <Table striped>
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>Upload date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {classDetails.documents && classDetails.documents.map(document => (
+                                <tr key={document.id}>
+                                    <td href={document.documentUrl}>{document.documentUrl}</td>
+                                    <td>{document.uploadDate}</td>
+                                    <td style={{ width: "10%" }}><Button color='danger' onClick={() => handleDeleteDocument(document.id)}>Delete</Button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                    {/* Add document */}
+                    <Input
+                        type="file"
+                        value={newDocumentUrl}
+                        onChange={(e) => setNewDocumentUrl(e.target.value)}
+                        placeholder="Enter document URL"
+                        required
+                    />
+                    <Button onClick={handleAddDocument}>Add </Button>
                 </div >
             )
             }
+            <Outlet />
         </div >
     );
 }
