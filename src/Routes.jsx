@@ -38,6 +38,7 @@ import Courses from "./components/manager/courses/Courses";
 import MaProfile from "./components/manager/profile/Profile";
 import Classes from "./components/manager/classes/Classes";
 import AdminClasses from "./components/admin/classes/AdminClasses";
+import AdminManageUser from "./components/admin/user/AdminManageUser";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -127,6 +128,7 @@ const AppRouter = () => {
         >
           <Route path="dashboard" element={<AdminDashBoard />} />
           <Route path="classes" element={<AdminClasses />} />
+          <Route path="user" element={<AdminManageUser />} />
         </Route>
         {/* Guest */}
         <Route
