@@ -29,7 +29,7 @@ function AdminClasses() {
     const handleEdit = async (className) => {
         try{
             const response = await axios.post("API_ENDPOINT", {className});
-            console.log("Data sent successfully: ", reponse.data);
+            console.log("Data sent successfully: ", response.data);
         }catch (error){
             console.error("Error sending data: ",error);
         }
