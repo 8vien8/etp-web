@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import {
-  Cart,
+  Card,
   CardImg,
   CardText,
   CardBody,
   CardTitle,
   CardSubtitle,
+  Container,
+  Row,
+  Col,
 } from "reactstrap";
+import data from "../../../../db.json";
 
 function GuestDashBoard() {
-  const [data, setData] = useState(null);
+  const [jsondata, setJsonData] = useState(null);
 
   useEffect(() => {
     fetch("db.json")
@@ -20,7 +24,7 @@ function GuestDashBoard() {
         return respone.json();
       })
       .then((jsonData) => {
-        setData(jsonData);
+        setJsonData(jsonData);
       })
       .catch((error) => {
         console.log("There was a problem fetching the data! ", error);
@@ -29,35 +33,23 @@ function GuestDashBoard() {
 
   return (
     <div>
-      <div className="col-6">
-        <Cart>
-          <CardBody>
-            <CardTitle tag="h5">{data.coordinators[0].name}</CardTitle>
-            <CardSubtitle tag="h6" className="mb-2 text-muted">
-              {data.coordinators[0].coordinatorID}
-            </CardSubtitle>
-            <CardText>Email: {data.coordinators[0].email}</CardText>
-          </CardBody>
-          <img
-            width="100%"
-            src={data.coordinators[0].avatarUrl}
-            alt="Coordinator Avatar"
-          />
-          <CardBody>
-            <CardTitle tag="h5">{data.coordinators[1].name}</CardTitle>
-            <CardSubtitle tag="h6" className="mb-2 text-muted">
-              {data.coordinators[1].coordinatorID}
-            </CardSubtitle>
-            <CardText>Email: {data.coordinators[1].email}</CardText>
-          </CardBody>
-          <img
-            width="100%"
-            src={data.coordinators[1].avatarUrl}
-            alt="Coordinator Avatar"
-          />
-        </Cart>
-      </div>
-      <div className="col-6"></div>
+      {data && data.submissions && data.submissions.length > 0 && (
+        <div>
+          <h2>Submissions</h2>
+          {data.submissions.map((submission, index) => (
+            <Card key={index} sm="6">
+              <CardBody>
+                <CardTitle tag="h5">{submission.submissionTitle}</CardTitle>
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  Student: {submission.studentName}
+                </CardSubtitle>
+                <CardText>Grade: {submission.grade}</CardText>
+                <CardText>Comment: {submission.comment}</CardText>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

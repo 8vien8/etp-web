@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Form, FormGroup, Row, Input, Button, Col, Label } from "reactstrap";
-import axios from "axios";
 
 function AdminClasses() {
   const [data, setData] = useState([]);
@@ -8,11 +7,11 @@ function AdminClasses() {
 
   useEffect(() => {
     fetch("API_ENDPOINT")
-      .then((reponse) => {
-        if (!reponse.ok) {
-          throw new Error(reponse);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
         }
-        return reponse.json();
+        return response.json();
       })
       .then((data) => {
         setData(data);
@@ -25,7 +24,7 @@ function AdminClasses() {
 
   const handleEdit = async (className) => {
     try {
-      const response = await axios.post("API_ENDPOINT", { className });
+      const response = await fetch("API_ENDPOINT", { className });
       console.log("Data sent successfully: ", response.data);
     } catch (error) {
       console.error("Error sending data: ", error);
@@ -50,7 +49,7 @@ function AdminClasses() {
         </div>
       </div>
       <div>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           {data.map((item) => (
             <FormGroup key={item.id}>
               <Row>
