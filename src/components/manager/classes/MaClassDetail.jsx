@@ -1,538 +1,243 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
-import { Button, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
-import './classDetail.css'
+import { useParams } from 'react-router-dom';
+import { Table } from 'reactstrap';
 
-function MaClassDetail() {
+function ClassDetail() {
     const { classId } = useParams();
-    const apiUrl = `http://localhost:3001/class/${classId}`;
-
-    const [classDetails, setClassDetails] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [classInfo, setClassInfo] = useState(null);
+    const [coordinators, setCoordinators] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [submissions, setSubmissions] = useState([]);
     const [error, setError] = useState(null);
-
-    const [showEditClassInformations, setShowEditClassInformations] = useState(false);
-    const [showEditCoordinator, setShowEditCoordinator] = useState(false);
-    const [showEditCourseDueDate, setShowEditCourseDueDate] = useState(false);
-
-    const handleShowEditClassInformations = () => {
-        setShowEditClassInformations(!showEditClassInformations);
-    }
-
-    const handleShowEditCoordinator = () => {
-        setShowEditCoordinator(!showEditCoordinator);
-    }
-
-    const handleShowEditCourseDueDate = () => {
-        setShowEditCourseDueDate(!showEditCourseDueDate);
-    }
-
-    const [newClassName, setNewClassName] = useState('');
-    const [newClassID, setNewClassID] = useState('');
-    const [newCoordinatorName, setNewCoordinatorName] = useState('');
-    const [newCoordinatorID, setNewCoordinatorID] = useState('');
-    const [newCourseName, setNewCourseName] = useState('');
-    const [newDocumentUrl, setNewDocumentUrl] = useState('');
-    // const [newUploadDate, setNewUploadDate] = useState('');
-    const [newStudentName, setNewStudentName] = useState('');
-    const [newStudentID, setNewStudentID] = useState('');
-    const [courseDueDate, setNewCourseDueDate] = useState('');
-    const [courseStartDate, setNewCourseStartDate] = useState('');
+    const classApiUrl = 'http://localhost:3001/classes'
+    const userApiUrl = 'http://localhost:3001/users'
+    const courseApiUrl = 'http://localhost:3001/courses'
+    const submissionApiUrl = 'http://localhost:3001/submissions'
 
     useEffect(() => {
-        const fetchClassDetails = async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                setClassDetails(data);
-                setLoading(false);
+                // Fetch class info
+                const classResponse = await fetch(classApiUrl + `/${classId}`);
+                if (!classResponse.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                const classData = await classResponse.json();
+                setClassInfo(classData);
+
+                // Combine coordinator_id and student_ids into one array
+                const userIds = [...classData.coordinator_id, ...classData.student_ids];
+
+                // User information
+                const usersResponse = await fetch(userApiUrl);
+                if (!usersResponse.ok) {
+                    throw new Error('Failed to fetch users data');
+                }
+                const userData = await usersResponse.json();
+
+                if (userData.length > 0) {
+                    const filteredUsers = userData.filter(user => userIds.includes(user.id));
+
+                    const coordinators = [];
+                    const students = [];
+
+                    filteredUsers.forEach(user => {
+                        if (classData.coordinator_id.includes(user.id)) {
+                            coordinators.push(user);
+                        } else if (classData.student_ids.includes(user.id)) {
+                            students.push(user);
+                        }
+                    });
+
+                    // Course data
+                    const courseResponse = await fetch(courseApiUrl);
+                    if (!courseResponse.ok) {
+                        throw new Error('Failed to fetch course data');
+                    }
+                    const courseData = await courseResponse.json();
+                    const filteredCourseData = courseData.filter(course => {
+                        return course.class_name === classData.name
+                            && course.class_code === classData.code;
+                    })
+
+                    //Submissions data
+                    const submissionsResponse = await fetch(submissionApiUrl);
+                    if (!submissionsResponse.ok) {
+                        throw new Error('Failed to fetch submissions data');
+                    }
+                    const submissionsData = await submissionsResponse.json();
+                    const filteredSubmissionsData = submissionsData.filter(submission => {
+                        return submission.class_name === classData.name
+                            && submission.class_code === classData.code
+                            && filteredCourseData.some(course => course.name === submission.course_name)
+                    })
+                    console.log(filteredSubmissionsData)
+
+                    setSubmissions(filteredSubmissionsData)
+                    setCourses(filteredCourseData);
+                    setCoordinators(coordinators);
+                    setStudents(students);
+                } else {
+                    throw new Error('Users data not found or malformed');
+                }
+
+
+
             } catch (error) {
-                console.error('Error fetching class details:', error);
-                setError(error);
-                setLoading(false);
+                console.error('Error fetching data:', error);
+                setError(error.message);
             }
         };
 
-        fetchClassDetails();
-    }, [apiUrl]);
+        fetchData();
+    }, [classId]);
 
-    // Class Information
-    const handleUpdateClass = async () => {
-        try {
-            const response = await fetch(apiUrl + '/classInfo', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ className: newClassName, classID: newClassID })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update class information');
-            }
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-            setShowEditClassInformations(!showEditClassInformations);
-        } catch (error) {
-            console.error('Error updating class information:', error);
-        }
-    };
-
-    // Coordinator
-
-    const handleEditCoordinator = async () => {
-        try {
-            const response = await fetch(apiUrl + '/coordinator', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ coordinatorName: newCoordinatorName, coordinatorID: newCoordinatorID })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to edit coordinator');
-            }
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-            setShowEditCoordinator(!showEditCoordinator)
-        } catch (error) {
-            console.error('Error editing coordinator:', error);
-        }
-    };
-
-    //  Courses
-    const handleAddCourse = async () => {
-        if (!newCourseName || !courseStartDate || !courseDueDate) {
-            alert('Please enter all fields.');
-            return;
-        }
-        try {
-            const response = await fetch(apiUrl + '/courses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ courseName: newCourseName, startDate: courseStartDate, endDate: courseDueDate })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to add course');
-            }
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error adding course:', error);
-        }
-    };
-
-    const handleSetCourseDueDate = async () => {
-        try {
-            // const formattedDate = `${courseDueDate.getDate().toString().padStart(2, '0')}-${(courseDueDate.getMonth() + 1).toString().padStart(2, '0')}-${courseDueDate.getFullYear()}`;
-
-            const response = await fetch(apiUrl + '/endDate', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    endDate: courseDueDate
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to set course due date');
-            }
-
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-            handleShowEditCourseDueDate();
-        } catch (error) {
-            console.error('Error setting course due date:', error);
-        }
+    if (error) {
+        return <div>Error: {error}</div>;
     }
 
-    const [modal, setModal] = useState(false);
-    const [courseToDelete, setCourseToDelete] = useState(null);
-    const [studentToDelete, setStudentToDelete] = useState(null);
-
-    const toggleModal = () => setModal(!modal);
-
-    const confirmDelete = () => {
-        if (courseToDelete) {
-            handleDeleteCourse(courseToDelete);
-            setModal(false);
-        }
-        if (studentToDelete) {
-            handleDeleteStudent(studentToDelete);
-            setModal(false);
-        }
-    };
-
-    // Documents
-
-    const handleAddDocument = async () => {
-        if (!newDocumentUrl) {
-            alert('Please choose a file for upload');
-            return;
-        }
-        try {
-            const currentDate = new Date();
-            const formattedDate = currentDate.toISOString().split('T')[0];
-
-            const currentDocuments = classDetails.documents || [];
-            const newDocument = { documentUrl: newDocumentUrl, uploadDate: formattedDate };
-            const updatedDocuments = [...currentDocuments, newDocument];
-
-            const response = await fetch(apiUrl + '/documents', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ documents: updatedDocuments })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add document');
-            }
-
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error adding document:', error);
-        }
-    };
-
-
-    const handleAddStudent = async () => {
-        try {
-            const response = await fetch(apiUrl + '/students', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ studentName: newStudentName, studentID: newStudentID })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to add student');
-            }
-            // Update class information after add student
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error adding student:', error);
-        }
-    };
-
-    const handleDeleteStudent = async (studentId) => {
-        try {
-            const response = await fetch(apiUrl + `/students/${studentId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete student');
-            }
-            // Update class information after delete student
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error deleting student:', error);
-        }
-    };
-
-    const handleDeleteCourse = async (courseId) => {
-        try {
-            const response = await fetch(apiUrl + `/courses/${courseId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete course');
-            }
-            // Update class information after delete course
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error deleting course:', error);
-        }
-    };
-
-    const handleDeleteDocument = async (documentId) => {
-        try {
-            const response = await fetch(apiUrl + `/documents/${documentId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete document');
-            }
-            // Update class information after delete document
-            const updatedClass = await response.json();
-            setClassDetails(updatedClass);
-        } catch (error) {
-            console.error('Error deleting document:', error);
-        }
-    };
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (!classInfo || !coordinators.length || !students.length || !courses.length || !submissions.length) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
-            {classDetails && (
+            {error && <div>Error: {error}</div>}
+            {!classInfo || !coordinators.length || !students.length || !courses.length || !submissions.length ? (
+                <div>Loading...</div>
+            ) : (
                 <div>
-                    <div className='class-detail-header'>
-                        <h2>
-                            <strong>{classDetails.className}</strong>
-                            <strong>({classDetails.classID})</strong>
+                    <h2 style={{ fontWeight: "bold", textAlign: "center" }}>{classInfo.name} Details</h2>
+                    <h3 className="mb-2 text-muted" style={{ textAlign: "center" }}>Code: {classInfo.code}</h3>
 
-                        </h2>
-                        {!showEditClassInformations && (
-                            <Button style={{ backgroundColor: 'unset', border: 'unset', paddingBottom: '0' }} onClick={handleShowEditClassInformations}><box-icon name='edit'></box-icon></Button>
-                        )}
-                    </div>
-                    {/* Edit class info */}
-                    {showEditClassInformations && (
-                        <Modal isOpen={showEditClassInformations}>
-                            <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditClassInformations}>
-                                Edit Class Information
-                            </ModalHeader>
-                            <ModalBody>
-                                <Label>Edit Class Name</Label>
-                                <Input
-                                    value={newClassName}
-                                    onChange={(e) => setNewClassName(e.target.value)}
-                                    type='text'
-                                    placeholder='Class Name'
-                                    required
-                                />
-                                <Label>Edit Class ID</Label>
-                                <Input
-                                    value={newClassID}
-                                    onChange={(e) => setNewClassID(e.target.value)}
-                                    type='text'
-                                    placeholder='Class ID'
-                                    required
-                                />
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color='primary' variant='primary' onClick={handleUpdateClass}>
-                                    Update
-                                </Button>
-                                <Button variant='secondary' onClick={handleShowEditClassInformations}>
-                                    Cancel
-                                </Button>
-                            </ModalFooter>
-                        </Modal>
-                    )}
-                    <div className='coordinator'>
-                        <h4>
-                            <strong>Coordinator: </strong>{classDetails.coordinatorName} - <strong>ID: </strong> {classDetails.coordinatorID}
-                            {!showEditCoordinator && (
-                                <Button style={{ backgroundColor: 'unset', border: 'unset', paddingBottom: '0' }} onClick={handleShowEditCoordinator}><box-icon name='edit'></box-icon></Button>
-                            )}
-                        </h4>
-
-                        {/* Edit coordinator */}
-                        {showEditCoordinator && (
-                            <Modal isOpen={showEditCoordinator}>
-                                <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditCoordinator}>Edit Coordinator Information</ModalHeader>
-                                <ModalBody>
-                                    <Label>Edit Coordinator Name</Label>
-                                    <Input
-                                        value={newCoordinatorName}
-                                        onChange={(e) => setNewCoordinatorName(e.target.value)}
-                                        type='text'
-                                        placeholder='Coordinator Name'
-                                    />
-                                    <Label>Edit Coordinator ID</Label>
-                                    <Input
-                                        value={newCoordinatorID}
-                                        onChange={(e) => setNewCoordinatorID(e.target.value)}
-                                        type='text'
-                                        placeholder='Coordinator ID'
-                                    />
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color='primary' variant='primary' onClick={handleEditCoordinator}>
-                                        Update
-                                    </Button>
-                                    <Button variant='secondary' onClick={handleShowEditCoordinator}>Cancel</Button>
-                                </ModalFooter>
-                            </Modal>
-                        )}
-                    </div>
-
-                    {/* Add students */}
-                    <div className='student'>
-                        <h3>Students</h3>
-                        <Table striped>
-                            <thead>
-                                <tr>
-                                    <th scope='row'>Student ID</th>
-                                    <th>Student Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {classDetails.students && classDetails.students.map(student => (
-                                    <tr key={student.id}>
-                                        <td style={{ width: "20%" }}>{student.studentID}</td>
-                                        <td>{student.studentName}</td>
-                                        <td style={{ width: "10%" }}>
-                                            <Button color='danger'
-                                                onClick={() => { setStudentToDelete(student.id); toggleModal() }}>
-                                                Delete
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                        <Input
-                            type="text"
-                            value={newStudentName}
-                            onChange={(e) => setNewStudentName(e.target.value)}
-                            placeholder="Enter student name"
-                        />
-                        <Input
-                            type="text"
-                            value={newStudentID}
-                            onChange={(e) => setNewStudentID(e.target.value)}
-                            placeholder="Enter student ID"
-                        />
-                        <Button onClick={handleAddStudent}>Add</Button>
-                    </div>
-
-                    <div className='courses'>
-                        <h3>Courses</h3>
-                        <Table striped>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Code</th>
-                                    <th>Release</th>
-                                    <th>Open</th>
-                                    <th>Close</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {classDetails.courses && classDetails.courses.map(course => (
-                                    <tr key={course.id}>
-                                        <td>{course.courseName}</td>
-                                        <td>{course.courseID}</td>
-                                        <td>{course.publicDate}</td>
-                                        <td>{course.startDate}</td>
-                                        <td>{course.endDate}</td>
-                                        <td style={{ width: "25%" }}>
-                                            <Button style={{ marginRight: "5px" }} color='danger' onClick={() => {
-                                                setCourseToDelete(course.id);
-                                                toggleModal();
-                                            }}>Delete</Button>
-                                            <Button style={{ marginLeft: "5px" }} color='primary' onClick={() => handleShowEditCourseDueDate(course.id)}>Set date</Button>
-                                            <Link to={`course/${course.id}/submissions`}>
-                                                <Button style={{ marginLeft: "5px" }} color='success'>Articles</Button>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-
-                        {/* Modal for confirming deletion */}
-                        <Modal isOpen={modal} toggle={toggleModal}>
-                            <ModalHeader toggle={toggleModal}>Confirm Delete</ModalHeader>
-                            <ModalBody>
-                                Are you sure you want to delete. Your data will be deleted!!
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" onClick={confirmDelete}>Delete</Button>{' '}
-                                <Button color="secondary" onClick={toggleModal}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
-                        {/* Add course */}
-                        <Input
-                            style={{ width: '30%' }}
-                            type="text"
-                            value={newCourseName}
-                            onChange={(e) => setNewCourseName(e.target.value)}
-                            placeholder="Enter new course name"
-                            required
-                        />
-                        <div style={{ display: "flex", gap: "10px" }}>
-                            <div>
-                                <Label><strong>Start Date</strong></Label>
-                                <Input
-                                    type="date"
-                                    value={courseStartDate}
-                                    onChange={(e) => setNewCourseStartDate(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <Label><strong>End Date</strong></Label>
-                                <Input
-                                    type="date"
-                                    value={courseDueDate}
-                                    onChange={(e) => setNewCourseDueDate(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <Button onClick={handleAddCourse}>Add</Button>
-
-                        {showEditCourseDueDate && (
-                            <Modal isOpen={showEditCourseDueDate}>
-                                <ModalHeader style={{ textAlign: "center" }} toggle={handleShowEditCourseDueDate}>Edit Course Due Date</ModalHeader>
-                                <ModalBody>
-                                    <Label>Choose new due date for course</Label>
-                                    <Input type='date'
-                                        onChange={(e) => setNewCourseDueDate(e.target.value)}
-                                        value={courseDueDate}
-                                        required
-                                    >
-                                    </Input>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color='primary' variant='primary' onClick={handleSetCourseDueDate}>
-                                        Update
-                                    </Button>
-                                    <Button variant='secondary' onClick={handleShowEditCourseDueDate}>Cancel</Button>
-                                </ModalFooter>
-                            </Modal>
-                        )}
-                    </div>
-
-                    <h3>Documents</h3>
-                    <Table striped>
+                    <h3>Coordinators</h3>
+                    <Table striped bordered>
                         <thead>
                             <tr>
-                                <th>Document</th>
-                                <th>Upload date</th>
+                                <th>Picture</th>
+                                <th>Coordinator ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {classDetails.documents && classDetails.documents.map(document => (
-                                <tr key={document.id}>
-                                    <td href={document.documentUrl}>{document.documentUrl}</td>
-                                    <td>{document.uploadDate}</td>
-                                    <td style={{ width: "10%" }}><Button color='danger' onClick={() => handleDeleteDocument(document.id)}>Delete</Button></td>
+                            {coordinators.map(coordinator => (
+                                <tr key={coordinator.id}>
+                                    <td><img style={{ width: "40px", height: "40px" }} src={coordinator.picture} /></td>
+                                    <td>{coordinator.code}</td>
+                                    <td>{coordinator.username}</td>
+                                    <td>{coordinator.email}</td>
+                                    <td>Button</td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
-                    {/* Add document */}
-                    <Input
-                        type="file"
-                        value={newDocumentUrl}
-                        onChange={(e) => setNewDocumentUrl(e.target.value)}
-                        placeholder="Enter document URL"
-                        required
-                    />
-                    <Button onClick={handleAddDocument}>Add </Button>
-                </div >
-            )
-            }
-            <Outlet />
-        </div >
+
+                    <h3>Students</h3>
+                    <Table striped bordered>
+                        <thead>
+                            <tr>
+                                <th>Picture</th>
+                                <th>Student ID</th>
+                                <th>User name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {students.map(student => (
+                                <tr key={student.id}>
+                                    <td style={{ width: "10%" }}><img style={{ width: "40px", height: "40px" }} src={student.picture}></img></td>
+                                    <td>{student.code}</td>
+                                    <td>{student.username}</td>
+                                    <td>{student.email}</td>
+                                    <td></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+
+                    <h3>Courses</h3>
+                    <Table striped bordered>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Documents</th>
+                                <th>Assignments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {courses.map(course => (
+                                <tr key={course.id}>
+                                    <td>{course.id}</td>
+                                    <td>{course.name}</td>
+                                    <td>{course.start_date}</td>
+                                    <td>{course.end_date}</td>
+                                    <td>
+                                        <ul>
+                                            {course.documents.map(document => (
+                                                <li key={document.id}>{document.filename}</li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            {course.assignments.map(assignment => (
+                                                <li key={assignment.id}>{assignment.title}</li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+
+                    <h3>Submissions</h3>
+                    <Table striped bordered>
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Course name</th>
+                                <th>Submit date</th>
+                                <th>Grade</th>
+                                <th>Comment</th>
+                                <th>Assignments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {courses.map(course => (
+                                <tr key={course.id}>
+                                    <td>{course.id}</td>
+                                    <td>{course.name}</td>
+                                    <td>{course.start_date}</td>
+                                    <td>{course.end_date}</td>
+                                    <td>
+                                        <ul>
+                                            {course.documents.map(document => (
+                                                <li key={document.id}>{document.filename}</li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            {course.assignments.map(assignment => (
+                                                <li key={assignment.id}>{assignment.title}</li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+        </div>
     );
 }
 
-export default MaClassDetail;
+export default ClassDetail;

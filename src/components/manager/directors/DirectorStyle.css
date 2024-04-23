@@ -1,14 +1,10 @@
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
 .header {
-  text-align: center;
-  font-family: "Times New Roman", Times, serif;
-  font-weight: bold;
-}
-
-.director-class-managing {
-  text-align: center !important;
-  font-size: large;
-}
-
-.card .articles-container {
-  background-color: rgba(233, 232, 232, 0.774);
+  display: flex;
+  justify-content: center;
 }

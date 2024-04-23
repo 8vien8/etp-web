@@ -2,3 +2,6 @@
   text-align: center !important;
   font-size: large;
 }
+.header {
+  justify-content: center;
+}

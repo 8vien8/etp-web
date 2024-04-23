@@ -1,0 +1,213 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "role": "admin",
+      "username": "admin",
+      "code": "AD1",
+      "password": "admin_password",
+      "email": "admin@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "2",
+      "role": "manager",
+      "code": "Ma1",
+      "username": "manager1",
+      "password": "manager1_password",
+      "email": "manager1@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "3",
+      "role": "manager",
+      "code": "Ma2",
+      "username": "manager2",
+      "password": "manager2_password",
+      "email": "manager2@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "4",
+      "role": "coordinator",
+      "code": "Co1",
+      "username": "Coordinator1",
+      "password": "coordinator1_password",
+      "email": "coordinator1@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "5",
+      "role": "coordinator",
+      "code": "Co2",
+      "username": "Coordinator2",
+      "password": "coordinator2_password",
+      "email": "coordinator2@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "6",
+      "role": "student",
+      "code": "Stu1",
+      "username": "student1",
+      "password": "student1_password",
+      "email": "student1@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "7",
+      "role": "student",
+      "code": "Stu2",
+      "username": "student2",
+      "password": "student2_password",
+      "email": "student2@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "8",
+      "role": "guest",
+      "code": "Gu1",
+      "username": "guest1",
+      "password": "guest1_password",
+      "email": "guest1@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    },
+    {
+      "id": "9",
+      "role": "guest",
+      "code": "Gu2",
+      "username": "guest2",
+      "password": "guest2_password",
+      "email": "guest2@example.com",
+      "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
+    }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "name": "Class A",
+      "code": "CL A",
+      "coordinator_id": ["4"],
+      "student_ids": ["6"]
+    },
+    {
+      "id": "2",
+      "name": "Class B",
+      "code": "CL B",
+      "coordinator_id": ["5"],
+      "student_ids": ["7"]
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "name": "Math",
+      "class_name": "Class A",
+      "class_code": "CL A",
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-01",
+      "documents": [
+        {
+          "id": "1",
+          "filename": "Document 1",
+          "documentUrl": "",
+          "uploadDate": "2024-01-01"
+        }
+      ],
+      "assignments": [
+        {
+          "id": "1",
+          "auth_code": "Stu1",
+          "title": "Math Homework",
+          "description": "Complete exercises 1-10",
+          "due_date": "2024-04-25"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Science",
+      "class_name": "Class B",
+      "class_code": "CL B",
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-01",
+      "documents": [
+        {
+          "id": "1",
+          "filename": "Document 1",
+          "documentUrl": "",
+          "uploadDate": "2024-02-01"
+        }
+      ],
+      "assignments": [
+        {
+          "id": "1",
+          "title": "Science Project",
+          "description": "Research and present on renewable energy sources",
+          "due_date": "2024-05-01"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Literature",
+      "class_name": "Class A",
+      "class_code": "CL A",
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-01",
+      "documents": [
+        {
+          "id": "1",
+          "filename": "Document 1",
+          "documentUrl": "",
+          "uploadDate": "2024-02-01"
+        }
+      ],
+      "assignments": [
+        {
+          "id": "1",
+          "title": "Literature Essay",
+          "description": "Analyze and write about a piece of classic literature",
+          "due_date": "2024-04-30"
+        }
+      ]
+    }
+  ],
+  "submissions": [
+    {
+      "id": "1",
+      "student_id": "6",
+      "class_name": "Class A",
+      "class_code": "CL A",
+      "course_name": "Math",
+      "assignment_id": "1",
+      "submission_date": "2024-04-20",
+      "title": "Documentation",
+      "description": "",
+      "grade": "90",
+      "comment": ""
+    },
+    {
+      "id": "2",
+      "student_id": "6",
+      "class_name": "Class B",
+      "class_code": "CL B",
+      "course_name": "Science",
+      "assignment_id": "2",
+      "submission_date": "2024-04-21",
+      "grade": "85",
+      "comment": ""
+    },
+    {
+      "id": "3",
+      "student_id": "7",
+      "class_name": "Class A",
+      "class_code": "CL A",
+      "course_name": "Literature",
+      "assignment_id": "3",
+      "submission_date": "2024-04-22",
+      "grade": "88",
+      "comment": ""
+    }
+  ]
+}
