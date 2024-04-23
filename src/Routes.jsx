@@ -41,6 +41,7 @@ import MaClassDetail from "./components/manager/classes/MaClassDetail";
 import MaSubmissionDetail from "./components/manager/classes/submissions/MaSubmissionDetail";
 import AdminClasses from "./components/admin/classes/AdminClasses";
 import AdminManageUser from "./components/admin/user/AdminManageUser";
+import AdminCrud from "./components/admin/crud/AdminCrud";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -136,6 +137,7 @@ const AppRouter = () => {
           <Route path="dashboard" element={<AdminDashBoard />} />
           <Route path="classes" element={<AdminClasses />} />
           <Route path="user" element={<AdminManageUser />} />
+          <Route path="crud" element={<AdminCrud />} />
         </Route>
         {/* Guest */}
         <Route
