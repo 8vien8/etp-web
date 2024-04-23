@@ -12,7 +12,7 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import "./DirectorStyle.css";
+import "./directorStyle.css";
 
 function Directors() {
   const [coordinators, setCoordinators] = useState([]);
@@ -66,17 +66,16 @@ function Directors() {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setNewImage(reader.result); // Lưu đường dẫn hình ảnh mới vào state
+      setNewImage(reader.result);
     };
   };
 
   const handleSave = () => {
-    toggleConfirmModal(); // Mở modal xác nhận
+    toggleConfirmModal();
   };
 
   const confirmSave = async () => {
     try {
-      // Nếu có hình ảnh mới, cập nhật đường dẫn hình ảnh trong editedCoordinator
       if (newImage) {
         setEditedCoordinator((prevState) => ({
           ...prevState,
