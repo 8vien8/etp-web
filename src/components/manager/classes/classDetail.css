@@ -4,5 +4,55 @@
 }
 
 .modal-title {
+  display: flex;
+  justify-content: center;
   width: 95%;
+}
+
+.course-details {
+  margin-top: 20px;
+}
+
+.course-details p {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.course-details table {
+  margin-top: 10px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.course-details th,
+.course-details td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+.course-details th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+}
+
+.course-details tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.course-details tbody tr:hover {
+  background-color: #ddd;
+}
+
+.course-details h4 {
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  margin-bottom: 5px;
+}
+
+.pointer-hover {
+  cursor: pointer;
 }

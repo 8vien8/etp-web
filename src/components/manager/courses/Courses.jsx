@@ -9,8 +9,21 @@ function Courses() {
     const [editedDocuments, setEditedDocuments] = useState([]);
     const [editedAssignments, setEditedAssignments] = useState([]);
     const [saveDisabled, setSaveDisabled] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newCourse, setNewCourse] = useState({
+        name: '',
+        class_name: '',
+        class_code: '',
+        start_date: '',
+        end_date: '',
+        documents: [],
+        assignments: []
+    });
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [courseToDelete, setCourseToDelete] = useState(null);
 
-    const apiUrl = 'http://localhost:3001/courses'
+    const apiUrl = 'http://localhost:3001/courses';
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +49,8 @@ function Courses() {
     const toggleModal = () => {
         setModalOpen(!modalOpen);
     };
+
+    //Edit
 
     const showCourseDetails = (course) => {
         setSelectedCourse(course);
@@ -101,7 +116,7 @@ function Courses() {
     const handleSaveEdit = async () => {
         try {
             const updatedCourse = { ...editedCourse, documents: editedDocuments, assignments: editedAssignments };
-            const response = await fetch(`http://localhost:3001/courses/${editedCourse.id}`, {
+            const response = await fetch(`${apiUrl}/${editedCourse.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -121,27 +136,124 @@ function Courses() {
         }
     };
 
+
+    //Create 
+
+    const toggleModalS = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewCourse(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const validateForm = () => {
+        const requiredFields = ['name', 'class_name', 'class_code', 'start_date', 'end_date'];
+        const isValid = requiredFields.every(field => newCourse[field].trim() !== '');
+        setIsFormValid(isValid);
+    };
+
+    const handleCreateCourse = () => {
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newCourse)
+        })
+            .then(response => response.json())
+            .then(data => {
+                toggleModalS();
+                setCourses([...courses, data]);
+            })
+            .catch(error => console.error('Error creating new course:', error));
+    };
+
+    const addDocument = () => {
+        setNewCourse({ ...newCourse, documents: [...newCourse.documents, {}] });
+    };
+
+    const addAssignment = () => {
+        setNewCourse({ ...newCourse, assignments: [...newCourse.assignments, {}] });
+    };
+
+    const removeDocument = (index) => {
+        const updatedDocuments = [...newCourse.documents];
+        updatedDocuments.splice(index, 1);
+        setNewCourse({ ...newCourse, documents: updatedDocuments });
+    };
+
+    const removeAssignment = (index) => {
+        const updatedAssignments = [...newCourse.assignments];
+        updatedAssignments.splice(index, 1);
+        setNewCourse({ ...newCourse, assignments: updatedAssignments });
+    };
+
+    useEffect(() => {
+        validateForm();
+    }, [newCourse]);
+
+    //Delete
+    const toggleDeleteModal = () => {
+        setDeleteModalOpen(!deleteModalOpen);
+    };
+
+    const confirmDelete = (course) => {
+        setCourseToDelete(course);
+        toggleDeleteModal();
+    };
+
+    const handleDeleteCourse = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/${courseToDelete.id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete course');
+            }
+
+            setCourses(courses.filter(course => course.id !== courseToDelete.id));
+            setCourseToDelete(null);
+            toggleDeleteModal();
+            console.log('Course deleted successfully');
+        } catch (error) {
+            console.error('Error deleting course:', error);
+        }
+    };
+
     return (
         <div>
             <h2 className='header'>Courses List</h2>
+            <Button style={{ margin: "10px 0" }} color="primary" onClick={toggleModalS}>Create Course</Button>
+
             <div className='dashboard-content'>
                 {courses.map(course => (
                     <Card key={course.id}>
                         <CardBody>
                             <CardTitle tag="h2">{course.name}</CardTitle>
                             <CardSubtitle tag="h3" className="mb-2 text-muted">End Date: {course.end_date}</CardSubtitle>
-                            <Button onClick={() => showCourseDetails(course)}>Detail</Button>
+                            <Button onClick={() => showCourseDetails(course)} className="btn btn-primary">Detail</Button>
+                            <Button onClick={() => confirmDelete(course)} color="danger">Delete</Button>
                         </CardBody>
                     </Card>
                 ))}
             </div>
 
-            <Modal style={{ width: "80vh" }} centered isOpen={modalOpen} toggle={toggleModal}>
+            <Modal centered isOpen={modalOpen} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}>Course Details</ModalHeader>
                 <ModalBody>
                     {selectedCourse && (
                         <div>
                             <h2 style={{ display: "flex", justifyContent: "center" }}>{selectedCourse.name}</h2>
+                            <h4>Applying for class</h4>
+                            <Input type="text" name="class_name" value={selectedCourse.class_name} onChange={handleEditInputChange} />
+                            <Input type="text" name="class_code" value={selectedCourse.class_code} onChange={handleEditInputChange} />
+                            <h4>Course</h4>
                             <Input type="text" name="name" value={editedCourse.name} onChange={handleEditInputChange} />
                             <Input type="date" name="start_date" value={editedCourse.start_date} onChange={handleEditInputChange} />
                             <Input type="date" name="end_date" value={editedCourse.end_date} onChange={handleEditInputChange} />
@@ -184,6 +296,60 @@ function Courses() {
                 <ModalFooter>
                     <Button color="primary" onClick={handleSaveEdit} disabled={saveDisabled}>Save</Button>{' '}
                     <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={isModalOpen} toggle={toggleModalS}>
+                <ModalHeader toggle={toggleModalS}><div style={{ fontWeight: "bold" }}>Add New Course</div></ModalHeader>
+                <ModalBody>
+                    <h5> Apply class</h5>
+                    <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
+                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} />
+                    <hr />
+                    <h5> Course information</h5>
+                    <Input type="text" name="name" placeholder="Course Name" value={newCourse.name} onChange={handleInputChange} />
+                    <Input type="date" name="start_date" placeholder="Start Date" value={newCourse.start_date} onChange={handleInputChange} />
+                    <Input type="date" name="end_date" placeholder="End Date" value={newCourse.end_date} onChange={handleInputChange} />
+                    <hr />
+                    <h5>Documents
+                        <Button color="none" onClick={addDocument}><box-icon name='plus-circle'></box-icon></Button>
+                    </h5>
+                    {newCourse.documents.map((document, index) => (
+                        <div key={index}>
+                            <Input type="text" name={`documents[${index}].filename`} placeholder="Filename" value={document.filename} onChange={handleInputChange} />
+                            <Input type="file" name={`documents[${index}].documentUrl`} onChange={handleInputChange} />
+                            <Input type="date" name={`documents[${index}].uploadDate`} placeholder="Upload Date" value={document.uploadDate} onChange={handleInputChange} />
+                            <Button color="none" onClick={() => removeDocument(index)}><box-icon name='minus-circle'></box-icon></Button>
+                        </div>
+                    ))}
+
+                    <h5>Assignments
+                        <Button color="none" onClick={addAssignment}><box-icon name='plus-circle'></box-icon></Button>
+                    </h5>
+                    {newCourse.assignments.map((assignment, index) => (
+                        <div key={index}>
+                            <Input type="text" name={`assignments[${index}].title`} placeholder="Title" value={assignment.title} onChange={handleInputChange} />
+                            <Input type="text" name={`assignments[${index}].description`} placeholder="Description" value={assignment.description} onChange={handleInputChange} />
+                            <Input type="date" name={`assignments[${index}].due_date`} placeholder="Due Date" value={assignment.due_date} onChange={handleInputChange} />
+                            <Button color="none" onClick={() => removeAssignment(index)}><box-icon name='minus-circle'></box-icon></Button>
+                            <hr />
+                        </div>
+                    ))}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={handleCreateCourse} disabled={!isFormValid}>Create</Button>{' '}
+                    <Button color="secondary" onClick={toggleModalS}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={deleteModalOpen} toggle={toggleDeleteModal}>
+                <ModalHeader toggle={toggleDeleteModal}>Confirm Delete</ModalHeader>
+                <ModalBody>
+                    Are you sure you want to delete the course {courseToDelete && courseToDelete.name}?
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={handleDeleteCourse}>Delete</Button>{' '}
+                    <Button color="secondary" onClick={toggleDeleteModal}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>
