@@ -10,10 +10,12 @@ function Courses() {
     const [editedAssignments, setEditedAssignments] = useState([]);
     const [saveDisabled, setSaveDisabled] = useState(true);
 
+    const apiUrl = 'http://localhost:3001/courses'
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3001/courses');
+                const response = await fetch(apiUrl);
                 const data = await response.json();
                 setCourses(data);
             } catch (error) {

@@ -87,15 +87,15 @@
       "id": "1",
       "name": "Class A",
       "code": "CL A",
-      "coordinator_id": [4],
-      "student_ids": [6]
+      "coordinator_id": ["4"],
+      "student_ids": ["6"]
     },
     {
       "id": "2",
       "name": "Class B",
       "code": "CL B",
-      "coordinator_id": [5],
-      "student_ids": [7]
+      "coordinator_id": ["5"],
+      "student_ids": ["7"]
     }
   ],
   "courses": [
@@ -182,6 +182,8 @@
       "course_name": "Math",
       "assignment_id": "1",
       "submission_date": "2024-04-20",
+      "title": "Documentation",
+      "description": "",
       "grade": "90",
       "comment": ""
     },
