@@ -87,15 +87,23 @@
       "id": "1",
       "name": "Class A",
       "code": "CL A",
-      "coordinator_id": ["4"],
-      "student_ids": ["6"]
+      "coordinator_id": [
+        "Co1"
+      ],
+      "student_ids": [
+        "Stu1"
+      ]
     },
     {
       "id": "2",
       "name": "Class B",
       "code": "CL B",
-      "coordinator_id": ["5"],
-      "student_ids": ["7"]
+      "coordinator_id": [
+        "Co2"
+      ],
+      "student_ids": [
+        "Stu2"
+      ]
     }
   ],
   "courses": [
@@ -117,7 +125,7 @@
       "assignments": [
         {
           "id": "1",
-          "auth_code": "Stu1",
+          "auth_code": "Ma1",
           "title": "Math Homework",
           "description": "Complete exercises 1-10",
           "due_date": "2024-04-25"
@@ -176,7 +184,7 @@
   "submissions": [
     {
       "id": "1",
-      "student_id": "6",
+      "student_id": "Stu1",
       "class_name": "Class A",
       "class_code": "CL A",
       "course_name": "Math",
@@ -184,28 +192,35 @@
       "submission_date": "2024-04-20",
       "title": "Documentation",
       "description": "",
-      "grade": "90",
-      "comment": ""
+      "files": [
+        "file1.pdf",
+        "file2.docx",
+        "file3.jpg"
+      ],
+      "grade": "90+",
+      "comment": "hello worldss"
     },
     {
       "id": "2",
-      "student_id": "6",
+      "student_id": "Stu2",
       "class_name": "Class B",
       "class_code": "CL B",
       "course_name": "Science",
       "assignment_id": "2",
       "submission_date": "2024-04-21",
+      "files": [],
       "grade": "85",
       "comment": ""
     },
     {
       "id": "3",
-      "student_id": "7",
+      "student_id": "Stu1",
       "class_name": "Class A",
       "class_code": "CL A",
       "course_name": "Literature",
       "assignment_id": "3",
       "submission_date": "2024-04-22",
+      "files": [],
       "grade": "88",
       "comment": ""
     }
