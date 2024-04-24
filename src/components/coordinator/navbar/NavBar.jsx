@@ -10,15 +10,15 @@ function NavBar() {
                 </NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     <NavItem className='navbar-item'>
-                        <box-icon name='home' />
+                        <Link to=""><box-icon name='home' /> </Link>
                         <NavLink tag={Link} to="" >Home</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <box-icon type='solid' name='dashboard' />
-                        <NavLink tag={Link} to="dashboard" >Board</NavLink>
+                        <Link to="class"><box-icon type='solid' name='school' /></Link>
+                        <NavLink tag={Link} to="classes" >Classes</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <box-icon name='user-circle' />
+                        <Link to="profile"><box-icon name='user-circle' /></Link>
                         <NavLink tag={Link} to="profile" >Profile</NavLink>
                     </NavItem>
                 </Nav>

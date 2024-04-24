@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
-  CardImg,
   CardText,
   CardBody,
   CardTitle,
   CardSubtitle,
-  Container,
-  Row,
-  Col,
 } from "reactstrap";
 import data from "../../../../db.json";
 

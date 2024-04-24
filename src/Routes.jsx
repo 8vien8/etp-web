@@ -17,17 +17,9 @@ import RegisterForm from "./components/registerForm/RegisterForm";
 import Terms from "./components/terms/Terms";
 import UserDashboard from "./components/user/dashboard/UserDashboard";
 import Submissions from "./components/user/submissions/Submissions";
-import Messages from "./components/user/message/Messages";
 import Profile from "./components/user/profile/Profile";
-import Dashboard from "./components/coordinator/dashboard/Dashboard";
-import Articles from "./components/coordinator/artiicle/Articles";
 import CreateNewSubmissions from "./components/user/create/CreateNewSubmisson";
-import CreateNewUser from "./components/coordinator/createUser/CreateNewUser";
-import Message from "./components/coordinator/message/Messages";
 import CoProfile from "./components/coordinator/profile/CoProfile";
-import ManagerDashBoard from "./components/manager/dashboard/ManagerDashBoard";
-import ClassDetail from "./components/coordinator/classroom/ClassDetail";
-import SubmissionDetail from "./components/coordinator/classroom/submission/detail/SubmissionDetail";
 import AdminLandingPage from "./pages/admin/AdminLandingPage";
 import AdminDashBoard from "./components/admin/dashboard/AdminDashBoard";
 import GuestLandingPage from "./pages/guest/GuestLandingPage";
@@ -38,10 +30,12 @@ import Courses from "./components/manager/courses/Courses";
 import MaProfile from "./components/manager/profile/Profile";
 import Classes from "./components/manager/classes/Classes";
 import MaClassDetail from "./components/manager/classes/MaClassDetail";
-import MaSubmissionDetail from "./components/manager/classes/submissions/MaSubmissionDetail";
 import AdminClasses from "./components/admin/classes/AdminClasses";
 import AdminManageUser from "./components/admin/user/AdminManageUser";
 import AdminCrud from "./components/admin/crud/AdminCrud";
+import CoordinatorHome from "./components/coordinator/home/CoordinatorHome";
+import CoClasses from "./components/coordinator/classes/CoClasses";
+import CoClassDetail from "./components/coordinator/classes/CoClassdetail";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -62,7 +56,7 @@ const AppRouter = () => {
         </Route>
         {/* Student */}
         <Route
-          path="/user"
+          path="/user/:id"
           element={
             isAuthenticated("student") ? (
               <LandingPage />
@@ -74,13 +68,12 @@ const AppRouter = () => {
           <Route path="dashboard" element={<UserDashboard />} />
           <Route path="submissions" element={<Submissions />} />
           <Route path="create" element={<CreateNewSubmissions />} />
-          <Route path="messages" element={<Messages />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 
         {/* Coordinator */}
         <Route
-          path="/coordinator"
+          path="/coordinator/:id"
           element={
             isAuthenticated("coordinator") ? (
               <CoordinatorLandingPage />
@@ -89,20 +82,16 @@ const AppRouter = () => {
             )
           }
         >
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="articles" element={<Articles />} />
-          <Route path="create-user" element={<CreateNewUser />} />
-          <Route path="messages" element={<Message />} />
+          <Route path="" element={<CoordinatorHome />} />
+          <Route path="classes" element={<CoClasses />} />
+          <Route path="classes/:classId" element={<CoClassDetail />} />
           <Route path="profile" element={<CoProfile />} />
-          <Route path="settings" element={<Articles />} />
-          <Route path="classroom" element={<ClassDetail />}>
-            <Route path="submission" element={<SubmissionDetail />} />
-          </Route>
+
         </Route>
 
         {/*Manager */}
         <Route
-          path="/manager"
+          path="/manager/:id"
           element={
             isAuthenticated("manager") ? (
               <ManagerLandingPage />
@@ -112,20 +101,16 @@ const AppRouter = () => {
           }
         >
           <Route path="" element={<ManagerHome />} />
-          <Route path="dashboard" element={<ManagerDashBoard />} />
           <Route path="director" element={<Directors />} />
           <Route path="courses" element={<Courses />} />
           <Route path="classes" element={<Classes />} />
           <Route path="classes/:classId" element={<MaClassDetail />} />
-          <Route
-            path="classes/:classId/course/:courseId/submissions"
-            element={<MaSubmissionDetail />}
-          />
           <Route path="profile" element={<MaProfile />} />
         </Route>
+
         {/* Admin */}
         <Route
-          path="/admin"
+          path="/admin/:id"
           element={
             isAuthenticated("admin") ? (
               <AdminLandingPage />
@@ -139,9 +124,10 @@ const AppRouter = () => {
           <Route path="user" element={<AdminManageUser />} />
           <Route path="crud" element={<AdminCrud />} />
         </Route>
+
         {/* Guest */}
         <Route
-          path="/guest"
+          path="/guest/:id"
           element={
             isAuthenticated("guest") ? (
               <GuestLandingPage />
