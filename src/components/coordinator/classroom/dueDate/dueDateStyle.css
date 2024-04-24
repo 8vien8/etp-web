@@ -1,9 +1,0 @@
-.set-due-date {
-  display: flex;
-  gap: 10px;
-}
-
-.set-due-date input {
-  font-size: large;
-  width: 30%;
-}

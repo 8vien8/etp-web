@@ -11,7 +11,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const apiUrl = 'http://localhost:3001/users'
+  const apiUrl = 'http://localhost:3001/users';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,31 +34,12 @@ function Login() {
     e.preventDefault();
     const user = users.find(user => user.email === email && user.password === password);
     if (user) {
-      console.log('Login successful!');
-      console.log(user.role);
-      switch (user.role) {
-        case "admin":
-          navigate("/admin");
-          break;
-        case "manager":
-          navigate("/manager");
-          break;
-        case "coordinator":
-          navigate("/coordinator");
-          break;
-        case "student":
-          navigate("/user");
-          break;
-        case "guest":
-          navigate("/guest");
-          break;
-        default:
-          break;
-      }
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userCode', user.code);
+      navigate(`/${user.role}/${user.id}`);
       setError('');
     } else {
-      console.error('Login failed!');
       setError('Incorrect email or password.');
     }
   };
