@@ -9,8 +9,8 @@ function LogOut() {
     };
 
     return (
-        <div className="header">
-            <Button onClick={handleLogout}>Logout</Button>
+        <div style={{ textAlign: "center" }} className="header">
+            <Button color='danger' onClick={handleLogout}>Logout</Button>
         </div>
     );
 }
