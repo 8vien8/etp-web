@@ -3,6 +3,13 @@ import { Container, Row, Col, Button, Input } from "reactstrap";
 
 function AdminCrud() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [userData, setUserData] = useState({
+    id: "",
+    username: "",
+    name: "",
+    email: "",
+    class: "",
+  });
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -11,7 +18,30 @@ function AdminCrud() {
   const handleUpload = () => {};
 
   const handleSubmit = () => {
-    fetch("API_EndPoint", {});
+    fetch("http://localhost:3001/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Profile saved successfully. ");
+          setUserData({
+            id: "",
+            username: "",
+            name: "",
+            email: "",
+            class: "",
+          });
+        } else {
+          throw new Error("Failed to save user data");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
