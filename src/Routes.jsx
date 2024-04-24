@@ -34,6 +34,7 @@ import StudentHome from "./components/user/home/StudentHome";
 import StudentClasses from "./components/user/classes/StudentClasses";
 import StudentClassDetail from "./components/user/classes/StudentClasseDetail";
 import UserProfile from "./components/profile/Profile";
+import AdminNavbar from "./components/admin/navbar/Navbar";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
