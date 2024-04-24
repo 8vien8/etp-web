@@ -12,7 +12,7 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import "./directorStyle.css";
+import "./DirectorStyle.css";
 
 function Directors() {
   const [coordinators, setCoordinators] = useState([]);

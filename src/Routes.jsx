@@ -42,6 +42,7 @@ import MaSubmissionDetail from "./components/manager/classes/submissions/MaSubmi
 import AdminClasses from "./components/admin/classes/AdminClasses";
 import AdminManageUser from "./components/admin/user/AdminManageUser";
 import AdminCrud from "./components/admin/crud/AdminCrud";
+import AdminNavbar from "./components/admin/navbar/Navbar";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
