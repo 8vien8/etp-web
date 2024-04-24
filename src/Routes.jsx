@@ -15,10 +15,6 @@ import ManagerLandingPage from "./pages/manager/ManagerLandingPage";
 import Login from "./components/loginForm/LoginForm";
 import RegisterForm from "./components/registerForm/RegisterForm";
 import Terms from "./components/terms/Terms";
-import UserDashboard from "./components/user/dashboard/UserDashboard";
-import Submissions from "./components/user/submissions/Submissions";
-import Profile from "./components/user/profile/Profile";
-import CreateNewSubmissions from "./components/user/create/CreateNewSubmisson";
 import CoProfile from "./components/coordinator/profile/CoProfile";
 import AdminLandingPage from "./pages/admin/AdminLandingPage";
 import AdminDashBoard from "./components/admin/dashboard/AdminDashBoard";
@@ -36,6 +32,10 @@ import AdminCrud from "./components/admin/crud/AdminCrud";
 import CoordinatorHome from "./components/coordinator/home/CoordinatorHome";
 import CoClasses from "./components/coordinator/classes/CoClasses";
 import CoClassDetail from "./components/coordinator/classes/CoClassdetail";
+import StudentHome from "./components/user/home/StudentHome";
+import Profile from "./components/user/profile/Profile";
+import StudentClasses from "./components/user/classes/StudentClasses";
+import StudentClassDetail from "./components/user/classes/StudentClasseDetail";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -54,9 +54,10 @@ const AppRouter = () => {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/terms" element={<Terms />} />
         </Route>
+
         {/* Student */}
         <Route
-          path="/user/:id"
+          path="/student/:id"
           element={
             isAuthenticated("student") ? (
               <LandingPage />
@@ -65,10 +66,11 @@ const AppRouter = () => {
             )
           }
         >
-          <Route path="dashboard" element={<UserDashboard />} />
-          <Route path="submissions" element={<Submissions />} />
-          <Route path="create" element={<CreateNewSubmissions />} />
+          <Route path="" element={<StudentHome />} />
+          <Route path="classes" element={<StudentClasses />} />
+          <Route path="classes/:classId" element={<StudentClassDetail />} />
           <Route path="profile" element={<Profile />} />
+
         </Route>
 
         {/* Coordinator */}

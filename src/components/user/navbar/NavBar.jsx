@@ -10,19 +10,15 @@ function NavBar() {
                 </NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     <NavItem className='navbar-item'>
-                        <Link to="dashboard"> <box-icon name='home' /></Link>
-                        <NavLink tag={Link} to="dashboard" >Home</NavLink>
+                        <Link to=""> <box-icon name='home' /></Link>
+                        <NavLink tag={Link} to="" >Home</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <Link to="submission"><box-icon name='dock-left' /> </Link>
-                        <NavLink tag={Link} to="submissions" >Reports</NavLink>
+                        <Link to="submission"><box-icon type="solid" name='school' /> </Link>
+                        <NavLink tag={Link} to="classes" >Classes</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <Link to="create"><box-icon name='plus-circle' /></Link>
-                        <NavLink tag={Link} to="create" >Create</NavLink>
-                    </NavItem>
-                    <NavItem className='navbar-item'>
-                        <Link to="messages"><box-icon name='message-rounded-dots' /></Link>
+                        <Link to="messages"><box-icon name='user-circle' /></Link>
                         <NavLink tag={Link} to="profile" >Profile</NavLink>
                     </NavItem>
                 </Nav>

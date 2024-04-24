@@ -87,23 +87,15 @@
       "id": "1",
       "name": "Class A",
       "code": "CL A",
-      "coordinator_id": [
-        "Co1"
-      ],
-      "student_ids": [
-        "Stu1"
-      ]
+      "coordinator_id": ["Co1"],
+      "student_ids": ["Stu1"]
     },
     {
       "id": "2",
       "name": "Class B",
       "code": "CL B",
-      "coordinator_id": [
-        "Co2"
-      ],
-      "student_ids": [
-        "Stu2"
-      ]
+      "coordinator_id": ["Co2"],
+      "student_ids": ["Stu2"]
     }
   ],
   "courses": [
@@ -139,14 +131,7 @@
       "class_code": "CL B",
       "start_date": "2024-01-01",
       "end_date": "2024-06-01",
-      "documents": [
-        {
-          "id": "1",
-          "filename": "Document 1",
-          "documentUrl": "",
-          "uploadDate": "2024-02-01"
-        }
-      ],
+      "documents": [],
       "assignments": [
         {
           "id": "1",
@@ -192,11 +177,7 @@
       "submission_date": "2024-04-20",
       "title": "Documentation",
       "description": "",
-      "files": [
-        "file1.pdf",
-        "file2.docx",
-        "file3.jpg"
-      ],
+      "files": ["file1.pdf", "file2.docx", "file3.jpg"],
       "grade": "90+",
       "comment": "hello worldss"
     },

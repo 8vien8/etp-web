@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function CoClasses() {
   const [classes, setClasses] = useState([]);
-  const userCode = localStorage.getItem('userCode');
+  // const userCode = localStorage.getItem('userCode');
   const apiUrl = 'http://localhost:3001/classes'
 
   const fetchClasses = async () => {
@@ -23,8 +23,6 @@ function CoClasses() {
       console.error('Error fetching class data:', error);
     }
   };
-
-  console.log('userCode:', userCode);
 
   useEffect(() => {
     fetchClasses();

@@ -1,37 +1,128 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, Input, ListGroup, ListGroupItem } from 'reactstrap';
-import './classDetail.css'
+import { useParams } from 'react-router-dom';
+import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Label, Input } from 'reactstrap';
 
-function CoClassDetail() {
+function StudentClassDetail() {
     const { classId } = useParams();
     const [classInfo, setClassInfo] = useState(null);
-    const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const [error, setError] = useState(null);
-    const [newStudentId, setNewStudentId] = useState('');
-    const [studentList, setStudentList] = useState([]);
-    const [editedSubmission, setEditedSubmission] = useState(null);
-    const [editedGrade, setEditedGrade] = useState('');
-    const [editedComment, setEditedComment] = useState('');
 
-    const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
-    const [inputValue, setInputValue] = useState('');
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isCourseDetailModalOpen, setIsCourseDetailModalOpen] = useState(false);
-    const [isDeleteStudentModalOpen, setIsDeleteStudentModalOpen] = useState(false);
-    const [studentToDelete, setStudentToDelete] = useState(null);
+
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [isSubmissionDetailModalOpen, setIsSubmissionDetailModalOpen] = useState(false);
 
-    const confirmDeleteStudent = () => {
-        if (studentToDelete) {
-            handleDeleteStudent(studentToDelete);
-        }
-        setIsDeleteStudentModalOpen(false);
+    const [newSubmission, setNewSubmission] = useState({
+        student_id: "",
+        class_name: "",
+        class_code: "",
+        course_name: "",
+        submission_date: "",
+        title: "",
+        description: "",
+        files: [],
+        grade: "",
+        comment: ""
+    });
+
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleRemoveFile = (fileName) => {
+        const updatedFiles = selectedFiles.filter(file => file.name !== fileName);
+        setSelectedFiles(updatedFiles);
+        const updatedSubmissionFiles = newSubmission.files.filter(file => file.name !== fileName);
+        setNewSubmission({ ...newSubmission, files: updatedSubmissionFiles });
     };
+
+    useEffect(() => {
+        const isFormValid =
+            newSubmission.course_name !== "" &&
+            newSubmission.title !== "" &&
+            newSubmission.description !== "" &&
+            newSubmission.files.length > 0;
+        setIsFormValid(isFormValid);
+    }, [newSubmission]);
+    const toggleSubmissionModal = () => {
+        setIsSubmissionModalOpen(!isSubmissionModalOpen);
+    };
+
+    const handleSubmissionInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewSubmission({ ...newSubmission, [name]: value });
+    };
+
+    const handleFileInputChange = (e) => {
+        const files = e.target.files;
+        const selectedFilesArray = [...selectedFiles];
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const fileData = {
+                    name: files[i].name,
+                    content: event.target.result
+                };
+                selectedFilesArray.push(fileData);
+                setNewSubmission({ ...newSubmission, files: selectedFilesArray });
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    };
+
+    const handleSubmitSubmission = async () => {
+        try {
+            if (!newSubmission || !classInfo) {
+                throw new Error('New submission or class info is not available');
+            }
+
+            const userCode = localStorage.getItem('userCode');
+            const currentDate = new Date().toISOString().slice(0, 10);
+
+            let newId = 1;
+            if (submissions.length > 0) {
+                const lastSubmission = submissions[submissions.length - 1];
+                newId = parseInt(lastSubmission.id) + 1;
+            }
+
+            const submissionData = {
+                id: newId.toString(),
+                student_id: userCode,
+                class_name: classInfo.name,
+                class_code: classInfo.code,
+                course_name: newSubmission.course_name,
+                submission_date: currentDate,
+                title: newSubmission.title,
+                description: newSubmission.description,
+                files: newSubmission.files.map(file => ({
+                    name: file.name,
+                    content: file.content.split(',')[1]
+                })),
+                grade: newSubmission.grade,
+                comment: newSubmission.comment
+            };
+
+            const response = await fetch(submissionApiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submissionData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new submission');
+            }
+
+            setIsSubmissionModalOpen(false);
+        } catch (error) {
+            console.error('Error creating submission:', error);
+        }
+    };
+
 
     const handleShowSubmissionDetail = (submission) => {
         setSelectedSubmission(submission);
@@ -43,9 +134,11 @@ function CoClassDetail() {
     const courseApiUrl = 'http://localhost:3001/courses'
     const submissionApiUrl = 'http://localhost:3001/submissions'
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const userCode = localStorage.getItem('userCode');
                 // Fetch class info
                 const classResponse = await fetch(classApiUrl + `/${classId}`);
                 if (!classResponse.ok) {
@@ -95,12 +188,12 @@ function CoClassDetail() {
                         return submission.class_name === classData.name
                             && submission.class_code === classData.code
                             && filteredCourseData.some(course => course.name === submission.course_name)
-                            && students.some(student => submission.student_id === student.code);
+                            && students.some(student => submission.student_id === student.code)
+                            && students.some(student => userCode === student.code)
                     })
 
                     setSubmissions(filteredSubmissionsData)
                     setCourses(filteredCourseData);
-                    setStudents(students);
                 } else {
                     throw new Error('Users data not found or malformed');
                 }
@@ -114,89 +207,10 @@ function CoClassDetail() {
         fetchData();
     }, [classId]);
 
-    //Student
-    useEffect(() => {
-        const fetchStudents = async () => {
-            try {
-                const response = await fetch(userApiUrl);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch students');
-                }
-                const data = await response.json();
-                setStudentList(data.filter(user => user.role === 'student'));
-            } catch (error) {
-                console.error('Error fetching students:', error);
-            }
-        };
-
-        fetchStudents();
-    }, []);
 
     if (error) {
         return <div>Error: {error}</div>;
     }
-
-    //Students
-    const handleDeleteStudent = async (studentId) => {
-        try {
-            const updatedStudents = students.filter(student => student.code !== studentId);
-            setStudents(updatedStudents);
-            const updateResponse = await fetch(`${classApiUrl}/${classId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    student_ids: updatedStudents.map(student => student.code)
-                })
-            });
-
-            if (!updateResponse.ok) {
-                throw new Error('Failed to update student in database');
-            }
-
-        } catch (error) {
-            console.error('Error updating student list:', error);
-        }
-    };
-
-    const handleAddStudent = async () => {
-        try {
-            if (students.some(student => student.code === newStudentId)) {
-                alert('This user is already a student in the class.');
-                return;
-            }
-            const updatedStudents = [...students, studentList.find(user => user.code === newStudentId)];
-            setStudents(updatedStudents);
-            const updateResponse = await fetch(`${classApiUrl}/${classId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    student_ids: updatedStudents.map(student => student.code)
-                })
-            });
-            if (!updateResponse.ok) {
-                throw new Error('Failed to update students in the database');
-            }
-            setNewStudentId('');
-            setIsStudentModalOpen(!isStudentModalOpen);
-
-        } catch (error) {
-            console.error('Error adding student:', error);
-        }
-    }
-
-    const handleStudentListGroupItemClick = (userCode) => {
-        setNewStudentId(userCode);
-        setInputValue(userCode);
-    };
-
-    const handleSearchInputChange = async (e) => {
-        setSearchInput(e.target.value);
-        setInputValue(e.target.value);
-    };
 
     // Courses
     const handleShowCourseDetail = (course) => {
@@ -208,48 +222,9 @@ function CoClassDetail() {
         setIsCourseDetailModalOpen(!isCourseDetailModalOpen);
     };
 
-    // Submission
-
-    const handleEdit = () => {
-        setEditedSubmission(selectedSubmission);
-        setEditedGrade(selectedSubmission.grade);
-        setEditedComment(selectedSubmission.comment);
-    };
-
     const toggleSubmissionDetailModal = () => {
-        setEditedSubmission(null);
-        setEditedGrade(null);
-        setEditedComment(null);
         setIsSubmissionDetailModalOpen(!isSubmissionDetailModalOpen);
     };
-
-    const handleSave = () => {
-        if (!editedSubmission) return;
-        const updatedSubmission = {
-            grade: editedGrade,
-            comment: editedComment
-        };
-
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedSubmission)
-        };
-
-        fetch(`${submissionApiUrl}/${editedSubmission.id}`, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Update failed');
-                }
-                toggleSubmissionDetailModal();
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Update failed:', error);
-            });
-
-    };
-
 
     return (
         <div>
@@ -260,47 +235,6 @@ function CoClassDetail() {
                 <div>
                     <h2 style={{ fontWeight: "bold", textAlign: "center" }}>{classInfo.name} Details</h2>
                     <h3 className="mb-2 text-muted" style={{ textAlign: "center" }}>Code: {classInfo.code}</h3>
-
-                    <h3>Students</h3>
-                    <h5 style={{ color: "green", display: "flex", alignItems: "center" }}>
-                        Add new student into class
-                        <Button
-                            style={{ display: "flex", alignItems: "center" }}
-                            color="none"
-                            onClick={() => setIsStudentModalOpen(true)}>
-                            <box-icon name='user-plus'></box-icon>
-                        </Button>
-                    </h5>
-                    <Table striped bordered>
-                        <thead>
-                            <tr>
-                                <th>Picture</th>
-                                <th>Student ID</th>
-                                <th>User name</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map(student => (
-                                <tr key={student.id}>
-                                    <td style={{ width: "10%" }}>
-                                        <Link>
-                                            <img style={{ width: "40px", height: "40px" }} src={student.picture}></img>
-                                        </Link>
-                                    </td>
-                                    <td>{student.code}</td>
-                                    <td>{student.username}</td>
-                                    <td>{student.email}</td>
-                                    <td style={{ width: "10%" }}>
-                                        <Button className="btn btn-danger"
-                                            onClick={() => { setStudentToDelete(student.code); setIsDeleteStudentModalOpen(true) }}>
-                                            Delete
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
 
                     <h3>Articles</h3>
                     <Table striped bordered>
@@ -370,47 +304,7 @@ function CoClassDetail() {
                         </tbody>
                     </Table>
 
-                    {/* Student  */}
-                    <Modal isOpen={isStudentModalOpen} toggle={() => setIsStudentModalOpen(!isStudentModalOpen)}>
-                        <ModalHeader>Add Student</ModalHeader>
-                        <ModalBody>
-                            <Input
-                                type="text"
-                                value={inputValue}
-                                onChange={handleSearchInputChange}
-                                placeholder="Search for students by name"
-                            />
-                            <hr />
-                            <ListGroup>
-                                {studentList
-                                    .filter(user => user.username.toLowerCase().includes(searchInput.toLowerCase()))
-                                    .map(user => (
-                                        <ListGroupItem key={user.id} onClick={() => handleStudentListGroupItemClick(user.code)}>
-                                            <Link style={{ textDecoration: "unset" }}>
-                                                {user.code} - {user.username}
-                                            </Link>
-                                        </ListGroupItem>
-                                    ))}
-                            </ListGroup>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={handleAddStudent}>Confirm</Button>{' '}
-                            <Button color="secondary" onClick={() => setIsStudentModalOpen(!isStudentModalOpen)}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
-
-                    <Modal isOpen={isDeleteStudentModalOpen} toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>
-                        <ModalHeader toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>Confirm Delete</ModalHeader>
-                        <ModalBody>
-                            Are you sure you want to delete this student
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" onClick={confirmDeleteStudent}>Delete</Button>
-                            <Button color="secondary" onClick={() => setIsDeleteStudentModalOpen(false)}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
-
-                    {/* Course */}
+                    {/* Articles */}
                     <Modal className='course-details' isOpen={isCourseDetailModalOpen} toggle={toggleCourseDetailModal}>
                         <ModalHeader className='header'>{selectedCourse && (<>{selectedCourse.name}</>)} Detail</ModalHeader>
                         <ModalBody >
@@ -512,25 +406,13 @@ function CoClassDetail() {
                                                 <td style={{ width: "30%" }}>
                                                     <strong>Grade</strong>
                                                 </td>
-                                                <td>
-                                                    {editedSubmission && isSubmissionDetailModalOpen ? (
-                                                        <Input value={editedGrade} onChange={(e) => setEditedGrade(e.target.value)} />
-                                                    ) : (
-                                                        selectedSubmission.grade
-                                                    )}
-                                                </td>
+                                                <td>{selectedSubmission.grade}</td>
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}>
                                                     <strong>Comment</strong>
                                                 </td>
-                                                <td>
-                                                    {editedSubmission && isSubmissionDetailModalOpen ? (
-                                                        <Input value={editedComment} onChange={(e) => setEditedComment(e.target.value)} />
-                                                    ) : (
-                                                        selectedSubmission.comment
-                                                    )}
-                                                </td>
+                                                <td>{selectedSubmission.comment}</td>
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}><strong>Files</strong></td>
@@ -538,7 +420,7 @@ function CoClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a href={file} target="_blank" rel="noopener noreferrer">{file}</a>
+                                                                <a download={file.content} href={file.content}>{file.name}</a>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -546,19 +428,58 @@ function CoClassDetail() {
                                             </tr>
                                         </tbody>
                                     </Table>
+
                                 </div>
                             )}
                         </ModalBody>
                         <ModalFooter>
                             <Button color="secondary" onClick={toggleSubmissionDetailModal}>Close</Button>
-                            <Button color="primary" onClick={handleEdit}>Edit</Button>
-                            {editedSubmission && (editedGrade !== selectedSubmission.grade || editedComment !== selectedSubmission.comment) && (
-                                <Button color="success" onClick={handleSave}>Save</Button>
-                            )}
                         </ModalFooter>
                     </Modal>
 
+                    {/* Create */}
 
+                    <Button color="primary" onClick={toggleSubmissionModal}>Create New Submission</Button>
+
+                    {/* Submission modal */}
+                    <Modal isOpen={isSubmissionModalOpen} toggle={toggleSubmissionModal}>
+                        <ModalHeader>Create New Submission</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label for="course_name">Course Name</Label>
+                                <Input type="select" name="course_name" id="course_name" onChange={handleSubmissionInputChange}>
+                                    <option>Select Course</option>
+                                    {courses.map(course => (
+                                        <option key={course.id}>{course.name}</option>
+                                    ))}
+                                </Input>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="title">Title</Label>
+                                <Input type="text" name="title" id="title" onChange={handleSubmissionInputChange} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="description">Description</Label>
+                                <Input type="textarea" name="description" id="description" onChange={handleSubmissionInputChange} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="files">Files</Label>
+                                <Input type="file" name="files" id="files" multiple onChange={handleFileInputChange} />
+                            </FormGroup>
+                            <ul>
+                                {selectedFiles.map((file, index) => (
+                                    <li key={index}>
+                                        {file.name}
+                                        <Button color="link" onClick={() => handleRemoveFile(file.name)}>Remove</Button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={handleSubmitSubmission} disabled={!isFormValid}>Submit</Button>
+                            <Button color="secondary" onClick={toggleSubmissionModal}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
 
                 </div>
             )
@@ -567,4 +488,4 @@ function CoClassDetail() {
     );
 }
 
-export default CoClassDetail;
+export default StudentClassDetail;
