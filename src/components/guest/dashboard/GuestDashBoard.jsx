@@ -1,53 +1,53 @@
-import { useState, useEffect } from "react";
-import {
-  Card,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
-import data from "../../../../db.json";
+import { useEffect, useState } from 'react';
+import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
-function GuestDashBoard() {
-  const [jsondata, setJsonData] = useState(null);
+function ApprovedSubmissions() {
+    const [approvedSubmissions, setApprovedSubmissions] = useState([]);
 
-  useEffect(() => {
-    fetch("db.json")
-      .then((respone) => {
-        if (!respone.ok) {
-          throw new Error("Network respone had problem");
-        }
-        return respone.json();
-      })
-      .then((jsonData) => {
-        setJsonData(jsonData);
-      })
-      .catch((error) => {
-        console.log("There was a problem fetching the data! ", error);
-      });
-  }, []);
+    useEffect(() => {
+        const fetchApprovedSubmissions = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/submissions');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch submissions');
+                }
+                const submissions = await response.json();
+                const approved = submissions.filter(submission => submission.status === 'Approve');
+                setApprovedSubmissions(approved);
+            } catch (error) {
+                console.error('Error fetching approved submissions:', error);
+            }
+        };
 
-  return (
-    <div>
-      {data && data.submissions && data.submissions.length > 0 && (
+        fetchApprovedSubmissions();
+    }, []);
+
+    return (
         <div>
-          <h2>Submissions</h2>
-          {data.submissions.map((submission, index) => (
-            <Card key={index} sm="6">
-              <CardBody>
-                <CardTitle tag="h5">{submission.submissionTitle}</CardTitle>
-                <CardSubtitle tag="h6" className="mb-2 text-muted">
-                  Student: {submission.studentName}
-                </CardSubtitle>
-                <CardText>Grade: {submission.grade}</CardText>
-                <CardText>Comment: {submission.comment}</CardText>
-              </CardBody>
-            </Card>
-          ))}
+            <h2 style={{ textAlign: "center" }}> Submissions</h2>
+            <ul>
+                {approvedSubmissions.map(submission => (
+                    <Card style={{ width: "25%" }} key={submission.id} className="mb-3">
+                        <CardBody>
+                            <CardTitle style={{ textAlign: "center" }} tag="h5"><strong>Article: {submission.course_name}</strong></CardTitle>
+                            <CardText tag="h5"><strong>{submission.title}</strong></CardText>
+                            <CardText>Rating: {submission.grade}</CardText>
+                            <CardText>Feed Back: {submission.comment}</CardText>
+                            <CardText>Description: {submission.description}</CardText>
+                            <CardText>Contribution:: {submission.description}</CardText>
+                            <ul>
+                                {submission.files.map((file, index) => (
+                                    <li key={index}><a href={`${file}`} target="_blank" rel="noopener noreferrer">
+                                        {file}
+                                    </a></li>
+                                ))}
+                            </ul>
+                        </CardBody>
+                    </Card>
+                ))}
+            </ul>
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
-export default GuestDashBoard;
+export default ApprovedSubmissions;

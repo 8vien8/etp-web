@@ -540,7 +540,7 @@ function StudentClassDetail() {
                                 <Input type="file" name="files" id="files" multiple onChange={handleFileInputChange} />
                             </FormGroup>
                             <ul>
-                                {selectedFiles.map((file, index) => (
+                                {selectedFiles.map((index, file) => (
                                     <li key={index}>
                                         {file.name}
                                         <Button color="link" onClick={() => handleRemoveFile(file.name)}>Remove</Button>

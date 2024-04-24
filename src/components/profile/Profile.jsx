@@ -72,8 +72,8 @@ const UserProfile = () => {
     <div>
       <p style={{ textAlign: "center" }}>
         <img style={{ borderRadius: "50%", width: "250px", height: "250px", marginBottom: "10px" }} src={userData.picture} alt="Profile" />
-        <LogOut />
       </p>
+      <LogOut />
       <div>
         <p><strong>Username:</strong> {userData.username}</p>
         <p>
@@ -87,7 +87,7 @@ const UserProfile = () => {
         <p><strong>Code:</strong> {userCode}</p>
       </div>
       {!isEditing && (
-        <Button onClick={handleEditProfile}>Edit Profile</Button>
+        <Button color='primary' onClick={handleEditProfile}>Edit Profile</Button>
       )}
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Edit Profile</ModalHeader>

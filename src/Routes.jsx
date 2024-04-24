@@ -137,7 +137,8 @@ const AppRouter = () => {
             )
           }
         >
-          <Route path="dashboard" element={<GuestDashBoard />} />
+          <Route path="" element={<GuestDashBoard />} />
+          <Route path="profile" element={<UserProfile />} />
         </Route>
       </Routes>
     </Router>
