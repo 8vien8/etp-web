@@ -114,7 +114,7 @@ function Directors() {
       <h2 className="header">Coordinator List</h2>
       <div className="dashboard-content">
         {coordinators.map((coordinator) => (
-          <Card key={coordinator.id}>
+          <Card style={{ width: "20%" }} key={coordinator.id}>
             <CardBody className="articles-container">
               <CardTitle tag="h2">{coordinator.username}</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h3">

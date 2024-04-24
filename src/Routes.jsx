@@ -15,7 +15,6 @@ import ManagerLandingPage from "./pages/manager/ManagerLandingPage";
 import Login from "./components/loginForm/LoginForm";
 import RegisterForm from "./components/registerForm/RegisterForm";
 import Terms from "./components/terms/Terms";
-import CoProfile from "./components/coordinator/profile/CoProfile";
 import AdminLandingPage from "./pages/admin/AdminLandingPage";
 import AdminDashBoard from "./components/admin/dashboard/AdminDashBoard";
 import GuestLandingPage from "./pages/guest/GuestLandingPage";
@@ -23,7 +22,6 @@ import GuestDashBoard from "./components/guest/dashboard/GuestDashBoard";
 import ManagerHome from "./components/manager/home/ManagerHome";
 import Directors from "./components/manager/directors/Directors";
 import Courses from "./components/manager/courses/Courses";
-import MaProfile from "./components/manager/profile/Profile";
 import Classes from "./components/manager/classes/Classes";
 import MaClassDetail from "./components/manager/classes/MaClassDetail";
 import AdminClasses from "./components/admin/classes/AdminClasses";
@@ -33,9 +31,9 @@ import CoordinatorHome from "./components/coordinator/home/CoordinatorHome";
 import CoClasses from "./components/coordinator/classes/CoClasses";
 import CoClassDetail from "./components/coordinator/classes/CoClassdetail";
 import StudentHome from "./components/user/home/StudentHome";
-import Profile from "./components/user/profile/Profile";
 import StudentClasses from "./components/user/classes/StudentClasses";
 import StudentClassDetail from "./components/user/classes/StudentClasseDetail";
+import UserProfile from "./components/profile/Profile";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -69,7 +67,7 @@ const AppRouter = () => {
           <Route path="" element={<StudentHome />} />
           <Route path="classes" element={<StudentClasses />} />
           <Route path="classes/:classId" element={<StudentClassDetail />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<UserProfile />} />
 
         </Route>
 
@@ -87,7 +85,7 @@ const AppRouter = () => {
           <Route path="" element={<CoordinatorHome />} />
           <Route path="classes" element={<CoClasses />} />
           <Route path="classes/:classId" element={<CoClassDetail />} />
-          <Route path="profile" element={<CoProfile />} />
+          <Route path="profile" element={<UserProfile />} />
 
         </Route>
 
@@ -107,7 +105,7 @@ const AppRouter = () => {
           <Route path="courses" element={<Courses />} />
           <Route path="classes" element={<Classes />} />
           <Route path="classes/:classId" element={<MaClassDetail />} />
-          <Route path="profile" element={<MaProfile />} />
+          <Route path="profile" element={<UserProfile />} />
         </Route>
 
         {/* Admin */}
@@ -125,6 +123,7 @@ const AppRouter = () => {
           <Route path="classes" element={<AdminClasses />} />
           <Route path="user" element={<AdminManageUser />} />
           <Route path="crud" element={<AdminCrud />} />
+          <Route path="profile" element={<UserProfile />} />
         </Route>
 
         {/* Guest */}

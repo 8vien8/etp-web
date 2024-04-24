@@ -14,11 +14,11 @@ function NavBar() {
                         <NavLink tag={Link} to="" >Home</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <Link to="submission"><box-icon type="solid" name='school' /> </Link>
+                        <Link to="classes"><box-icon type="solid" name='school' /> </Link>
                         <NavLink tag={Link} to="classes" >Classes</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
-                        <Link to="messages"><box-icon name='user-circle' /></Link>
+                        <Link to="profile"><box-icon name='user-circle' /></Link>
                         <NavLink tag={Link} to="profile" >Profile</NavLink>
                     </NavItem>
                 </Nav>

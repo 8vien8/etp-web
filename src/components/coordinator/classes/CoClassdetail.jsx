@@ -410,7 +410,7 @@ function CoClassDetail() {
                         </ModalFooter>
                     </Modal>
 
-                    {/* Course */}
+                    {/* Articles */}
                     <Modal className='course-details' isOpen={isCourseDetailModalOpen} toggle={toggleCourseDetailModal}>
                         <ModalHeader className='header'>{selectedCourse && (<>{selectedCourse.name}</>)} Detail</ModalHeader>
                         <ModalBody >

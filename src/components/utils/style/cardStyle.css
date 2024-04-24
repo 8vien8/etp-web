@@ -1,12 +1,3 @@
-/* .card:hover .articles-container {
-  transform: translateY(-105%);
-}
-
-.card:hover img {
-  filter: opacity(0.4);
-  transition: transform 0.3s ease;
-} */
-
 .card .articles-container {
   transition: transform 0.3s ease;
 }

@@ -31,13 +31,12 @@ function StudentClassDetail() {
     const [isFormValid, setIsFormValid] = useState(false);
     const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().slice(0, 10));
 
-    const handleRemoveFile = (fileName) => {
-        const updatedFiles = selectedFiles.filter(file => file.name !== fileName);
-        setSelectedFiles(updatedFiles);
-        const updatedSubmissionFiles = newSubmission.files.filter(file => file.name !== fileName);
-        setNewSubmission({ ...newSubmission, files: updatedSubmissionFiles });
-    };
+    const classApiUrl = 'http://localhost:3001/classes';
+    const userApiUrl = 'http://localhost:3001/users';
+    const courseApiUrl = 'http://localhost:3001/courses';
+    const submissionApiUrl = 'http://localhost:3001/submissions';
 
     useEffect(() => {
         const isFormValid =
@@ -47,93 +46,10 @@ function StudentClassDetail() {
             newSubmission.files.length > 0;
         setIsFormValid(isFormValid);
     }, [newSubmission]);
-    const toggleSubmissionModal = () => {
-        setIsSubmissionModalOpen(!isSubmissionModalOpen);
-    };
 
-    const handleSubmissionInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewSubmission({ ...newSubmission, [name]: value });
-    };
-
-    const handleFileInputChange = (e) => {
-        const files = e.target.files;
-        const selectedFilesArray = [...selectedFiles];
-        for (let i = 0; i < files.length; i++) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const fileData = {
-                    name: files[i].name,
-                    content: event.target.result
-                };
-                selectedFilesArray.push(fileData);
-                setNewSubmission({ ...newSubmission, files: selectedFilesArray });
-            };
-            reader.readAsDataURL(files[i]);
-        }
-    };
-
-    const handleSubmitSubmission = async () => {
-        try {
-            if (!newSubmission || !classInfo) {
-                throw new Error('New submission or class info is not available');
-            }
-
-            const userCode = localStorage.getItem('userCode');
-            const currentDate = new Date().toISOString().slice(0, 10);
-
-            let newId = 1;
-            if (submissions.length > 0) {
-                const lastSubmission = submissions[submissions.length - 1];
-                newId = parseInt(lastSubmission.id) + 1;
-            }
-
-            const submissionData = {
-                id: newId.toString(),
-                student_id: userCode,
-                class_name: classInfo.name,
-                class_code: classInfo.code,
-                course_name: newSubmission.course_name,
-                submission_date: currentDate,
-                title: newSubmission.title,
-                description: newSubmission.description,
-                files: newSubmission.files.map(file => ({
-                    name: file.name,
-                    content: file.content.split(',')[1]
-                })),
-                grade: newSubmission.grade,
-                comment: newSubmission.comment
-            };
-
-            const response = await fetch(submissionApiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(submissionData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to create new submission');
-            }
-
-            setIsSubmissionModalOpen(false);
-        } catch (error) {
-            console.error('Error creating submission:', error);
-        }
-    };
-
-
-    const handleShowSubmissionDetail = (submission) => {
-        setSelectedSubmission(submission);
-        setIsSubmissionDetailModalOpen(true);
-    };
-
-    const classApiUrl = 'http://localhost:3001/classes'
-    const userApiUrl = 'http://localhost:3001/users'
-    const courseApiUrl = 'http://localhost:3001/courses'
-    const submissionApiUrl = 'http://localhost:3001/submissions'
-
+    useEffect(() => {
+        setCurrentDate(new Date().toISOString().slice(0, 10));
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -176,9 +92,9 @@ function StudentClassDetail() {
                     const filteredCourseData = courseData.filter(course => {
                         return course.class_name === classData.name
                             && course.class_code === classData.code;
-                    })
+                    });
 
-                    //Submissions data
+                    // Submissions data
                     const submissionsResponse = await fetch(submissionApiUrl);
                     if (!submissionsResponse.ok) {
                         throw new Error('Failed to fetch submissions data');
@@ -189,10 +105,10 @@ function StudentClassDetail() {
                             && submission.class_code === classData.code
                             && filteredCourseData.some(course => course.name === submission.course_name)
                             && students.some(student => submission.student_id === student.code)
-                            && students.some(student => userCode === student.code)
-                    })
+                            && students.some(student => userCode === student.code);
+                    });
 
-                    setSubmissions(filteredSubmissionsData)
+                    setSubmissions(filteredSubmissionsData);
                     setCourses(filteredCourseData);
                 } else {
                     throw new Error('Users data not found or malformed');
@@ -207,10 +123,88 @@ function StudentClassDetail() {
         fetchData();
     }, [classId]);
 
+    // Create a new submission
+    const handleRemoveFile = (fileName) => {
+        const updatedFiles = selectedFiles.filter(file => file.name !== fileName);
+        setSelectedFiles(updatedFiles);
+        const updatedSubmissionFiles = newSubmission.files.filter(file => file.name !== fileName);
+        setNewSubmission({ ...newSubmission, files: updatedSubmissionFiles });
+    };
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const toggleSubmissionModal = () => {
+        setIsSubmissionModalOpen(!isSubmissionModalOpen);
+    };
+
+    const handleSubmissionInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewSubmission({ ...newSubmission, [name]: value });
+    };
+
+    const handleFileInputChange = (e) => {
+        const files = e.target.files;
+        const selectedFilesArray = [...selectedFiles];
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const fileData = {
+                    name: files[i].name,
+                    content: event.target.result
+                };
+                selectedFilesArray.push(fileData);
+                setNewSubmission({ ...newSubmission, files: selectedFilesArray });
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    };
+
+    const handleSubmitSubmission = async () => {
+        try {
+            if (!newSubmission || !classInfo) {
+                throw new Error('New submission or class info is not available');
+            }
+
+            const userCode = localStorage.getItem('userCode');
+
+            let newId = 1;
+            if (submissions.length > 0) {
+                const lastSubmission = submissions[submissions.length - 1];
+                newId = parseInt(lastSubmission.id) + 1;
+            }
+
+            const submissionData = {
+                id: newId.toString(),
+                student_id: userCode,
+                class_name: classInfo.name,
+                class_code: classInfo.code,
+                course_name: newSubmission.course_name,
+                submission_date: currentDate,
+                title: newSubmission.title,
+                description: newSubmission.description,
+                files: newSubmission.files.map(file => ({
+                    name: file.name,
+                    content: file.content.split(',')[1]
+                })),
+                grade: newSubmission.grade,
+                comment: newSubmission.comment
+            };
+
+            const response = await fetch(submissionApiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submissionData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create new submission');
+            }
+
+            setIsSubmissionModalOpen(false);
+        } catch (error) {
+            console.error('Error creating submission:', error);
+        }
+    };
 
     // Courses
     const handleShowCourseDetail = (course) => {
@@ -222,9 +216,69 @@ function StudentClassDetail() {
         setIsCourseDetailModalOpen(!isCourseDetailModalOpen);
     };
 
+    // View submission
+    const handleShowSubmissionDetail = (submission) => {
+        setSelectedSubmission(submission);
+        setIsSubmissionDetailModalOpen(true);
+    };
     const toggleSubmissionDetailModal = () => {
+        setEditedSubmission(null);
+        setEditDescription(null);
+        setEditedFile(null);
         setIsSubmissionDetailModalOpen(!isSubmissionDetailModalOpen);
     };
+
+    // Edit submission details
+    const [editedSubmission, setEditedSubmission] = useState(null);
+    const [editedDescription, setEditDescription] = useState('');
+    const [editedFile, setEditedFile] = useState([]);
+
+    const isPastEndDate = (courseName) => {
+        const course = courses.find(course => course.name === courseName);
+        if (course) {
+            const endDate = new Date(course.end_date);
+            const currentDate = new Date();
+            return currentDate > endDate;
+        }
+        return false;
+    };
+
+    const handleEdit = () => {
+        setEditedSubmission(selectedSubmission);
+        setEditDescription(selectedSubmission.description);
+        setEditedFile(selectedSubmission.files);
+    };
+
+    const handleSave = () => {
+        if (!editedSubmission) return;
+        const updatedSubmission = {
+            description: editedDescription,
+            files: editedFile
+        };
+
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedSubmission)
+        };
+
+        fetch(`${submissionApiUrl}/${editedSubmission.id}`, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Update failed');
+                }
+                toggleSubmissionDetailModal();
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Update failed:', error);
+            });
+
+    };
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div>
@@ -287,7 +341,7 @@ function StudentClassDetail() {
                                 <th>Student</th>
                                 <th>Course</th>
                                 <th>Submit date</th>
-                                <th>Grade</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -400,7 +454,14 @@ function StudentClassDetail() {
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}><strong>Description</strong></td>
-                                                <td>{selectedSubmission.description}</td>
+                                                <td>
+                                                    {selectedSubmission.description}
+                                                    {editedSubmission && isSubmissionDetailModalOpen ? (
+                                                        <Input value={editedDescription} onChange={(e) => setEditDescription(e.target.value)} />
+                                                    ) : (
+                                                        selectedSubmission.description
+                                                    )}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}>
@@ -417,31 +478,39 @@ function StudentClassDetail() {
                                             <tr>
                                                 <td style={{ width: "30%" }}><strong>Files</strong></td>
                                                 <td>
-                                                    <ul>
-                                                        {selectedSubmission.files.map((file, index) => (
-                                                            <li key={index}>
-                                                                <a download={file.content} href={file.content}>{file.name}</a>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
+                                                    {editedSubmission && isSubmissionDetailModalOpen ? (
+                                                        <Input type="file" onChange={handleFileInputChange} multiple />
+                                                    ) : (
+                                                        <ul>
+                                                            {selectedSubmission.files.map((file, index) => (
+                                                                <li key={index}>
+                                                                    <a href={file} target="_blank" rel="noopener noreferrer">{file}</a>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </Table>
-
                                 </div>
                             )}
                         </ModalBody>
                         <ModalFooter>
                             <Button color="secondary" onClick={toggleSubmissionDetailModal}>Close</Button>
+                            {selectedSubmission && (
+                                <Button style={{ display: isPastEndDate(selectedSubmission.course_name) ? 'none' : 'inline-block' }} color="primary" onClick={handleEdit}>Edit</Button>
+                            )}
+                            {editedSubmission && (editedSubmission !== selectedSubmission.grade || editedFile !== selectedSubmission.comment) && (
+                                <Button color="success" onClick={handleSave}>Save</Button>
+                            )}
                         </ModalFooter>
                     </Modal>
 
                     {/* Create */}
-
                     <Button color="primary" onClick={toggleSubmissionModal}>Create New Submission</Button>
 
-                    {/* Submission modal */}
+                    {/* Create Submission modal */}
                     <Modal isOpen={isSubmissionModalOpen} toggle={toggleSubmissionModal}>
                         <ModalHeader>Create New Submission</ModalHeader>
                         <ModalBody>
@@ -480,11 +549,9 @@ function StudentClassDetail() {
                             <Button color="secondary" onClick={toggleSubmissionModal}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
-
                 </div>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }
 
