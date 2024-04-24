@@ -10,6 +10,10 @@ function AdminCrud() {
 
   const handleUpload = () => {};
 
+  const handleSubmit = () => {
+    fetch("API_EndPoint", {});
+  };
+
   return (
     <Container>
       <Row>
@@ -38,6 +42,7 @@ function AdminCrud() {
           <h3>Class *</h3>
           <Input type="text" placeholder="Class..." />
         </Col>
+        <Button onClick={handleSubmit}>Submit</Button>
       </Row>
     </Container>
   );
