@@ -71,7 +71,7 @@ const UserProfile = () => {
   return (
     <div>
       <p style={{ textAlign: "center" }}>
-        <img style={{ borderRadius: "50%", width: "300px", height: "300px" }} src={userData.picture} alt="Profile" />
+        <img style={{ borderRadius: "50%", width: "250px", height: "250px", marginBottom: "10px" }} src={userData.picture} alt="Profile" />
         <LogOut />
       </p>
       <div>

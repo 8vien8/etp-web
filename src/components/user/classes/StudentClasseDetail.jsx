@@ -22,6 +22,7 @@ function StudentClassDetail() {
         course_name: "",
         submission_date: "",
         title: "",
+        status: "",
         description: "",
         files: [],
         grade: "",
@@ -177,6 +178,7 @@ function StudentClassDetail() {
                 class_name: classInfo.name,
                 class_code: classInfo.code,
                 course_name: newSubmission.course_name,
+                status: "pending",
                 submission_date: currentDate,
                 title: newSubmission.title,
                 description: newSubmission.description,
@@ -199,7 +201,7 @@ function StudentClassDetail() {
             if (!response.ok) {
                 throw new Error('Failed to create new submission');
             }
-
+            window.location.reload();
             setIsSubmissionModalOpen(false);
         } catch (error) {
             console.error('Error creating submission:', error);
@@ -341,6 +343,7 @@ function StudentClassDetail() {
                                 <th>Student</th>
                                 <th>Course</th>
                                 <th>Submit date</th>
+                                <th>Rating</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -352,6 +355,7 @@ function StudentClassDetail() {
                                     <td>{submission.course_name}</td>
                                     <td>{submission.submission_date}</td>
                                     <td>{submission.grade}</td>
+                                    <td>{submission.status}</td>
                                     <td style={{ width: "10%" }}><Button color="primary" onClick={() => handleShowSubmissionDetail(submission)}>Detail</Button></td>
                                 </tr>
                             ))}

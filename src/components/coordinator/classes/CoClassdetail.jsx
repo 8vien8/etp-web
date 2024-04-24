@@ -15,6 +15,7 @@ function CoClassDetail() {
     const [editedSubmission, setEditedSubmission] = useState(null);
     const [editedGrade, setEditedGrade] = useState('');
     const [editedComment, setEditedComment] = useState('');
+    const [editedStatus, setEditedStatus] = useState('');
 
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
@@ -214,9 +215,11 @@ function CoClassDetail() {
         setEditedSubmission(selectedSubmission);
         setEditedGrade(selectedSubmission.grade);
         setEditedComment(selectedSubmission.comment);
+        setEditedStatus(selectedSubmission.status);
     };
 
     const toggleSubmissionDetailModal = () => {
+        setEditedStatus(null);
         setEditedSubmission(null);
         setEditedGrade(null);
         setEditedComment(null);
@@ -227,7 +230,8 @@ function CoClassDetail() {
         if (!editedSubmission) return;
         const updatedSubmission = {
             grade: editedGrade,
-            comment: editedComment
+            comment: editedComment,
+            status: editedStatus
         };
 
         const requestOptions = {
@@ -353,7 +357,8 @@ function CoClassDetail() {
                                 <th>Student</th>
                                 <th>Course</th>
                                 <th>Submit date</th>
-                                <th>Grade</th>
+                                <th>Status</th>
+                                <th>Rating</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -363,6 +368,7 @@ function CoClassDetail() {
                                     <td>{submission.student_id}</td>
                                     <td>{submission.course_name}</td>
                                     <td>{submission.submission_date}</td>
+                                    <td>{submission.status}</td>
                                     <td>{submission.grade}</td>
                                     <td style={{ width: "10%" }}><Button color="primary" onClick={() => handleShowSubmissionDetail(submission)}>Detail</Button></td>
                                 </tr>
@@ -370,7 +376,7 @@ function CoClassDetail() {
                         </tbody>
                     </Table>
 
-                    {/* Student  */}
+                    {/* Add new Student  */}
                     <Modal isOpen={isStudentModalOpen} toggle={() => setIsStudentModalOpen(!isStudentModalOpen)}>
                         <ModalHeader>Add Student</ModalHeader>
                         <ModalBody>
@@ -399,6 +405,7 @@ function CoClassDetail() {
                         </ModalFooter>
                     </Modal>
 
+                    {/* Delete Student */}
                     <Modal isOpen={isDeleteStudentModalOpen} toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>
                         <ModalHeader toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>Confirm Delete</ModalHeader>
                         <ModalBody>
@@ -522,6 +529,22 @@ function CoClassDetail() {
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}>
+                                                    <strong>Status</strong>
+                                                </td>
+                                                <td>
+                                                    {editedSubmission && isSubmissionDetailModalOpen ? (
+                                                        <Input type='select' value={editedStatus} onChange={(e) => setEditedStatus(e.target.value)} >
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Approve">Approve</option>
+                                                            <option value="Reject">Reject</option>
+                                                        </Input>
+                                                    ) : (
+                                                        selectedSubmission.status
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style={{ width: "30%" }}>
                                                     <strong>Comment</strong>
                                                 </td>
                                                 <td>
@@ -552,14 +575,11 @@ function CoClassDetail() {
                         <ModalFooter>
                             <Button color="secondary" onClick={toggleSubmissionDetailModal}>Close</Button>
                             <Button color="primary" onClick={handleEdit}>Edit</Button>
-                            {editedSubmission && (editedGrade !== selectedSubmission.grade || editedComment !== selectedSubmission.comment) && (
+                            {editedSubmission && (editedGrade !== selectedSubmission.grade || editedComment !== selectedSubmission.comment || editedStatus !== selectedSubmission.status) && (
                                 <Button color="success" onClick={handleSave}>Save</Button>
                             )}
                         </ModalFooter>
                     </Modal>
-
-
-
                 </div>
             )
             }
