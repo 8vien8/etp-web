@@ -10,8 +10,34 @@ function AdminCrud() {
     password: "",
     name: "",
     email: "",
-    class: "",
   });
+
+  useEffect(() => {
+    const getMaxId = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/users");
+        const users = await response.json();
+        if (users.length > 0) {
+          const maxId = users.reduce((max, user) => Math.max(max, user.id), 0);
+          // +1 id
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            id: maxId + 1,
+          }));
+        } else {
+          // without id, set id default is 1
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            id: 1,
+          }));
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    getMaxId();
+  }, []);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -22,6 +48,10 @@ function AdminCrud() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserData({ ...userData, [name]: value });
+  };
+
+  const handleRoleChange = (event) => {
+    setUserData({ ...userData, role: event.target.value });
   };
 
   const handleSubmit = () => {
@@ -42,7 +72,6 @@ function AdminCrud() {
             password: "",
             name: "",
             email: "",
-            class: "",
           });
         } else {
           throw new Error("Failed to save user data");
@@ -79,15 +108,22 @@ function AdminCrud() {
             name="id"
             value={userData.id}
             onChange={handleInputChange}
+            disabled
           />
           <h3>Role *</h3>
           <Input
-            type="text"
+            type="select"
             placeholder="Coor,Stu,.."
             name="role"
             value={userData.role}
-            onChange={handleInputChange}
-          />
+            onChange={handleRoleChange}
+          >
+            <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
+            <option value="coordinator">Coordinator</option>
+            <option value="student">Student</option>
+            <option value="guest">Guest</option>
+          </Input>
           <h3>User name *</h3>
           <Input
             type="text"
@@ -118,14 +154,6 @@ function AdminCrud() {
             placeholder="Email..."
             name="email"
             value={userData.email}
-            onChange={handleInputChange}
-          />
-          <h3>Class *</h3>
-          <Input
-            type="text"
-            placeholder="Class..."
-            name="class"
-            value={userData.class}
             onChange={handleInputChange}
           />
         </Col>
