@@ -4,11 +4,31 @@ import { Container, Row, Col, Button, Input } from "reactstrap";
 function AdminCrud() {
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const [formData, setFormData] = useState({
+    id: "",
+    userName: "",
+    name: "",
+    email: "",
+    class: "",
+  });
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
   const handleUpload = () => {};
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    fetch("API_EndPoint", {});
+  };
 
   return (
     <Container>
@@ -21,7 +41,7 @@ function AdminCrud() {
           {selectedFile && (
             <img
               src={URL.createObjectURL(selectedFile)}
-              alt="Avatar Preview"
+              alt="Avatar"
               style={{ maxWidth: "100%", marginTop: "10px" }}
             />
           )}
@@ -38,6 +58,9 @@ function AdminCrud() {
           <h3>Class *</h3>
           <Input type="text" placeholder="Class..." />
         </Col>
+        <Button color="green" onClick={handleSubmit}>
+          Submit
+        </Button>
       </Row>
     </Container>
   );
