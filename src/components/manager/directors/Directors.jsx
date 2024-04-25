@@ -20,12 +20,14 @@ function Directors() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editedCoordinator, setEditedCoordinator] = useState(null);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [newImage, setNewImage] = useState(null);
+  // const [newImage, setNewImage] = useState(null);
+
+  const apiUrl = "http://localhost:3001/users"
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/users");
+        const response = await fetch(apiUrl);
         const data = await response.json();
         const coordinatorData = data.filter(
           (user) => user.role === "coordinator"
@@ -61,14 +63,14 @@ function Directors() {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setNewImage(reader.result);
-    };
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onloadend = () => {
+  //     setNewImage(reader.result);
+  //   };
+  // };
 
   const handleSave = () => {
     toggleConfirmModal();
@@ -76,12 +78,12 @@ function Directors() {
 
   const confirmSave = async () => {
     try {
-      if (newImage) {
-        setEditedCoordinator((prevState) => ({
-          ...prevState,
-          picture: newImage,
-        }));
-      }
+      // if (newImage) {
+      //   setEditedCoordinator((prevState) => ({
+      //     ...prevState,
+      //     picture: newImage,
+      //   }));
+      // }
 
       const response = await fetch(
         `http://localhost:3001/users/${editedCoordinator.id}`,
@@ -162,7 +164,17 @@ function Directors() {
                 value={editedCoordinator.username || ""}
                 onChange={handleInputChange}
               />
-              <Label for="email">
+              <Label for="code">
+                <strong>User Code</strong>
+              </Label>
+              <Input
+                type="text"
+                name="code"
+                id="code"
+                value={editedCoordinator.code || ""}
+                onChange={handleInputChange}
+              />
+              {/* <Label for="email">
                 <strong>Email</strong>
               </Label>
               <Input
@@ -181,7 +193,7 @@ function Directors() {
                 id="image"
                 onChange={handleImageChange}
                 required
-              />
+              /> */}
             </div>
           )}
         </ModalBody>

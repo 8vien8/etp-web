@@ -5,7 +5,8 @@ function LogOut() {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        navigate('/login');
+        window.location.reload();
+        navigate('/');
     };
 
     return (
