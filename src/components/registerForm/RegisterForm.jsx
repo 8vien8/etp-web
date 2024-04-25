@@ -58,7 +58,7 @@ function RegisterForm() {
         },
         body: JSON.stringify({
           role: 'guest',
-          id: maxUserId + 1,
+          id: `${maxUserId + 1}`,
           code: `Gu${maxUserCode + 1}`,
           username: `guest${maxUsername + 1}`,
           password: password,

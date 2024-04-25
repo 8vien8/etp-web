@@ -80,15 +80,6 @@
       "password": "guest2_password",
       "email": "guest2@example.com",
       "picture": "https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg"
-    },
-    {
-      "id": 10,
-      "role": "guest",
-      "code": "Gu1",
-      "username": "guest1",
-      "password": "vudinhvien123",
-      "email": "vudinhvien123@gmail.com",
-      "picture": "https://telegraph-image-bak.pages.dev/file/5d447a34d3484def3a7a3.jpg"
     }
   ],
   "classes": [
@@ -96,15 +87,23 @@
       "id": "1",
       "name": "Class A",
       "code": "CL A",
-      "coordinator_id": ["Co1"],
-      "student_ids": ["Stu1"]
+      "coordinator_id": [
+        "Co1"
+      ],
+      "student_ids": [
+        "Stu1"
+      ]
     },
     {
       "id": "2",
       "name": "Class B",
       "code": "CL B",
-      "coordinator_id": ["Co2"],
-      "student_ids": ["Stu2"]
+      "coordinator_id": [
+        "Co2"
+      ],
+      "student_ids": [
+        "Stu2"
+      ]
     }
   ],
   "courses": [
@@ -187,7 +186,11 @@
       "submission_date": "2024-04-20",
       "title": "Documentation",
       "description": "This is description",
-      "files": ["file1.pdf", "file2.docx", "file3.jpg"],
+      "files": [
+        "file1.pdf",
+        "file2.docx",
+        "file3.jpg"
+      ],
       "grade": "90+",
       "comment": "hello worldss"
     },
