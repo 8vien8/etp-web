@@ -547,7 +547,7 @@ function StudentClassDetail() {
                                 <Label check>
                                     <Input type="checkbox" onChange={handleCheckboxChange} checked={isChecked} />
                                 </Label>
-                                <div style={{ display: "flex", gap: "5px" }}>I agree to the <Terms /> and conditions </div>
+                                <div style={{ display: "flex", gap: "5px" }}>I agree with <Terms /> and conditions </div>
                             </FormGroup>
                             <ul>
                                 {selectedFiles.map((index, file) => (

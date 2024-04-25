@@ -179,7 +179,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>Admin Dashboard</h1>
+      <h1 style={{ textAlign: "center" }}>Manage Users</h1>
       <Button style={{ marginBottom: "10px" }} color="success" onClick={toggleAddModal}>Add User</Button>
       {renderUsersByRole('admin')}
       {renderUsersByRole('manager')}
