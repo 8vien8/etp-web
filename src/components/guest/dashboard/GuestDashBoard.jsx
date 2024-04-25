@@ -1,40 +1,37 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody, CardTitle, CardText } from "reactstrap";
-import db1 from "../../../../db1.json";
-// import "./GuestDashBoardStyle.css";
+import './GuestDashBoardStyle.css';
 
 function ApprovedSubmissions() {
-  const [approvedSubmissions, setApprovedSubmissions] = useState([]);
-
+  const [submissions, setSubmissions] = useState([]);
+  const apiUrl = "http://localhost:3001/submissions"
   useEffect(() => {
-    const fetchApprovedSubmissions = async () => {
+    const fetchSubmissions = async () => {
       try {
-        // Fetch data from imported JSON file
-        const submissions = db1.submissions;
+        // Fetch data from the endpoint
+        const response = await fetch(apiUrl);
 
-        // Filter approved submissions
-        const approved = submissions.filter(
-          (submission) =>
-            submission.status === "Approve" ||
-            submission.status === "Reject" ||
-            submission.status === ""
-        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
 
-        // Set state with approved submissions
-        setApprovedSubmissions(approved);
+        const submissionsData = await response.json();
+
+        // Set state with all submissions
+        setSubmissions(submissionsData);
       } catch (error) {
-        console.error("Error fetching approved submissions:", error);
+        console.error("Error fetching submissions:", error);
       }
     };
 
-    fetchApprovedSubmissions();
+    fetchSubmissions();
   }, []);
 
   return (
-    <div className="card-container">
+    <div>
       <h2 style={{ textAlign: "center" }}> Submissions</h2>
-      <ul>
-        {approvedSubmissions.map((submission) => (
+      <div className="card-container">
+        {submissions.map((submission) => (
           <Card
             style={{ width: "25%" }}
             key={submission.id}
@@ -47,20 +44,20 @@ function ApprovedSubmissions() {
               <CardText tag="h5">
                 <strong>{submission.title}</strong>
               </CardText>
-              <CardText>ID: {submission.id}</CardText>
               <CardText>Student ID: {submission.student_id}</CardText>
               <CardText>Course: {submission.course_name}</CardText>
               <CardText>Status: {submission.status}</CardText>
               <CardText>Grade: {submission.grade}</CardText>
+              <CardText>Files:</CardText>
               <ul>
                 {submission.files.map((file, index) => (
                   <li key={index}>
                     <a
-                      href={`${file}`}
+                      href={`${file.content}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {file}
+                      {file.name}
                     </a>
                   </li>
                 ))}
@@ -68,7 +65,7 @@ function ApprovedSubmissions() {
             </CardBody>
           </Card>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
