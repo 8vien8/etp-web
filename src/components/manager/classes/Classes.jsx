@@ -175,12 +175,12 @@ function Classes() {
                 <ModalBody>
                     <Form>
                         <FormGroup>
-                            <Label style={{ fontWeight: "bold", fontSize: "1.2rem" }} for="name">Name</Label>
-                            <Input type="text" placeholder="Class Name" name="name" id="name" value={newClassData.name} onChange={e => setNewClassData({ ...newClassData, name: e.target.value })} />
+                            <Label style={{ fontWeight: "bold", fontSize: "1.2rem" }} for="name">Faculty Name</Label>
+                            <Input type="text" placeholder="Faculty Name" name="name" id="name" value={newClassData.name} onChange={e => setNewClassData({ ...newClassData, name: e.target.value })} />
                         </FormGroup>
                         <FormGroup>
-                            <Label style={{ fontWeight: "bold", fontSize: "1.2rem" }} for="code">Code</Label>
-                            <Input type="text" placeholder="Class Code" name="code" id="code" value={newClassData.code} onChange={e => setNewClassData({ ...newClassData, code: e.target.value })} />
+                            <Label style={{ fontWeight: "bold", fontSize: "1.2rem" }} for="code">Faculty ID</Label>
+                            <Input type="text" placeholder="Faculty Code" name="code" id="code" value={newClassData.code} onChange={e => setNewClassData({ ...newClassData, code: e.target.value })} />
                         </FormGroup>
                         <FormGroup>
                             <Label style={{ fontWeight: "bold", fontSize: "1.2rem" }} for="coordinator_id">Coordinator Codes</Label>

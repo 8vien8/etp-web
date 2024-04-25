@@ -6,7 +6,7 @@ function NavBar() {
         <div className='navbar-container'>
             <Navbar>
                 <NavbarBrand>
-                    <img className='navbar-logo' src="src\assets\logo.jpg" />
+                    <img className='navbar-logo' src="https://telegraph-image-bak.pages.dev/file/4416b1da140c3ac1902ce.png" />
                 </NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     <NavItem className='navbar-item'>

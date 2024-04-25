@@ -193,6 +193,19 @@ function Courses() {
         setNewCourse({ ...newCourse, assignments: updatedAssignments });
     };
 
+    const [classes, setClasses] = useState([]);
+    useEffect(() => {
+        fetch('http://localhost:3001/classes')
+            .then(response => response.json())
+            .then(data => {
+                setClasses(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
+
     useEffect(() => {
         validateForm();
     }, [newCourse]);
@@ -253,7 +266,7 @@ function Courses() {
                             <h4>Applying for class</h4>
                             <Input type="text" name="class_name" value={selectedCourse.class_name} onChange={handleEditInputChange} />
                             <Input type="text" name="class_code" value={selectedCourse.class_code} onChange={handleEditInputChange} />
-                            <h4>Course</h4>
+                            <h4>Article</h4>
                             <Input type="text" name="name" value={editedCourse.name} onChange={handleEditInputChange} />
                             <Input type="date" name="start_date" value={editedCourse.start_date} onChange={handleEditInputChange} />
                             <Input type="date" name="end_date" value={editedCourse.end_date} onChange={handleEditInputChange} />
@@ -300,14 +313,27 @@ function Courses() {
             </Modal>
 
             <Modal isOpen={isModalOpen} toggle={toggleModalS}>
-                <ModalHeader toggle={toggleModalS}><div style={{ fontWeight: "bold" }}>Add New Course</div></ModalHeader>
+                <ModalHeader toggle={toggleModalS}><div style={{ fontWeight: "bold" }}>Add New Article</div></ModalHeader>
                 <ModalBody>
-                    <h5> Apply class</h5>
-                    <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
-                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} />
+                    <h5> Apply for Faculties</h5>
+
+                    <Input type="select" onChange={handleInputChange} value={newCourse.class_code}>
+                        <option value="">Select a class name...</option>
+                        {classes.map(cls => (
+                            <option key={cls.id} value={cls.name}>{cls.name}</option>
+                        ))}
+                    </Input>
+                    <Input type="select" onChange={handleInputChange} value={newCourse.class_name}>
+                        <option value="">Select a class code...</option>
+                        {classes.map(cls => (
+                            <option key={cls.id} value={cls.code}>{cls.code}</option>
+                        ))}
+                    </Input>
+                    {/* <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
+                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} /> */}
                     <hr />
-                    <h5> Course information</h5>
-                    <Input type="text" name="name" placeholder="Course Name" value={newCourse.name} onChange={handleInputChange} />
+                    <h5> Article information</h5>
+                    <Input type="text" name="name" placeholder="Artitcle Name" value={newCourse.name} onChange={handleInputChange} />
                     <Input type="date" name="start_date" placeholder="Start Date" value={newCourse.start_date} onChange={handleInputChange} />
                     <Input type="date" name="end_date" placeholder="End Date" value={newCourse.end_date} onChange={handleInputChange} />
                     <hr />
@@ -345,7 +371,7 @@ function Courses() {
             <Modal isOpen={deleteModalOpen} toggle={toggleDeleteModal}>
                 <ModalHeader toggle={toggleDeleteModal}>Confirm Delete</ModalHeader>
                 <ModalBody>
-                    Are you sure you want to delete the course {courseToDelete && courseToDelete.name}?
+                    Are you sure you want to delete the article {courseToDelete && courseToDelete.name}?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="danger" onClick={handleDeleteCourse}>Delete</Button>{' '}

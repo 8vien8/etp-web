@@ -83,17 +83,13 @@ const AdminDashboard = () => {
   };
   const handleAddUser = async () => {
     try {
-      if (!newUser.id || !newUser.username || !newUser.email || !newUser.code || !newUser.role || !newUser.password) {
+      if (!newUser.username || !newUser.email || !newUser.code || !newUser.role || !newUser.password) {
         throw new Error('All fields are required');
       }
       const maxId = Math.max(...users.map(user => user.id));
       const newId = `${maxId + 1}`;
       const newUserWithId = { ...newUser, id: newId };
 
-      // if (newUser.password !== confirmPassword) {
-      //   alert('Passwords do not match!');
-      //   return;
-      // }
 
       const response = await fetch(apiUrl, {
         method: 'POST',

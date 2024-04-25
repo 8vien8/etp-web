@@ -740,7 +740,7 @@ function ClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a href={file} target="_blank" rel="noopener noreferrer">{file}</a>
+                                                                <a href='' target="_blank" rel="noopener noreferrer">{file.name}</a>
                                                             </li>
                                                         ))}
                                                     </ul>

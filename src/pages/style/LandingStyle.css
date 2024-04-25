@@ -15,7 +15,7 @@
   padding: 20px;
   min-height: 95vh;
 }
-button {
+.dashboard-content button {
   color: unset;
   padding: unset;
 }
