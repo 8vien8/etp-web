@@ -8,11 +8,13 @@ function Terms(args) {
 
   return (
     <div>
-      <p onClick={toggle}>
+      <div
+        style={{ cursor: 'pointer', color: "blue" }}
+        onClick={toggle}>
         Terms
-      </p>
+      </div>
       <Modal isOpen={modal} toggle={toggle} {...args}>
-        <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+        <ModalHeader toggle={toggle}>Term in submitting contribution</ModalHeader>
         <ModalBody>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -23,11 +25,8 @@ function Terms(args) {
           culpa qui officia deserunt mollit anim id est laborum.
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
-            Do Something
-          </Button>{' '}
           <Button color="secondary" onClick={toggle}>
-            Cancel
+            Close
           </Button>
         </ModalFooter>
       </Modal>
