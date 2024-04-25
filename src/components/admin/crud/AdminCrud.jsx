@@ -6,12 +6,14 @@ const AdminDashboard = () => {
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+
   const [editedUser, setEditedUser] = useState({
     id: '',
     username: '',
     email: '',
     code: '',
-    role: ''
+    role: '',
+    password: ''
   });
   const [newUser, setNewUser] = useState({
     id: '',
@@ -195,22 +197,22 @@ const AdminDashboard = () => {
       </Modal>
 
       <Modal isOpen={showEditModal} toggle={() => toggleEditModal(null)}>
-        <ModalHeader toggle={() => toggleEditModal(null)}>Edit User</ModalHeader>
-        <ModalBody>
+        <ModalHeader tag="h3" toggle={() => toggleEditModal(null)}>Editing {editedUser.username}</ModalHeader>
+        <ModalBody style={{ margin: "10px" }}>
           <FormGroup>
-            <Label for="username">Username</Label>
+            <Label tag="h5" for="username">Username</Label>
             <Input type="text" name="username" id="username" value={editedUser.username} onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })} />
           </FormGroup>
           <FormGroup>
-            <Label for="email">Email</Label>
+            <Label tag="h5" for="email">Email</Label>
             <Input type="email" name="email" id="email" value={editedUser.email} onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })} />
           </FormGroup>
           <FormGroup>
-            <Label for="code">Code</Label>
+            <Label tag="h5" for="code">Code</Label>
             <Input type="text" name="code" id="code" value={editedUser.code} onChange={(e) => setEditedUser({ ...editedUser, code: e.target.value })} />
           </FormGroup>
           <FormGroup>
-            <Label for="role">Role</Label>
+            <Label tag="h5" for="role">Role</Label>
             <Input type="select" name="role" id="role" value={editedUser.role} onChange={(e) => setEditedUser({ ...editedUser, role: e.target.value })}>
               <option value="admin">Admin</option>
               <option value="manager">Manager</option>
@@ -219,9 +221,13 @@ const AdminDashboard = () => {
               <option value="guest">Guest</option>
             </Input>
           </FormGroup>
+          <FormGroup>
+            <Label tag="h5" for="password">Password</Label>
+            <Input type="password" name="password" id="password" value={editedUser.password} onChange={(e) => setEditedUser({ ...editedUser, password: e.target.value })} />
+          </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={toggleEditModal}>Cancel</Button>
+          <Button color="secondary" onClick={() => toggleEditModal(null)}>Cancel</Button>
           <Button color="primary" onClick={handleEdit}>Save</Button>
         </ModalFooter>
       </Modal>
