@@ -193,17 +193,17 @@ function Courses() {
         setNewCourse({ ...newCourse, assignments: updatedAssignments });
     };
 
-    const [classes, setClasses] = useState([]);
-    useEffect(() => {
-        fetch('http://localhost:3001/classes')
-            .then(response => response.json())
-            .then(data => {
-                setClasses(data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
+    // const [classes, setClasses] = useState([]);
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/classes')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setClasses(data);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching data:', error);
+    //         });
+    // }, []);
 
 
     useEffect(() => {
@@ -317,7 +317,7 @@ function Courses() {
                 <ModalBody>
                     <h5> Apply for Faculties</h5>
 
-                    <Input type="select" onChange={handleInputChange} value={newCourse.class_code}>
+                    {/* <Input type="select" onChange={handleInputChange} value={newCourse.class_code}>
                         <option value="">Select a class name...</option>
                         {classes.map(cls => (
                             <option key={cls.id} value={cls.name}>{cls.name}</option>
@@ -328,9 +328,9 @@ function Courses() {
                         {classes.map(cls => (
                             <option key={cls.id} value={cls.code}>{cls.code}</option>
                         ))}
-                    </Input>
-                    {/* <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
-                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} /> */}
+                    </Input> */}
+                    <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
+                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} />
                     <hr />
                     <h5> Article information</h5>
                     <Input type="text" name="name" placeholder="Artitcle Name" value={newCourse.name} onChange={handleInputChange} />
