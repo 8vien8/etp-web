@@ -5,12 +5,13 @@ function LogOut() {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        navigate('/login');
+        window.location.reload();
+        navigate('/');
     };
 
     return (
-        <div className="header">
-            <Button onClick={handleLogout}>Logout</Button>
+        <div style={{ textAlign: "center" }} className="header">
+            <Button color='danger' onClick={handleLogout}>Logout</Button>
         </div>
     );
 }

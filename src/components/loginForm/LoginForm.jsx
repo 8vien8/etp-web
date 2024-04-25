@@ -1,57 +1,53 @@
-import { useState } from 'react'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
-import './styleLogin.css'
-import { Link, useNavigate } from 'react-router-dom'
-import RegisterForm from '../registerForm/RegisterForm'
-import { mockUsers } from '../../../mockdata'
+import { useState, useEffect } from 'react';
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import './styleLogin.css';
+import { Link, useNavigate } from 'react-router-dom';
+import RegisterForm from '../registerForm/RegisterForm';
+
 function Login() {
-  const [showRegistrationForm, setShowRegistrationForm] = useState(false)
-  const handleRegister = () => {
-    setShowRegistrationForm(!showRegistrationForm)
-  }
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const apiUrl = 'http://localhost:3001/users';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleRegister = () => {
+    setShowRegistrationForm(!showRegistrationForm);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = mockUsers.find(user => user.email === email && user.password === password);
+    const user = users.find(user => user.email === email && user.password === password);
     if (user) {
-      console.log('Login successful!');
-      console.log(user.role);
-      switch (user.role) {
-        case 'admin':
-          navigate("/admin")
-          break;
-        case 'manager':
-          navigate("/manager")
-          break;
-        case 'coordinator':
-          navigate("/coordinator")
-          break;
-        case 'student':
-          navigate("/user")
-          break;
-        case 'guest':
-          navigate("/guest")
-          break;
-        default:
-          break;
-      }
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userCode', user.code);
+      navigate(`/${user.role}/${user.id}`);
       setError('');
     } else {
-      console.error('Login failed!');
       setError('Incorrect email or password.');
     }
   };
+
   return (
     <div className="form-container">
       {!showRegistrationForm && (
-        <Form className='login-form'
-          onSubmit={handleLogin}
-        >
+        <Form className='login-form' onSubmit={handleLogin}>
           <div className='form-header'>
             <h2>Login</h2>
           </div>
@@ -67,8 +63,8 @@ function Login() {
             />
           </FormGroup>
           <FormGroup>
-            <label>Password</label>
-            <input
+            <Label>Password</Label>
+            <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -78,22 +74,19 @@ function Login() {
             />
           </FormGroup>
           <div className='login-button'>
-            <Button
-              type="submit"
-            >
+            <Button color='primary' type="submit">
               <b>Sign-in</b>
             </Button>
             <p> or <Link to='/register' onClick={handleRegister}> Register</Link></p>
           </div>
-          {error && { error }}
+          {error && <div style={{ color: 'red' }} className='error'>{error}</div>}
           <div className='form-footer'>
-            <p>Forgot your password? <Link to='/reset'>Reset now!</Link></p>
           </div>
         </Form>
       )}
       {showRegistrationForm && <RegisterForm />}
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

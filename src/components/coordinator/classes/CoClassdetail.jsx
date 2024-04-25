@@ -2,34 +2,26 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, Input, ListGroup, ListGroupItem } from 'reactstrap';
 import './classDetail.css'
-import '../../utils/style/cardStyle.css';
 
-function ClassDetail() {
+function CoClassDetail() {
     const { classId } = useParams();
     const [classInfo, setClassInfo] = useState(null);
-    const [coordinators, setCoordinators] = useState([]);
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const [error, setError] = useState(null);
-    const [newCoordinatorId, setNewCoordinatorId] = useState('');
     const [newStudentId, setNewStudentId] = useState('');
     const [studentList, setStudentList] = useState([]);
-    const [coordinatorList, setCoordinatorList] = useState([]);
     const [editedSubmission, setEditedSubmission] = useState(null);
     const [editedGrade, setEditedGrade] = useState('');
     const [editedComment, setEditedComment] = useState('');
     const [editedStatus, setEditedStatus] = useState('');
 
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isCourseDetailModalOpen, setIsCourseDetailModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [coordinatorToDelete, setCoordinatorToDelete] = useState(null);
     const [isDeleteStudentModalOpen, setIsDeleteStudentModalOpen] = useState(false);
     const [studentToDelete, setStudentToDelete] = useState(null);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -63,8 +55,7 @@ function ClassDetail() {
                 const classData = await classResponse.json();
                 setClassInfo(classData);
 
-                // Combine coordinator_id and student_ids into one array
-                const userIds = [...classData.coordinator_id, ...classData.student_ids];
+                const userIds = [...classData.student_ids];
 
                 // User information
                 const usersResponse = await fetch(userApiUrl);
@@ -76,15 +67,12 @@ function ClassDetail() {
                 if (userData.length > 0) {
                     const filteredUsers = userData.filter(user => userIds.includes(user.code));
 
-                    const coordinators = [];
                     const students = [];
 
                     filteredUsers.forEach(user => {
-                        if (classData.coordinator_id.includes(user.code)) {
-                            coordinators.push(user);
-                        } else if (classData.student_ids.includes(user.code)) {
-                            students.push(user);
-                        }
+                        (classData.student_ids.includes(user.code))
+                        students.push(user);
+
                     });
 
                     // Course data
@@ -113,7 +101,6 @@ function ClassDetail() {
 
                     setSubmissions(filteredSubmissionsData)
                     setCourses(filteredCourseData);
-                    setCoordinators(coordinators);
                     setStudents(students);
                 } else {
                     throw new Error('Users data not found or malformed');
@@ -127,24 +114,6 @@ function ClassDetail() {
 
         fetchData();
     }, [classId]);
-
-    //Coordinator
-    useEffect(() => {
-        const fetchCoordinator = async () => {
-            try {
-                const response = await fetch(userApiUrl);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch coordinators');
-                }
-                const data = await response.json();
-                setCoordinatorList(data.filter(user => user.role === 'coordinator'));
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-
-        fetchCoordinator();
-    }, []);
 
     //Student
     useEffect(() => {
@@ -167,73 +136,6 @@ function ClassDetail() {
     if (error) {
         return <div>Error: {error}</div>;
     }
-
-    // Coordinator
-    const handleDeleteCoordinator = async (coordinatorId) => {
-        try {
-            const updatedCoordinators = coordinators.filter(coordinator => coordinator.code !== coordinatorId);
-            setCoordinators(updatedCoordinators);
-            const updateResponse = await fetch(`${classApiUrl}/${classId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    coordinator_id: updatedCoordinators.map(coordinator => coordinator.code)
-                })
-            });
-
-            if (!updateResponse.ok) {
-                throw new Error('Failed to update coordinator in database');
-            }
-
-        } catch (error) {
-            console.error('Error updating coordinator:', error);
-        }
-    };
-
-    const confirmDeleteCoordinator = () => {
-        if (coordinatorToDelete) {
-            handleDeleteCoordinator(coordinatorToDelete);
-        }
-        setIsDeleteModalOpen(false);
-    };
-
-    const handleAddCoordinator = async () => {
-        try {
-            if (coordinators.some(coordinator => coordinator.code === newCoordinatorId)) {
-                alert('This user is already a coordinator in the class.');
-                return;
-            }
-            const updatedCoordinators = [...coordinators, coordinatorList.find(user => user.code === newCoordinatorId)];
-            setCoordinators(updatedCoordinators);
-
-            const updateResponse = await fetch(`${classApiUrl}/${classId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    coordinator_id: updatedCoordinators.map(coordinator => coordinator.code)
-                })
-            });
-
-            if (!updateResponse.ok) {
-                throw new Error('Failed to update coordinators in the database');
-            }
-
-            setNewCoordinatorId('');
-            setIsModalOpen(!isModalOpen);
-
-        } catch (error) {
-            console.error('Error adding coordinator:', error);
-        }
-    };
-
-    const handleListGroupItemClick = (userCode) => {
-        setNewCoordinatorId(userCode);
-        setInputValue(userCode);
-    };
 
     //Students
     const handleDeleteStudent = async (studentId) => {
@@ -314,7 +216,6 @@ function ClassDetail() {
         setEditedGrade(selectedSubmission.grade);
         setEditedComment(selectedSubmission.comment);
         setEditedStatus(selectedSubmission.status);
-
     };
 
     const toggleSubmissionDetailModal = () => {
@@ -355,55 +256,14 @@ function ClassDetail() {
 
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div>
             {error && <div>Error: {error}</div>}
-            {!classInfo && !coordinators.length && !students.length && !courses.length && !submissions.length ? (
+            {!classInfo && !courses.length ? (
                 <div>Loading...</div>
             ) : (
                 <div>
                     <h2 style={{ fontWeight: "bold", textAlign: "center" }}>{classInfo.name} Details</h2>
                     <h3 className="mb-2 text-muted" style={{ textAlign: "center" }}>Code: {classInfo.code}</h3>
-
-                    <h3>Coordinators</h3>
-                    <h5 style={{ color: "green", display: "flex", alignItems: "center" }}>
-                        Add new coordinator for class
-                        <Button
-                            style={{ display: "flex", alignItems: "center" }}
-                            color="none"
-                            onClick={() => setIsModalOpen(true)}>
-                            <box-icon name='user-plus'></box-icon>
-                        </Button>
-                    </h5>
-                    <Table striped bordered>
-                        <thead>
-                            <tr>
-                                <th>Picture</th>
-                                <th>Coordinator ID</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {coordinators.map(coordinator => (
-                                <tr key={coordinator.id}>
-                                    <td>
-                                        <Link to={coordinator.picture}>
-                                            <img style={{ width: "40px", height: "40px" }} src={coordinator.picture} />
-                                        </Link>
-                                    </td>
-                                    <td>{coordinator.code}</td>
-                                    <td>{coordinator.username}</td>
-                                    <td>{coordinator.email}</td>
-                                    <td style={{ width: "10%" }}>
-                                        <Button className="btn btn-danger"
-                                            onClick={() => { setCoordinatorToDelete(coordinator.code); setIsDeleteModalOpen(true); }}>
-                                            Delete
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
 
                     <h3>Students</h3>
                     <h5 style={{ color: "green", display: "flex", alignItems: "center" }}>
@@ -516,47 +376,7 @@ function ClassDetail() {
                         </tbody>
                     </Table>
 
-                    {/* Coordinator */}
-                    <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
-                        <ModalHeader>Add Coordinator</ModalHeader>
-                        <ModalBody>
-                            <Input
-                                type="text"
-                                value={inputValue}
-                                onChange={handleSearchInputChange}
-                                placeholder="Search for coordinator by name"
-                            />
-                            <hr />
-                            <ListGroup>
-                                {coordinatorList
-                                    .filter(user => user.username.toLowerCase().includes(searchInput.toLowerCase()))
-                                    .map(user => (
-                                        <ListGroupItem key={user.id} onClick={() => handleListGroupItemClick(user.code)}>
-                                            <Link style={{ textDecoration: "unset" }}>
-                                                {user.code} - {user.username}
-                                            </Link>
-                                        </ListGroupItem>
-                                    ))}
-                            </ListGroup>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={handleAddCoordinator}>Confirm</Button>{' '}
-                            <Button color="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
-
-                    <Modal isOpen={isDeleteModalOpen} toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>
-                        <ModalHeader toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>Confirm Delete</ModalHeader>
-                        <ModalBody>
-                            Are you sure you want to delete this coordinator?
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" onClick={confirmDeleteCoordinator}>Delete</Button>
-                            <Button color="secondary" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
-
-                    {/* Student  */}
+                    {/* Add new Student  */}
                     <Modal isOpen={isStudentModalOpen} toggle={() => setIsStudentModalOpen(!isStudentModalOpen)}>
                         <ModalHeader>Add Student</ModalHeader>
                         <ModalBody>
@@ -585,6 +405,7 @@ function ClassDetail() {
                         </ModalFooter>
                     </Modal>
 
+                    {/* Delete Student */}
                     <Modal isOpen={isDeleteStudentModalOpen} toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>
                         <ModalHeader toggle={() => setIsDeleteStudentModalOpen(!isDeleteStudentModalOpen)}>Confirm Delete</ModalHeader>
                         <ModalBody>
@@ -596,7 +417,7 @@ function ClassDetail() {
                         </ModalFooter>
                     </Modal>
 
-                    {/* Course */}
+                    {/* Articles */}
                     <Modal className='course-details' isOpen={isCourseDetailModalOpen} toggle={toggleCourseDetailModal}>
                         <ModalHeader className='header'>{selectedCourse && (<>{selectedCourse.name}</>)} Detail</ModalHeader>
                         <ModalBody >
@@ -696,7 +517,7 @@ function ClassDetail() {
                                             </tr>
                                             <tr>
                                                 <td style={{ width: "30%" }}>
-                                                    <strong>Rating</strong>
+                                                    <strong>Grade</strong>
                                                 </td>
                                                 <td>
                                                     {editedSubmission && isSubmissionDetailModalOpen ? (
@@ -740,7 +561,7 @@ function ClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a href='' target="_blank" rel="noopener noreferrer">{file.name}</a>
+                                                                <a href={file} target="_blank" rel="noopener noreferrer">{file}</a>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -759,9 +580,6 @@ function ClassDetail() {
                             )}
                         </ModalFooter>
                     </Modal>
-
-
-
                 </div>
             )
             }
@@ -769,4 +587,4 @@ function ClassDetail() {
     );
 }
 
-export default ClassDetail;
+export default CoClassDetail;

@@ -1,0 +1,148 @@
+.container {
+  background: rgba(231, 231, 231, 0.443);
+  padding: 20px;
+}
+
+.profile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    45deg,
+    #b1a5a5,
+    #ffdbac,
+    #a3a080,
+    #486848,
+    #94bcca,
+    #5b4272,
+    #dea7b0,
+    #b29876,
+    #ab96ab,
+    #81a9ae,
+    #b45050
+  );
+  background-size: 400% 400%;
+  animation: color-change 15s linear infinite;
+}
+
+@keyframes color-change {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.profile-container p {
+  margin: 10px 0;
+}
+
+.profile-container strong {
+  font-weight: bold;
+}
+
+.profile-container img {
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 10px;
+  display: block;
+  margin: 0 auto;
+  border: 8px solid #fff;
+}
+
+.profile-container .log-out-btn {
+  float: right;
+}
+
+.profile-container .edit-profile-btn {
+  margin-top: 10px;
+}
+
+.profile-container .toggle-password-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-container .toggle-password-btn:focus {
+  outline: none;
+}
+
+.profile-container .toggle-password-btn box-icon {
+  color: #666;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.profile-container .toggle-password-btn:hover box-icon {
+  color: #333;
+}
+
+.profile-container .edit-profile-btn,
+.profile-container .log-out-btn,
+.modal-footer .btn {
+  background-color: #0e60b8e5;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-container .edit-profile-btn:hover,
+.profile-container .log-out-btn:hover,
+.modal-footer .btn:hover {
+  background-color: #0056b3;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="password"],
+.modal-body input[type="file"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-footer .btn {
+  border-radius: 5px;
+}
+
+.profile-info {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #060606;
+}
+
+.profile-info strong {
+  font-weight: bold;
+}
+
+.profile-info .toggle-password-btn {
+  margin-left: 10px;
+  vertical-align: middle;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
