@@ -14,6 +14,8 @@ const UserProfile = () => {
     email: "",
     picture: ""
   });
+
+
   const [isEditing, setIsEditing] = useState(false);
   const [modal, setModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
