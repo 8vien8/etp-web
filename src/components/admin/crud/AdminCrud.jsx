@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+import '../../utils/style/cardStyle.css';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  // const [confirmPassword, setConfirmPassword] = useState('');
 
   const [editedUser, setEditedUser] = useState({
     id: '',
@@ -88,6 +90,11 @@ const AdminDashboard = () => {
       const newId = `${maxId + 1}`;
       const newUserWithId = { ...newUser, id: newId };
 
+      // if (newUser.password !== confirmPassword) {
+      //   alert('Passwords do not match!');
+      //   return;
+      // }
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -124,6 +131,10 @@ const AdminDashboard = () => {
     setShowAddModal(!showAddModal);
   };
 
+  // const handleConfirmPasswordChange = (e) => {
+  //   setConfirmPassword(e.target.value);
+  // };
+
   const renderUsersByRole = (role) => {
     const filteredUsers = users.filter(user => user.role === role);
     const isAdminAndSingle = (role) => {
@@ -135,25 +146,28 @@ const AdminDashboard = () => {
     }
     return (
       <div key={role}>
-        <h2>{role.charAt(0).toUpperCase() + role.slice(1)}s</h2>
-        <Table striped bordered hover>
+        <h2 style={{ textAlign: "center", background: "#e2dfdf", color: "green" }}>{role.charAt(0).toUpperCase() + role.slice(1)}s</h2>
+        <Table striped bordered>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Code</th>
-              <th>Actions</th>
+              <th style={{ width: "5%" }}>#</th>
+              <th style={{ width: "8%" }}>ID</th>
+              <th style={{ width: "12%" }}>Username</th>
+              <th style={{ width: "30%" }}>Email</th>
+              <th>Password</th>
+              <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredUsers.map((user) => (
-              <tr key={user.id}>
+              <tr
+                key={user.id}>
                 <td>{user.id}</td>
+                <td>{user.code}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{user.code}</td>
-                <td style={{ width: "20%" }}>
+                <td>{user.password}</td>
+                <td >
                   <Button
                     color="danger"
                     disabled={isAdminAndSingle(user.role)}
@@ -164,6 +178,7 @@ const AdminDashboard = () => {
                   >
                     Delete
                   </Button>
+                  -
                   <Button color="primary" onClick={() => {
                     setEditedUser(user);
                     setShowEditModal(true);
@@ -178,15 +193,25 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
+    <div className='container' style={{ padding: "20px" }}>
       <h1 style={{ textAlign: "center" }}>Manage Users</h1>
-      <Button style={{ marginBottom: "10px" }} color="success" onClick={toggleAddModal}>Add User</Button>
-      {renderUsersByRole('admin')}
-      {renderUsersByRole('manager')}
-      {renderUsersByRole('coordinator')}
-      {renderUsersByRole('student')}
-      {renderUsersByRole('guest')}
-
+      <Button style={{ marginBottom: "10px" }} color="success" onClick={toggleAddModal}>Create New User</Button>
+      {successMessage && <h4 style={{ color: "green" }}>{successMessage}</h4>}
+      <div className='user-table-container'>
+        {renderUsersByRole('admin')}
+      </div>
+      <div className='user-table-container'>
+        {renderUsersByRole('manager')}
+      </div>
+      <div className='user-table-container'>
+        {renderUsersByRole('coordinator')}
+      </div>
+      <div className='user-table-container'>
+        {renderUsersByRole('student')}
+      </div>
+      <div className='user-table-container'>
+        {renderUsersByRole('guest')}
+      </div>
       <Modal isOpen={showDeleteModal} toggle={() => toggleDeleteModal(null)}>
         <ModalHeader toggle={() => toggleDeleteModal(null)}>Confirm Delete</ModalHeader>
         <ModalBody>Are you sure you want to delete this user?</ModalBody>
@@ -197,7 +222,7 @@ const AdminDashboard = () => {
       </Modal>
 
       <Modal isOpen={showEditModal} toggle={() => toggleEditModal(null)}>
-        <ModalHeader tag="h3" toggle={() => toggleEditModal(null)}>Editing {editedUser.username}</ModalHeader>
+        <ModalHeader tag="h3" toggle={() => toggleEditModal(null)}>{editedUser.username} information</ModalHeader>
         <ModalBody style={{ margin: "10px" }}>
           <FormGroup>
             <Label tag="h5" for="username">Username</Label>
@@ -262,6 +287,10 @@ const AdminDashboard = () => {
             <Input type="password" name="newPassword" id="newPassword" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} />
           </FormGroup>
           <FormGroup>
+            {/* <Label for="confirmPassword">Confirm Password</Label>
+            <Input type="password" name="confirmPassword" id="confirmPassword" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+          </FormGroup>
+          <FormGroup> */}
             <Label for="newPicture">Picture</Label>
             <Input type="file" name="newPicture" id="newPicture" value={newUser.picture} onChange={(e) => setNewUser({ ...newUser, picture: e.target.value })} />
           </FormGroup>
@@ -272,7 +301,6 @@ const AdminDashboard = () => {
         </ModalFooter>
       </Modal>
 
-      {successMessage && <p>{successMessage}</p>}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardBody, CardTitle, CardSubtitle, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import '../../utils/style/cardStyle.css';
+import './classDetail.css'
 
 function Classes() {
     const [classes, setClasses] = useState([]);
@@ -139,17 +141,17 @@ function Classes() {
     };
 
     return (
-        <div>
-            <h2 className='header'>Classes List</h2>
-            <Button style={{ marginBottom: "10px" }} color="primary" onClick={toggleModal}>Create Class</Button>
+        <div style={{ padding: "20px" }}>
+            <h2 className='header'>Faculties</h2>
+            <Button style={{ marginBottom: "10px" }} color="success" onClick={toggleModal}>Create Faculty</Button>
             <div className='dashboard-content'>
                 {classes.map(classItem => (
                     <Card style={{ width: "20%" }} key={classItem.id}>
                         <CardBody>
                             <CardTitle tag="h2">{classItem.name}</CardTitle>
                             <CardSubtitle tag="h3" className="mb-2 text-muted">Code: {classItem.code}</CardSubtitle>
-                            <Button tag={Link} to={`${classItem.id}`} className="btn btn-primary">Detail</Button>
-                            <Button color="danger" onClick={() => handleShowConfirmModal(classItem.id)}>Delete</Button>
+                            <Button tag={Link} to={`${classItem.id}`} color='primary' className="btn btn-primary">Detail</Button>
+                            <Button color="danger" className="btn btn-primary" onClick={() => handleShowConfirmModal(classItem.id)}>Delete</Button>
                         </CardBody>
                     </Card>
                 ))}
@@ -159,7 +161,7 @@ function Classes() {
             <Modal isOpen={confirmModal} toggle={toggleConfirmModal}>
                 <ModalHeader toggle={toggleConfirmModal}>Confirm Delete</ModalHeader>
                 <ModalBody>
-                    Are you sure you want to delete this class?
+                    Are you sure you want to delete this aculty?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="danger" onClick={confirmDeleteClass}>Yes</Button>{' '}
@@ -169,7 +171,7 @@ function Classes() {
 
             {/* Create modal */}
             <Modal isOpen={modal} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}>Create New Class</ModalHeader>
+                <ModalHeader toggle={toggleModal}>Create New Faculty</ModalHeader>
                 <ModalBody>
                     <Form>
                         <FormGroup>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, Input, ListGroup, ListGroupItem } from 'reactstrap';
 import './classDetail.css'
+import '../../utils/style/cardStyle.css';
 
 function ClassDetail() {
     const { classId } = useParams();
@@ -354,7 +355,7 @@ function ClassDetail() {
 
 
     return (
-        <div>
+        <div style={{ padding: "20px" }}>
             {error && <div>Error: {error}</div>}
             {!classInfo && !coordinators.length && !students.length && !courses.length && !submissions.length ? (
                 <div>Loading...</div>

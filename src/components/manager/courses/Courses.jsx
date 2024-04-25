@@ -228,8 +228,8 @@ function Courses() {
 
     return (
         <div>
-            <h2 className='header'>Courses List</h2>
-            <Button style={{ margin: "10px 0" }} color="primary" onClick={toggleModalS}>Create Course</Button>
+            <h2 className='header'>Article List</h2>
+            <Button style={{ margin: "10px 0" }} color="success" onClick={toggleModalS}>Create Article</Button>
 
             <div className='dashboard-content'>
                 {courses.map(course => (
@@ -237,7 +237,7 @@ function Courses() {
                         <CardBody>
                             <CardTitle tag="h2">{course.name}</CardTitle>
                             <CardSubtitle tag="h3" className="mb-2 text-muted">End Date: {course.end_date}</CardSubtitle>
-                            <Button onClick={() => showCourseDetails(course)} className="btn btn-primary">Detail</Button>
+                            <Button onClick={() => showCourseDetails(course)} color='primary' className="btn btn-primary">Detail</Button>
                             <Button onClick={() => confirmDelete(course)} color="danger">Delete</Button>
                         </CardBody>
                     </Card>
@@ -245,7 +245,7 @@ function Courses() {
             </div>
 
             <Modal centered isOpen={modalOpen} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}>Course Details</ModalHeader>
+                <ModalHeader toggle={toggleModal}>Article Details</ModalHeader>
                 <ModalBody>
                     {selectedCourse && (
                         <div>

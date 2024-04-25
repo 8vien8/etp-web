@@ -23,11 +23,11 @@ function NavBar() {
           </NavItem>
           <NavItem className='navbar-item'>
             <Link to='courses'><box-icon type='solid' name='collection' /></Link>
-            <NavLink tag={Link} to="courses" >Courses</NavLink>
+            <NavLink tag={Link} to="courses" >Articles</NavLink>
           </NavItem>
           <NavItem className='navbar-item'>
             <Link to='classes'><box-icon type='solid' name='school' /></Link>
-            <NavLink tag={Link} to="classes" >Classes</NavLink>
+            <NavLink tag={Link} to="classes" >Faculties</NavLink>
           </NavItem>
           <NavItem className='navbar-item'>
             <Link to='users'><box-icon type='solid' name='user-plus' /></Link>
