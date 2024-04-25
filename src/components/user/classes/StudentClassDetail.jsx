@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table, Button, Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Label, Input } from 'reactstrap';
+import Terms from '../../terms/Terms';
 
 function StudentClassDetail() {
     const { classId } = useParams();
@@ -8,6 +9,8 @@ function StudentClassDetail() {
     const [courses, setCourses] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const [error, setError] = useState(null);
+    const [isChecked, setIsChecked] = useState(false);
+    const handleCheckboxChange = () => setIsChecked(!isChecked);
 
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isCourseDetailModalOpen, setIsCourseDetailModalOpen] = useState(false);
@@ -44,9 +47,10 @@ function StudentClassDetail() {
             newSubmission.course_name !== "" &&
             newSubmission.title !== "" &&
             newSubmission.description !== "" &&
-            newSubmission.files.length > 0;
+            newSubmission.files.length > 0 &&
+            isChecked
         setIsFormValid(isFormValid);
-    }, [newSubmission]);
+    }, [newSubmission, isChecked]);
 
     useEffect(() => {
         setCurrentDate(new Date().toISOString().slice(0, 10));
@@ -538,6 +542,12 @@ function StudentClassDetail() {
                             <FormGroup>
                                 <Label for="files">Files</Label>
                                 <Input type="file" name="files" id="files" multiple onChange={handleFileInputChange} />
+                            </FormGroup>
+                            <FormGroup style={{ display: "flex" }} check>
+                                <Label check>
+                                    <Input type="checkbox" onChange={handleCheckboxChange} checked={isChecked} />
+                                </Label>
+                                <div style={{ display: "flex", gap: "5px" }}>I agree with <Terms /> and conditions </div>
                             </FormGroup>
                             <ul>
                                 {selectedFiles.map((index, file) => (

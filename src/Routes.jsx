@@ -16,7 +16,6 @@ import Login from "./components/loginForm/LoginForm";
 import RegisterForm from "./components/registerForm/RegisterForm";
 import Terms from "./components/terms/Terms";
 import AdminLandingPage from "./pages/admin/AdminLandingPage";
-import AdminDashBoard from "./components/admin/dashboard/AdminDashBoard";
 import GuestLandingPage from "./pages/guest/GuestLandingPage";
 import GuestDashBoard from "./components/guest/dashboard/GuestDashBoard";
 import ManagerHome from "./components/manager/home/ManagerHome";
@@ -24,17 +23,14 @@ import Directors from "./components/manager/directors/Directors";
 import Courses from "./components/manager/courses/Courses";
 import Classes from "./components/manager/classes/Classes";
 import MaClassDetail from "./components/manager/classes/MaClassDetail";
-import AdminClasses from "./components/admin/classes/AdminClasses";
-import AdminManageUser from "./components/admin/user/AdminManageUser";
 import AdminCrud from "./components/admin/crud/AdminCrud";
 import CoordinatorHome from "./components/coordinator/home/CoordinatorHome";
 import CoClasses from "./components/coordinator/classes/CoClasses";
-import CoClassDetail from "./components/coordinator/classes/CoClassdetail";
+import CoClassDetail from "./components/coordinator/classes/CoClassDetail";
 import StudentHome from "./components/user/home/StudentHome";
 import StudentClasses from "./components/user/classes/StudentClasses";
-import StudentClassDetail from "./components/user/classes/StudentClasseDetail";
+import StudentClassDetail from "./components/user/classes/StudentClassDetail";
 import UserProfile from "./components/profile/Profile";
-import AdminNavbar from "./components/admin/navbar/Navbar";
 
 const isAuthenticated = (role) => {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -120,10 +116,12 @@ const AppRouter = () => {
             )
           }
         >
-          <Route path="dashboard" element={<AdminDashBoard />} />
-          <Route path="classes" element={<AdminClasses />} />
-          <Route path="user" element={<AdminManageUser />} />
-          <Route path="crud" element={<AdminCrud />} />
+          <Route path="" element={<ManagerHome />} />
+          <Route path="director" element={<Directors />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="classes" element={<Classes />} />
+          <Route path="classes/:classId" element={<MaClassDetail />} />
+          <Route path="users" element={<AdminCrud />} />
           <Route path="profile" element={<UserProfile />} />
         </Route>
 

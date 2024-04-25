@@ -1,46 +1,43 @@
-
-.register-form{
-    width: 300px;
-    margin-top: 125px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #b4abab79;
+.register-form {
+  width: 300px;
+  margin-top: 125px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #b4abab79;
 }
 
-.form-header h2{
-    text-align: center;
-    font-size: 2em;
-    font-weight: bold;
+.form-header h2 {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
 }
 
-.register-form input{
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    text-align: left;
-    padding-left: 5px;
-    width: 100%;
+.register-form input {
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  text-align: left;
+  padding-left: 5px;
+  width: 100%;
 }
 
-.term-check-box{
-    display: flex;
-    width: 100%;
-    gap: 5px
+.term-check-box {
+  display: flex;
+  width: 100%;
+  gap: 5px;
 }
 
-.term-check-box input{
-    width: 1em;
-    height: 1em;
-    vertical-align: top;
-    background-color: #fff;
-    background-repeat: no-repeat;
-    background-size: contain;
-    border: 1px solid rgba(0, 0, 0, .25);
+.term-check-box input {
+  width: 1em;
+  height: 1em;
+  vertical-align: top;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
-
-.register-button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.register-button {
+  margin: 5px;
+  text-align: center;
 }
