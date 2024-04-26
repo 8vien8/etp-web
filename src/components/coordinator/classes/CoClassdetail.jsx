@@ -561,7 +561,7 @@ function CoClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a href={file} target="_blank" rel="noopener noreferrer">{file}</a>
+                                                                <a download={file.name} href={file.content} target="_blank" rel="noopener noreferrer">{file.name}</a>
                                                             </li>
                                                         ))}
                                                     </ul>

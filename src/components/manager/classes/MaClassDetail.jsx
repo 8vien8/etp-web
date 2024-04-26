@@ -740,7 +740,7 @@ function ClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a href='' target="_blank" rel="noopener noreferrer">{file.name}</a>
+                                                                <a download={file.content} href={file.content} target="_blank" rel="noopener noreferrer">{file.name}</a>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -759,8 +759,6 @@ function ClassDetail() {
                             )}
                         </ModalFooter>
                     </Modal>
-
-
 
                 </div>
             )

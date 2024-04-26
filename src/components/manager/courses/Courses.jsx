@@ -22,8 +22,21 @@ function Courses() {
     const [isFormValid, setIsFormValid] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [courseToDelete, setCourseToDelete] = useState(null);
+    const [classes, setClasses] = useState([]);
+    const classesApiUrl = 'http://localhost:3001/classes'
 
     const apiUrl = 'http://localhost:3001/courses';
+
+    useEffect(() => {
+        fetch(classesApiUrl)
+            .then(response => response.json())
+            .then(data => {
+                setClasses(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,7 +54,7 @@ function Courses() {
 
     useEffect(() => {
         const allAssignmentsFilled = editedAssignments.every(assignment => Object.values(assignment).every(value => value.trim() !== ''));
-        const allDocumentsFilled = editedDocuments.every(document => Object.values(document).every(value => value.trim() !== ''));
+        const allDocumentsFilled = editedDocuments.every(document => document.filename.trim() !== '');
 
         setSaveDisabled(!allAssignmentsFilled || !allDocumentsFilled);
     }, [editedAssignments, editedDocuments]);
@@ -149,6 +162,24 @@ function Courses() {
             ...prevState,
             [name]: value
         }));
+
+        if (name === 'class_name') {
+            const selectedClass = classes.find(cls => cls.name === value);
+            if (selectedClass) {
+                setNewCourse(prevState => ({
+                    ...prevState,
+                    class_code: selectedClass.code
+                }));
+            }
+        } else if (name === 'class_code') {
+            const selectedClass = classes.find(cls => cls.code === value);
+            if (selectedClass) {
+                setNewCourse(prevState => ({
+                    ...prevState,
+                    class_name: selectedClass.name
+                }));
+            }
+        }
     };
 
     const validateForm = () => {
@@ -193,18 +224,7 @@ function Courses() {
         setNewCourse({ ...newCourse, assignments: updatedAssignments });
     };
 
-    // const [classes, setClasses] = useState([]);
-    // useEffect(() => {
-    //     fetch('http://localhost:3001/classes')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setClasses(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching data:', error);
-    //         });
-    // }, []);
-
+    //=======================
 
     useEffect(() => {
         validateForm();
@@ -257,6 +277,7 @@ function Courses() {
                 ))}
             </div>
 
+            {/* View Details of Articles */}
             <Modal centered isOpen={modalOpen} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}>Article Details</ModalHeader>
                 <ModalBody>
@@ -272,7 +293,7 @@ function Courses() {
                             <Input type="date" name="end_date" value={editedCourse.end_date} onChange={handleEditInputChange} />
                             <hr />
                             <h4>
-                                Assignments
+                                Subjects
                                 <Button color="none" onClick={handleAddAssignment}>
                                     <box-icon name='plus-circle' type='solid' ></box-icon>
                                 </Button>
@@ -282,6 +303,9 @@ function Courses() {
                                 <div style={{ marginTop: 5 }} key={index}>
                                     <Input type="text" name="title" value={assignment.title} onChange={(e) => handleAssignmentInputChange(e, index)} />
                                     <Input type="text" name="description" value={assignment.description} onChange={(e) => handleAssignmentInputChange(e, index)} />
+                                    <p style={{ marginLeft: '10px' }}>
+                                        <strong>Set due date for subjects</strong>
+                                    </p>
                                     <Input type="date" name="due_date" value={assignment.due_date} onChange={(e) => handleAssignmentInputChange(e, index)} />
                                     <Button style={{ marginTop: 5 }} color="danger" onClick={() => handleDeleteAssignment(index)}>Delete</Button>
                                 </div>
@@ -297,7 +321,7 @@ function Courses() {
                             {editedDocuments.map((document, index) => (
                                 <div style={{ marginTop: 5 }} key={index}>
                                     <Input type="text" name="filename" value={document.filename} onChange={(e) => handleDocumentInputChange(e, index)} />
-                                    <p style={{ overflow: "hidden" }}>Document url: <a href={document.documentUrl}>{document.documentUrl}</a></p>
+                                    <p style={{ overflow: "hidden" }}>Documents <a download={document.documentUrl} href={document.documentUrl}>{document.filename}</a></p>
                                     <Input type="file" accept=".docx,.pdf,.jpg,.jpeg/*" name="documentUrl" onChange={(e) => handleDocumentFileChange(e, index)} />
                                     <Button style={{ marginTop: 5 }} color="danger" onClick={() => handleDeleteDocument(index)}>Delete</Button>
                                 </div>
@@ -312,25 +336,28 @@ function Courses() {
                 </ModalFooter>
             </Modal>
 
+            {/* Create a new Articles */}
             <Modal isOpen={isModalOpen} toggle={toggleModalS}>
                 <ModalHeader toggle={toggleModalS}><div style={{ fontWeight: "bold" }}>Add New Article</div></ModalHeader>
                 <ModalBody>
                     <h5> Apply for Faculties</h5>
-
-                    {/* <Input type="select" onChange={handleInputChange} value={newCourse.class_code}>
-                        <option value="">Select a class name...</option>
-                        {classes.map(cls => (
-                            <option key={cls.id} value={cls.name}>{cls.name}</option>
-                        ))}
-                    </Input>
-                    <Input type="select" onChange={handleInputChange} value={newCourse.class_name}>
-                        <option value="">Select a class code...</option>
+                    <p> <strong>Faculty code</strong></p>
+                    <Input type="select" name="class_code" placeholder="Class Code" onChange={handleInputChange} value={newCourse.class_code}>
+                        <option value="">Select a class ID...</option>
                         {classes.map(cls => (
                             <option key={cls.id} value={cls.code}>{cls.code}</option>
                         ))}
-                    </Input> */}
-                    <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
-                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} />
+                    </Input>
+                    <p><strong> Faculty name</strong></p>
+                    <Input placeholder='Select faculty ID below' name="class_name" onChange={handleInputChange} value={newCourse.class_name} readOnly>
+                        {/* <option value="">Select a class name...</option>
+                        {classes.map(cls => (
+                            <option key={cls.id} value={cls.name}>{cls.name}</option>
+                        ))} */}
+                    </Input>
+
+                    {/* <Input type="text" name="class_name" placeholder="Class Name" value={newCourse.class_name} onChange={handleInputChange} />
+                    <Input type="text" name="class_code" placeholder="Class Code" value={newCourse.class_code} onChange={handleInputChange} /> */}
                     <hr />
                     <h5> Article information</h5>
                     <Input type="text" name="name" placeholder="Artitcle Name" value={newCourse.name} onChange={handleInputChange} />
@@ -368,6 +395,7 @@ function Courses() {
                 </ModalFooter>
             </Modal>
 
+            {/* Confirm Delete Articles */}
             <Modal isOpen={deleteModalOpen} toggle={toggleDeleteModal}>
                 <ModalHeader toggle={toggleDeleteModal}>Confirm Delete</ModalHeader>
                 <ModalBody>
@@ -381,5 +409,4 @@ function Courses() {
         </div>
     );
 }
-
 export default Courses;

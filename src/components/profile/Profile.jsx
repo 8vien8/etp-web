@@ -60,7 +60,6 @@ const UserProfile = () => {
         return response.json();
       })
       .then(data => {
-        // Cập nhật dữ liệu người dùng trong state và local storage
         setUserData(data);
         localStorage.setItem('user', JSON.stringify(data));
         setIsEditing(false);

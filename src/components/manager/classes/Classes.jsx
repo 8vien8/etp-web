@@ -18,6 +18,9 @@ function Classes() {
     const [coordinatorOptions, setCoordinatorOptions] = useState([]);
     const [isValid, setIsValid] = useState(false);
 
+    const classApiUrl = 'http://localhost:3001/classes'
+    const userApiUrl = 'http://localhost:3001/users'
+
     const toggleModal = () => setModal(!modal);
     const toggleConfirmModal = () => setConfirmModal(!confirmModal);
 
@@ -43,7 +46,7 @@ function Classes() {
 
     const fetchClasses = async () => {
         try {
-            const response = await fetch('http://localhost:3001/classes');
+            const response = await fetch(classApiUrl);
             if (response.ok) {
                 const data = await response.json();
                 setClasses(data);
@@ -57,7 +60,7 @@ function Classes() {
 
     const fetchCoordinatorOptions = async () => {
         try {
-            const response = await fetch('http://localhost:3001/users');
+            const response = await fetch(userApiUrl);
             if (response.ok) {
                 const data = await response.json();
                 const coordinatorCodes = data.filter(user => user.role === 'coordinator').map(coordinator => coordinator.code);
@@ -81,11 +84,16 @@ function Classes() {
 
     const addNewClass = async () => {
         try {
+            const isDuplicateCode = classes.some(classItem => classItem.code === newClassData.code);
+            if (isDuplicateCode) {
+                alert(' Class code already exists. Choose a different class code');
+                return;
+            }
             const maxId = classes.reduce((max, cls) => Math.max(max, parseInt(cls.id)), 0);
             const newId = (maxId + 1).toString();
             const dataWithNewId = { ...newClassData, id: newId };
 
-            const response = await fetch('http://localhost:3001/classes', {
+            const response = await fetch(classApiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -121,7 +129,7 @@ function Classes() {
 
     const deleteClass = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3001/classes/${id}`, {
+            const response = await fetch(classApiUrl + `/${id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
