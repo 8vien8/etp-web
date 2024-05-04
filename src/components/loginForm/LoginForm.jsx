@@ -11,7 +11,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const apiUrl = 'http://localhost:3001/users';
+  const apiUrl = 'http://localhost:3001/users ';
 
   useEffect(() => {
     const fetchData = async () => {

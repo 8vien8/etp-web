@@ -285,8 +285,19 @@ function Courses() {
                         <div>
                             <h2 style={{ display: "flex", justifyContent: "center" }}>{selectedCourse.name}</h2>
                             <h4>Applying for class</h4>
-                            <Input type="text" name="class_name" value={selectedCourse.class_name} onChange={handleEditInputChange} />
-                            <Input type="text" name="class_code" value={selectedCourse.class_code} onChange={handleEditInputChange} />
+                            <Input type="select" name="class_code" placeholder="Class Code" onChange={handleInputChange} value={newCourse.class_code}>
+                                <option value="">Select a class ID...</option>
+                                {classes.map(cls => (
+                                    <option key={cls.id} value={cls.code}>{cls.code}</option>
+                                ))}
+                            </Input>
+                            <p><strong> Faculty name</strong></p>
+                            <Input placeholder='Select faculty ID below' name="class_name" onChange={handleInputChange} value={newCourse.class_name} readOnly>
+                                {/* <option value="">Select a class name...</option>
+                        {classes.map(cls => (
+                            <option key={cls.id} value={cls.name}>{cls.name}</option>
+                        ))} */}
+                            </Input>
                             <h4>Article</h4>
                             <Input type="text" name="name" value={editedCourse.name} onChange={handleEditInputChange} />
                             <Input type="date" name="start_date" value={editedCourse.start_date} onChange={handleEditInputChange} />

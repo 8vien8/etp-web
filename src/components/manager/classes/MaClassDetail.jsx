@@ -201,6 +201,9 @@ function ClassDetail() {
 
     const handleAddCoordinator = async () => {
         try {
+            if (inputValue === '') {
+                return;
+            }
             if (coordinators.some(coordinator => coordinator.code === newCoordinatorId)) {
                 alert('This user is already a coordinator in the class.');
                 return;
@@ -261,6 +264,9 @@ function ClassDetail() {
 
     const handleAddStudent = async () => {
         try {
+            if (inputValue === '') {
+                return;
+            }
             if (students.some(student => student.code === newStudentId)) {
                 alert('This user is already a student in the class.');
                 return;
@@ -450,7 +456,7 @@ function ClassDetail() {
                     <Table striped bordered>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                {/* <th>ID</th> */}
                                 <th>Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -462,7 +468,7 @@ function ClassDetail() {
                         <tbody>
                             {courses.map(course => (
                                 <tr key={course.id}>
-                                    <td>{course.id}</td>
+                                    {/* <td>{course.id}</td> */}
                                     <td>{course.name}</td>
                                     <td>{course.start_date}</td>
                                     <td>{course.end_date}</td>
@@ -471,6 +477,7 @@ function ClassDetail() {
                                             {course.documents.map(document => (
                                                 <li key={document.id}>
                                                     {document.filename}
+
                                                 </li>
                                             ))}
                                         </ul>
@@ -540,7 +547,8 @@ function ClassDetail() {
                             </ListGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={handleAddCoordinator}>Confirm</Button>{' '}
+
+                            <Button color="primary" disabled={inputValue === ''} onClick={handleAddCoordinator}>Confirm</Button>{' '}
                             <Button color="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
@@ -580,7 +588,9 @@ function ClassDetail() {
                             </ListGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={handleAddStudent}>Confirm</Button>{' '}
+                            <Button color="primary" onClick={handleAddStudent} disabled={inputValue === ''}>
+                                Confirm
+                            </Button>
                             <Button color="secondary" onClick={() => setIsStudentModalOpen(!isStudentModalOpen)}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
@@ -618,7 +628,7 @@ function ClassDetail() {
                                         <tbody>
                                             {selectedCourse.documents.map(document => (
                                                 <tr key={document.id}>
-                                                    <td>{document.filename}</td>
+                                                    <td>{document.filename} </td>
                                                     <td>{document.documentUrl}</td>
                                                     <td>{document.uploadDate}</td>
                                                 </tr>
@@ -740,8 +750,7 @@ function ClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a download={file.content} href={file.content} target="_blank" rel="noopener noreferrer">{file.name}</a>
-                                                            </li>
+                                                                {file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name}                                                            </li>
                                                         ))}
                                                     </ul>
                                                 </td>

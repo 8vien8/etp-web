@@ -489,10 +489,10 @@ function StudentClassDetail() {
                                                     {editedSubmission && isSubmissionDetailModalOpen ? (
                                                         <Input type="file" onChange={handleFileInputChange} multiple />
                                                     ) : (
-                                                        <ul>
+                                                        <ul style={{ overflow: "hidden" }}>
                                                             {selectedSubmission.files.map((file, index) => (
-                                                                <li key={index}>
-                                                                    <a href='' target="_blank" rel="noopener noreferrer">{file.name}</a>
+                                                                <li style={{ overflow: "hidden" }} key={index}>
+                                                                    <a download={file.content} href={file.content} target="_blank" rel="noopener noreferrer">{file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name}</a>
                                                                 </li>
                                                             ))}
                                                         </ul>

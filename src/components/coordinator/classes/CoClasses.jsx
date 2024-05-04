@@ -30,7 +30,7 @@ function CoClasses() {
 
   return (
     <div>
-      <h2 className='header'>Classes List</h2>
+      <h2 className='header'>Faculty List</h2>
       <div className='dashboard-content'>
         {classes.map(classItem => (
           <Card style={{ width: "20%" }} key={classItem.id}>

@@ -5,6 +5,7 @@ import './GuestDashBoardStyle.css';
 function ApprovedSubmissions() {
   const [submissions, setSubmissions] = useState([]);
   const apiUrl = "http://localhost:3001/submissions"
+
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
@@ -17,8 +18,12 @@ function ApprovedSubmissions() {
 
         const submissionsData = await response.json();
 
-        // Set state with all submissions
-        setSubmissions(submissionsData);
+        const approvedSubmissionsData = submissionsData.filter(
+          (submission) => submission.status === "Approve"
+        );
+
+        setSubmissions(approvedSubmissionsData);
+        console.log(approvedSubmissionsData);
       } catch (error) {
         console.error("Error fetching submissions:", error);
       }
@@ -53,11 +58,12 @@ function ApprovedSubmissions() {
                 {submission.files.map((file, index) => (
                   <li key={index}>
                     <a
-                      href={`${file.content}`}
+                      href={file.content}
+                      download={file.content}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {file.name}
+                      {file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name}
                     </a>
                   </li>
                 ))}

@@ -15,7 +15,7 @@ function NavBar() {
                     </NavItem>
                     <NavItem className='navbar-item'>
                         <Link to="class"><box-icon type='solid' name='school' /></Link>
-                        <NavLink tag={Link} to="classes" >Classes</NavLink>
+                        <NavLink tag={Link} to="classes" >Faculty</NavLink>
                     </NavItem>
                     <NavItem className='navbar-item'>
                         <Link to="profile"><box-icon name='user-circle' /></Link>

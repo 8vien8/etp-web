@@ -6,7 +6,7 @@ function NavBar() {
         <div className='navbar-container'>
             <Navbar>
                 <NavbarBrand>
-                    <img className='navbar-logo' src="src\assets\logo.jpg" style={{ width: "100%" }} />
+                    <img className='navbar-logo' src="https://telegraph-image-bak.pages.dev/file/4416b1da140c3ac1902ce.png" style={{ width: "100%" }} />
                 </NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     <NavItem className='navbar-item'>

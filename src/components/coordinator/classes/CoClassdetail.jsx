@@ -163,6 +163,10 @@ function CoClassDetail() {
 
     const handleAddStudent = async () => {
         try {
+
+            if (inputValue === '') {
+                return;
+            }
             if (students.some(student => student.code === newStudentId)) {
                 alert('This user is already a student in the class.');
                 return;
@@ -253,7 +257,6 @@ function CoClassDetail() {
             });
 
     };
-
 
     return (
         <div>
@@ -400,7 +403,9 @@ function CoClassDetail() {
                             </ListGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={handleAddStudent}>Confirm</Button>{' '}
+                            <Button color="primary" onClick={handleAddStudent} disabled={inputValue === ''}>
+                                Confirm
+                            </Button>
                             <Button color="secondary" onClick={() => setIsStudentModalOpen(!isStudentModalOpen)}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
@@ -561,7 +566,9 @@ function CoClassDetail() {
                                                     <ul>
                                                         {selectedSubmission.files.map((file, index) => (
                                                             <li key={index}>
-                                                                <a download={file.name} href={file.content} target="_blank" rel="noopener noreferrer">{file.name}</a>
+                                                                <a href={file.content}>
+                                                                    <p> {file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name} </p>
+                                                                </a>
                                                             </li>
                                                         ))}
                                                     </ul>

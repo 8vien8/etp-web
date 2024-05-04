@@ -88,7 +88,7 @@ const AdminDashboard = () => {
       }
       const maxId = Math.max(...users.map(user => user.id));
       const newId = `${maxId + 1}`;
-      const newUserWithId = { ...newUser, id: newId };
+      const newUserWithId = { ...newUser, id: newId, picture: 'https://telegraph-image-bak.pages.dev/file/4b2ae0216dac79e922c78.jpg' };
 
 
       const response = await fetch(apiUrl, {
@@ -150,7 +150,6 @@ const AdminDashboard = () => {
               <th style={{ width: "8%" }}>ID</th>
               <th style={{ width: "12%" }}>Username</th>
               <th style={{ width: "30%" }}>Email</th>
-              <th>Password</th>
               <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
@@ -162,7 +161,6 @@ const AdminDashboard = () => {
                 <td>{user.code}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{user.password}</td>
                 <td >
                   <Button
                     color="danger"
